@@ -1,0 +1,22 @@
+.profile-ctn {
+    display: flex;
+}
+
+.prof-img-ctn {
+    width: 10%;
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+.prof-img-ctn img {
+    width: 100%;
+    height: auto;
+}
+
+.prof-details-ctn {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+}
