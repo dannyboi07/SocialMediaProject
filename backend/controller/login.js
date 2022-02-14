@@ -4,13 +4,14 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 loginRouter.post("/", async(req, res, next) => {
-  const body = req.body;
+  // const body = req.body;
+  const { username, password } = req.body;
   try {
-    const doesExist = await db.query("SELECT * FROM users where username = $1 LIMIT 1", [body.username]);
+    const doesExist = await db.query("SELECT * FROM users where username = $1 LIMIT 1", [username]);
     if (doesExist.rows.length === 0) return res.status(401).json({ error: "User doesn't exist" });
-    console.log(body, doesExist.rows[0].password_hash.length);
+    console.log(req.body, doesExist.rows[0].password_hash.length);
 
-    const pwCorrect = await bcrypt.compare(body.password, doesExist.rows[0].password_hash);
+    const pwCorrect = await bcrypt.compare(password, doesExist.rows[0].password_hash);
     console.log(pwCorrect);
     if (!pwCorrect) return res.status(401).json({ error: "Incorrect password" });
 
