@@ -38,7 +38,7 @@ function initializeUser(userDetails) {
 function dispatchRegister(userDetails) {
   return async dispatch => {
     const resRegUserDetails = await registerUser(userDetails);
-    const resUserDetails = await loginUser(resRegUserDetails);
+    const resUserDetails = await loginUser({ username: userDetails.username, password: userDetails.password });
     dispatch({
       type: "LOGIN",
       data: resUserDetails
