@@ -9,21 +9,22 @@ const storage = multer.diskStorage({
     cb(null, "./images/profile-pics/")
   },
   filename: function (req, file, cb) {
-    let filetype;
-    if (file.mimetype === "image/jpeg") filetype = ".jpeg"
-    else if (file.mimetype === "image/png") filetype = ".png"
-    else if (file.mimetype === "image/svg+xml") filetype = ".svg"
-    else return cb(null, new Error ("Wrong file type, only jpg/jpeg/png/svg are supported"));
+    // let filetype;
+    // if (file.mimetype === "image/jpeg") filetype = ".jpeg"
+    // else if (file.mimetype === "image/png") filetype = ".png"
+    // else if (file.mimetype === "image/svg+xml") filetype = ".svg"
+    // else return cb(null, new Error ("Wrong file type, only jpg/jpeg/png/svg are supported"));
+    if (file.mimetype !== "image/jpeg" && file.mimetype !== "image/png" && file.mimetype !== "image/svg+xml") {
+      return cb(null, new Error("Wrong file type, only jpg/jpeg/png/svg are supported"));
+    }
 
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1E9);
     cb(null, file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname));
-      //   if (file.mimetype !== "image/jpeg" || file.mimetype !== "image/png" || file.mimetype !== "image/svg+xml") {
-      // return cb(null, new Error ("Wrong file type, only jpg/jpeg/png/svg are supported"));
-    }
   }
-)
+})
 const upload = multer({ storage: storage });
-// const fs = require("fs");
+
+
 
 registerRouter.get("/", async (req ,res, next) => {
   try {
@@ -36,8 +37,6 @@ registerRouter.get("/", async (req ,res, next) => {
 });
 
 registerRouter.post("/", upload.single("profileimg"), async(req, res, next) => {
-  // const body = req.body;
-  console.error(1, req.file);
   const { name, username, password } = req.body;
 
   if (username.length < 3) {
@@ -51,7 +50,6 @@ registerRouter.post("/", upload.single("profileimg"), async(req, res, next) => {
   };
 
   let profImgPath = "http://localhost:3500/images/profile-pics/default-prof-img/user-default.svg";
-  console.error(req.body);
   if (req.file) {
     profImgPath = `http://localhost:3500/images/profile-pics/${req.file.filename}`;
   }
@@ -69,7 +67,7 @@ registerRouter.post("/", upload.single("profileimg"), async(req, res, next) => {
   };
 });
 
-registerRouter.post("/test", upload.single("image"), async(req, res, next) => {
+registerRouter.post("/test", upload.single("testimg"), async(req, res, next) => {
   console.log(req.file);
   console.log(req.body);
   res.json({ status: "Success" });
