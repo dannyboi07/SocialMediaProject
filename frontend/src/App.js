@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Navbar from './components/Navbar/Navbar';
 import "./App.css";
 import { initializeUser } from "./reducers/userReducer";
+import { getAll } from './reducers/postblogReducer';
 import Home from "./components/Home/Home";
 import Register from './components/Register/Register';
 import Login from './components/Login/Login';
@@ -13,11 +14,12 @@ function App() {
 
   useEffect(() => {
     const userDetails = JSON.parse(window.localStorage.getItem("socialMediaAppUser"));
+    dispatch(getAll());
 
     if (userDetails) dispatch(initializeUser(userDetails));
   }, [dispatch]);
-  const user = useSelector(state => state);
-  console.log(user);
+  const user = useSelector(state => state.user);
+  // console.log(user);
 
   return (
     <div>

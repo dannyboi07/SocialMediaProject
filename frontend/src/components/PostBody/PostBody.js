@@ -4,12 +4,13 @@ import PostContent from '../PostContent/PostContent';
 import PostDetails from '../PostDetails/PostDetails';
 import "./postbody.css"
 
-function PostBody() {
+function PostBody({ post }) {
+
   return (
         <div className="post-body-ctn">
-            <Profile />
-            <PostContent />
-            <PostDetails />
+            <Profile name={ post.name } username={ post.username } profImgSrc={ post.imgloc }/>
+            <PostContent content={ post.text }/>
+            <PostDetails postId={ post.p_id } likes={ post.likes }/>
         </div>
     );
 }

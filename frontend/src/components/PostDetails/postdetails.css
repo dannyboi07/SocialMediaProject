@@ -12,8 +12,22 @@
   transform: scale(0,0);
   transform-origin: 50% -15%;
   transition: transform 0.5s;
+  z-index: 5;
+  width: 100px;
+  height: 100px;
 }
 
 .show-ctn {
   transform: scale(1,1);
 }
+
+.toggle-btn {
+  height: 100%;
+  margin-left: 0.25em;
+  padding: 0.5em;
+}
+
+/* .toggle-btn img {
+  width: 100%;
+  height: 100%;
+} */

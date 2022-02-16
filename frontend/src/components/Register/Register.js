@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from "react-redux";
 import { dispatchRegister } from '../../reducers/userReducer';
-import "./register.css"
+import { registerUser } from '../../services/registerService';
+import "./register.css";
 
 function Register() {
   const [profileimg, setProfileimg] = useState(null);
@@ -9,6 +10,15 @@ function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    URL.revokeObjectURL(profileimg);
+
+    const regForm = document.getElementById("register-form");
+    if (profileimg) {regForm.classList.add("form-modify")}
+    else {regForm.classList.remove("form-modify")};
+
+  }, [profileimg])
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -33,15 +43,19 @@ function Register() {
   }
 
   function handleProfChange(e) {
-    console.log(e.target.files[0]);
+    // console.log(e.target.files[0]);
     setProfileimg(e.target.files[0]);
   }
 
   return (
     <div className="register-ctn">
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
+      <form id="register-form" onSubmit={handleSubmit} encType="multipart/form-data">
         <label className="img-upload-ctn">
-          Upload a profile image:
+          Upload a profile image: { !profileimg && <span>(A default will be chosen if not uploaded)</span> }
+          { profileimg && <div className="pre-profimg-ctn">
+            <img className="pre-profimg" src={URL.createObjectURL(profileimg)} alt="Profile"/>
+          </div> }
+
           <input id="prof-img" type="file" name="profileimg" accept='.jpg,.jpeg,.png' onChange={(e) => handleProfChange(e)}/>
         </label>
         <label>

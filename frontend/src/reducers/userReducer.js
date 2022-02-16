@@ -9,7 +9,7 @@ const initialState = {
 };
 
 export default function userReducer(state = null, action) {
-  console.log(action);
+  // console.log(action);
   switch(action.type) {
     case "LOGIN":
 

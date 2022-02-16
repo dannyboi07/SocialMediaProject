@@ -1,10 +1,10 @@
 import React from 'react';
 import "./postcontent.css"
 
-function PostContent() {
+function PostContent({ content }) {
   return (
     <div className="post-content-ctn">
-        { true && <p>This is a test post. Filled with dummy text. This is a test post. Filled with dummy text.</p> }
+        <p>{ content }</p>
     </div>
   );
 }

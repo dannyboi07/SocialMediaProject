@@ -6,4 +6,9 @@ async function getAllService() {
   return response.data;
 };
 
-export { getAllService };
+async function getPostLikes(postId) {
+  const response = await axios.get(`${baseUrl}/post/likes/${postId}`);
+  return response.data;
+}
+
+export { getAllService, getPostLikes };
