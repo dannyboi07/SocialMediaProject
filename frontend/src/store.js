@@ -1,11 +1,17 @@
-import { applyMiddleware, createStore } from "redux";
+import { applyMiddleware, createStore, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import userReducer from "./reducers/userReducer";
+import postblogReducer from "./reducers/postblogReducer";
+
+const reducer = combineReducers({ 
+  user: userReducer,
+  postblog: postblogReducer 
+})
 
 const store = createStore(
-  userReducer, 
+  reducer, 
   composeWithDevTools(applyMiddleware(thunk))
 );
 store.subscribe(() => console.log(store.getState()));

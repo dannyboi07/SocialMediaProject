@@ -17,17 +17,19 @@ function Register() {
     const dotIdx = imgFileName.lastIndexOf(".") + 1;
     const fileExt = imgFileName.substring(dotIdx, imgFileName.length).toLowerCase();
     if (fileExt !== "jpg" && fileExt !== "jpeg" && fileExt !== "png") {
-      console.log(fileExt === "jpeg");
       window.alert("Profile image must be either of type .jpg, .jpeg, or .png");
       return;
     };
 
     const data = new FormData();
     data.append("profileimg", profileimg);
-    console.log(profileimg, "data", data.get("profileimg"));
+    data.append("name", name);
+    data.append("username", username);
+    data.append("password", password);
+    console.log("data", data);
 
-    const userDetails = { name, username, password, data };
-    dispatch(dispatchRegister(userDetails))
+    // const userDetails = { name, username, password, data };
+    dispatch(dispatchRegister(data));
   }
 
   function handleProfChange(e) {
@@ -56,8 +58,28 @@ function Register() {
         </label>
         <button type="submit">Register</button>
       </form>
+
     </div>
   );
 }
 
 export default Register;
+
+
+// const [testing, setTesting] = useState(null);
+
+// function testOnSubmit(e) {
+//   e.preventDefault();
+//   const data = new FormData();
+//   data.append("testimg", testing);
+
+//   fetch("http://localhost:3500/api/register/test", {
+//     method: "POST",
+//     body: data
+//   }).then(res => console.log(res))
+//   .catch(err => console.error(err));
+// }
+/* <form onSubmit={testOnSubmit}>
+<input type="file" name="testimg" onChange={(e) => setTesting(e.target.files[0])}/>
+<button type="submit">Submit</button>
+</form> */
