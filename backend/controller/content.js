@@ -10,4 +10,18 @@ contentRouter.get("/", async (req, res, next) => {
   res.json(allContent);
 });
 
+contentRouter.get("/post/likes/:id", async (req, res, next) => {
+  const post_id = parseInt(req.params.id);
+
+  const usersThatLiked = await db.query("SELECT like_id, date, p_id_fk, users.u_id, users.name, users.username, users.imgloc FROM likes_post_rel JOIN users ON users.u_id = likes_post_rel.u_id_fk WHERE p_id_fk=$1 ORDER BY date DESC", [post_id]);
+
+  res.json(usersThatLiked.rows);
+});
+
+// contentRouter.get("/post/comments/:id", async (req, res, next) => {
+//   const post_id = parseInt(req.params.id);
+
+//   const 
+// })
+
 module.exports = contentRouter;
