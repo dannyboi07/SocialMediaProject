@@ -19,6 +19,7 @@
 
 .prof-details-ctn {
     width: 100%;
+    padding-left: 0.75em;
     display: flex;
     flex-direction: column;
     justify-content: center;

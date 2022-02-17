@@ -16,7 +16,6 @@ export default function postblogReducer(state = null, action) {
 function getAll() {
   return async dispatch => {
     const all = await getAllService();
-    console.log("all", all);
     dispatch({
       type: "GET_ALL",
       data: all

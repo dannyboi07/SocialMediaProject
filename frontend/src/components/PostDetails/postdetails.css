@@ -6,25 +6,33 @@
 
 .likes-ctn {
   position: absolute;
-  visibility: hidden;
+  opacity: 0;
   top: 150%;
   left: 17%;
   transform: scale(0,0);
   transform-origin: 50% -15%;
-  transition: transform 0.5s;
+  transition: all 0.5s;
   z-index: 5;
-  width: 100px;
-  height: 100px;
+  /* width: 200px; */
+  height: 10em;
+  overflow-y: auto;
 }
 
 .show-ctn {
   transform: scale(1,1);
+  opacity: 1;
+  transition: all 0.5s;
 }
 
 .toggle-btn {
   height: 100%;
   margin-left: 0.25em;
   padding: 0.5em;
+}
+
+.likes-ctn .profile-ctn {
+  font-size: 0.925rem;
+  height: 4.5em;
 }
 
 /* .toggle-btn img {

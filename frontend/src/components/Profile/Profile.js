@@ -9,7 +9,7 @@ function Profile({ name, username, profImgSrc }) {
         </div>
         <div className="prof-details-ctn">
             <p><a href=''>{ name }</a></p>
-            <p><a href=''>{ username }</a></p>
+            <p><a href=''>@{ username }</a></p>
         </div>
     </div>
   );
