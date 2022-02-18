@@ -1,0 +1,88 @@
+CREATE TABLE users (
+id BIGSERIAL NOT NULL PRIMARY KEY,
+name VARCHAR(50) NOT NULL,
+username VARCHAR(20) NOT NULL,
+password_hash CHAR(80) NOT NULL );
+
+INSERT INTO users (name, username, password_hash) VALUES ('Daniel', 'danny', 'test');
+
+CREATE TABLE post (
+id BIGSERIAL NOT NULL PRIMARY KEY,
+text TEXT,
+likes INTEGER,
+date TIMESTAMP NOT NULL,
+user_id BIGINT REFERENCES users(id),
+UNIQUE(user_id)
+);
+
+CREATE TABLE blog (
+id BIGSERIAL NOT NULL PRIMARY KEY,
+text TEXT,
+images VARCHAR[],
+likes INTEGER,
+// liked: BIGINT REFERENCES users(u_id) [];
+date TIMESTAMP DEFAULT date_trunc('second', current_timestamp) NOT NULL,
+user_id BIGSERIAL REFERENCES users(id)
+);
+
+INSERT INTO post (text, likes, user_id) VALUES ('Second post for testing', 25, 1);
+
+SELECT * FROM users JOIN post ON post.user_id = users.id;
+
+UPDATE users SET imgloc = 'http://localhost:3500/images/profile-pics/avatar-michelle.jpg' WHERE id = 1;
+
+CREATE TABLE temp (
+id BIGSERIAL NOT NULL PRIMARY KEY,
+name VARCHAR(50) NOT NULL,
+username VARCHAR(20) NOT NULL,
+password_hash CHAR(80) NOT NULL );
+
+ALTER TABLE post ALTER COLUMN date SET DEFAULT date_trunc('second', current_timestamp);
+
+UPDATE post set date = date_trunc('second', current_timestamp);
+
+INSERT INTO blog (text, likes, user_id) VALUES ('First blog for testing', 27, 1);
+SELECT * FROM users JOIN blog ON blog.user_id = users.id;
+
+SELECT post.p_id, post.text, post.likes, post.date, users.u_id, users.name, users.username, users.imgloc FROM post JOIN users on users.u_id = post.user_id ORDER BY date desc;
+
+SELECT blog.b_id, blog.text, blog.images, blog.likes, blog.date, users.u_id, users.name, users.username, users.imgloc FROM blog JOIN users on users.u_id = blog.user_id ORDER BY date desc;
+
+CREATE TABLE likes_post_rel (
+id BIGSERIAL NOT NULL PRIMARY KEY,
+date TIMESTAMP DEFAULT date_trunc('second', current_timestamp) NOT NULL,
+p_id_fk BIGSERIAL REFERENCES post(p_id) NOT NULL,
+u_id_fk BIGSERIAL REFERENCES users(u_id) NOT NULL
+);
+
+INSERT INTO likes_post_rel (p_id_fk, u_id_fk) values (4, 1);
+INSERT INTO likes_post_rel (p_id_fk, u_id_fk) values (3, 35);
+INSERT INTO likes_post_rel (p_id_fk, u_id_fk) values (1, 35);
+
+SELECT id, date, p_id_fk, users.u_id, users.name, users.username, users.imgloc from likes_post_rel JOIN users on users.u_id = likes_post_rel.u_id_fk ORDER BY date DESC;
+
+SELECT id, date, p_id_fk, users.u_id, users.name, users.username, users.imgloc from likes_post_rel JOIN users on users.u_id = likes_post_rel.u_id_fk WHERE p_id_fk=1 ORDER BY date DESC;
+
+CREATE TABLE comments_post_rel (
+id BIGSERIAL NOT NULL PRIMARY KEY,
+comment VARCHAR(1000),
+date TIMESTAMP DEFAULT date_trunc('second', current_timestamp) NOT NULL,
+p_id_fk BIGSERIAL REFERENCES post(p_id) NOT NULL,
+u_id_fk BIGSERIAL REFERENCES users(u_id) NOT NULL
+);
+
+INSERT INTO comments_post_rel (comment, p_id_fk, u_id_fk) VALUES (
+'First comment for testing', 4, 1
+);
+
+INSERT INTO comments_post_rel (comment, p_id_fk, u_id_fk) VALUES (
+'Second comment for testing', 3, 35
+);
+
+INSERT INTO comments_post_rel (comment, p_id_fk, u_id_fk) VALUES (
+'Second comment for testing', 1, 35
+);
+
+SELECT id, comment, date, p_id_fk, u_id_fk, users.u_id, users.name, users.username, users.imgloc FROM comments_post_rel JOIN users on users.u_id = comments_post_rel.u_id_fk ORDER BY date DESC;
+
+SELECT id, comment, date, p_id_fk, u_id_fk, users.u_id, users.name, users.username, users.imgloc FROM comments_post_rel JOIN users on users.u_id = comments_post_rel.u_id_fk WHERE p_id_fk=1;
