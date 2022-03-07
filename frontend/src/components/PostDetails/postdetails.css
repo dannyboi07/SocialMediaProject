@@ -2,6 +2,19 @@
   position: relative;
   display: flex;
   justify-content: space-around;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.post-details-ctn button {
+  font-size: 0.925rem;
+  background-color: transparent;
 }
 
 .likes-ctn {
@@ -16,6 +29,8 @@
   /* width: 200px; */
   height: 10em;
   overflow-y: auto;
+
+  background-color: white;
 }
 
 .show-ctn {

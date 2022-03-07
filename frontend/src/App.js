@@ -8,6 +8,7 @@ import Home from "./components/Home/Home";
 import Register from './components/Register/Register';
 import Login from './components/Login/Login';
 import { Switch, Route, Redirect } from "react-router-dom";
+import CreatePost from "./components/CreatePost/CreatePost";
 
 function App() {
   const dispatch = useDispatch();
@@ -26,6 +27,9 @@ function App() {
       <Navbar/>
       {/* <WelcomePage /> */}
       <Switch>
+        <Route path="/createPost">
+          { user ? <CreatePost /> : <Redirect to="/login" /> }
+        </Route>
         <Route path="/register">
           { user ? <Redirect to="/home" /> : <Register />}
         </Route>

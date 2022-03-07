@@ -18,11 +18,10 @@ function PostDetails({ postId, likes }) {
 
       setTimeout(() => {
         toggle();
-      }, 14);
+      }, 15);
     }, 0)
     function toggle() {
       document.getElementById(`likes${postId}`).classList.add("show-ctn");
-      // console.log("hi");
     };
   };
   
@@ -36,14 +35,25 @@ function PostDetails({ postId, likes }) {
 
   async function getLikes(id) {
     setLikeResults(await getPostLikes(id));
-    console.log(likeResults);
+    // console.log(likeResults);
+  };
+
+  function showLikesAsBlock(id) {
+    likestate.display === "none" 
+    ? showLikes(id)
+    : hideLikes();
   }
 
   return (
     <div className='post-details-ctn'>
       <div>
-        <button onMouseOver={() => showLikes(postId)} onMouseLeave={hideLikes}>Likes: { likes }</button>
-        <button className="toggle-btn" onClick={() => getLikes(postId)}><img src="/icon-arrow-down.svg" alt="toggle-likes"/></button>
+        <button 
+          onTouchStart={() => showLikes(postId)}
+          onTouchEnd={hideLikes}
+          onMouseOver={() => showLikes(postId)} 
+          onMouseLeave={hideLikes}>Likes: { likes }
+        </button>
+        <button className="toggle-btn" onClick={() => showLikesAsBlock(postId)}><img src="/icon-arrow-down.svg" alt="toggle-likes"/></button>
       </div>
       <button>Comments: 10</button>
       <div id={`likes${postId}`} className="likes-ctn" style={likestate}>

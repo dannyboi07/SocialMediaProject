@@ -18,11 +18,11 @@ function PostsCtn() {
   posts = posts.posts;
   console.log(posts);
   return (
-    <>
+    <div className="posts-blogs-ctn">
       { 
         posts.map(post => <PostBody key={ post.p_id } post={ post } />) 
       }
-    </>
+    </div>
     // <PostBody />
   )
 }
