@@ -6,4 +6,21 @@ function requestLogger(req, res, next) {
   next();
 };
 
-module.exports = { requestLogger };
+function extractToken(req, res, next) {
+  const auth = req.get("authorization");
+  if (auth && auth.toLowerCase().startsWith("bearer")) {
+    req.token = auth.substring(7);
+  };
+
+  next();
+};
+
+function unknownEndpoint(req, res) {
+  res.status(404).json({ error: "Unknown Endpoint" });
+}
+
+module.exports = { 
+  requestLogger, 
+  extractToken,
+  unknownEndpoint
+};

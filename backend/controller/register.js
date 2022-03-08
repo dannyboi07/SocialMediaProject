@@ -9,12 +9,9 @@ const storage = multer.diskStorage({
     cb(null, "./images/profile-pics/")
   },
   filename: function (req, file, cb) {
-    // let filetype;
-    // if (file.mimetype === "image/jpeg") filetype = ".jpeg"
-    // else if (file.mimetype === "image/png") filetype = ".png"
-    // else if (file.mimetype === "image/svg+xml") filetype = ".svg"
-    // else return cb(null, new Error ("Wrong file type, only jpg/jpeg/png/svg are supported"));
-    if (file.mimetype !== "image/jpeg" && file.mimetype !== "image/png" && file.mimetype !== "image/svg+xml") {
+    if ( file.mimetype !== "image/jpeg" 
+      && file.mimetype !== "image/png" 
+      && file.mimetype !== "image/svg+xml" ) {
       return cb(null, new Error("Wrong file type, only jpg/jpeg/png/svg are supported"));
     }
 
@@ -74,3 +71,9 @@ registerRouter.post("/test", upload.single("testimg"), async(req, res, next) => 
 })
 
 module.exports = registerRouter;
+
+// let filetype;
+// if (file.mimetype === "image/jpeg") filetype = ".jpeg"
+// else if (file.mimetype === "image/png") filetype = ".png"
+// else if (file.mimetype === "image/svg+xml") filetype = ".svg"
+// else return cb(null, new Error ("Wrong file type, only jpg/jpeg/png/svg are supported"));

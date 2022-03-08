@@ -16,12 +16,15 @@ app.use(middleware.requestLogger);
 
 app.use("/api/register", registerRouter);
 app.use("/api/login", loginRouter);
-app.use("/api/content", contentRouter);
+app.use("/api/content", middleware.extractToken, contentRouter);
 
 app.use("/images", express.static("images"));
+app.use("/public", express.static("public"));
 
 app.get("/", (req, res) => {
     res.send("<h1>Hello world</h1>");
 });
+
+app.use(middleware.unknownEndpoint);
 
 module.exports = app;

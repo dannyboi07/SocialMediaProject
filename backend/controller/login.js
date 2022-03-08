@@ -8,6 +8,7 @@ loginRouter.post("/", async(req, res, next) => {
 
   try {
     const doesExist = await db.query("SELECT * FROM users where username = $1 LIMIT 1", [username]);
+    console.log(doesExist.rows);
     if (doesExist.rows.length === 0) return res.status(401).json({ error: "User doesn't exist" });
 
     const pwCorrect = await bcrypt.compare(password, doesExist.rows[0].password_hash);
@@ -15,7 +16,7 @@ loginRouter.post("/", async(req, res, next) => {
 
     const preToken = {
       username: doesExist.rows[0].username,
-      id: doesExist.rows[0].id
+      id: doesExist.rows[0].u_id
     };
 
     const token = jwt.sign(preToken, process.env.SECRET);
