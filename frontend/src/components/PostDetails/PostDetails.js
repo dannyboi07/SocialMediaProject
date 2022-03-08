@@ -30,15 +30,17 @@ function PostDetails({ postId, likes }) {
     document.getElementById(`likes${postId}`).classList.remove("show-ctn");
     timer = setTimeout(() => {
       setLikestate({ display: "none" });
-    }, 600);
+    }, 150);
   };
 
   async function getLikes(id) {
     setLikeResults(await getPostLikes(id));
-    // console.log(likeResults);
   };
 
   function showLikesAsBlock(id) {
+    const arwBtn = document.getElementById(`tglBtn${id}`);
+    console.log(arwBtn);
+    arwBtn.classList.toggle("toggle-btn--active")
     likestate.display === "none" 
     ? showLikes(id)
     : hideLikes();
@@ -53,7 +55,7 @@ function PostDetails({ postId, likes }) {
           onMouseOver={() => showLikes(postId)} 
           onMouseLeave={hideLikes}>Likes: { likes }
         </button>
-        <button className="toggle-btn" onClick={() => showLikesAsBlock(postId)}><img src="/icon-arrow-down.svg" alt="toggle-likes"/></button>
+        <button id={`tglBtn${postId}`} className="toggle-btn" onClick={() => showLikesAsBlock(postId)}><img src="/icon-arrow-down.svg" alt="toggle-likes"/></button>
       </div>
       <button>Comments: 10</button>
       <div id={`likes${postId}`} className="likes-ctn" style={likestate}>

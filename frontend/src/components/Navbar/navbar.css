@@ -60,6 +60,10 @@ nav {
     width: 260px;
 }
 
+.reg-log-btn-ctn--lgout {
+    justify-content: flex-end;
+}
+
 .reg-button, .log-button {
     padding: 1em 1.25em;
     display: flex;

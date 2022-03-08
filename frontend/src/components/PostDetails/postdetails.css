@@ -45,6 +45,26 @@
   padding: 0.5em;
 }
 
+@keyframes tgl-btn-anim {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.toggle-btn:hover {
+  animation: tgl-btn-anim 0.75s ease-in-out forwards;
+}
+
+.toggle-btn--active {
+  transform: rotate(-180deg);
+}
+
 .likes-ctn .profile-ctn {
   font-size: 0.925rem;
   height: 4.5em;

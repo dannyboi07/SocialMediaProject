@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from "react-redux";
 import { dispatchRegister } from '../../reducers/userReducer';
-import { registerUser } from '../../services/registerService';
 import "./register.css";
 
 function Register() {

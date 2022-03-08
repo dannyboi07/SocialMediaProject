@@ -9,6 +9,16 @@ async function getAllService() {
 async function getPostLikes(postId) {
   const response = await axios.get(`${baseUrl}/post/likes/${postId}`);
   return response.data;
+};
+
+async function createPost(postContent, token) {
+  const response = await axios.post(`${baseUrl}/createPost/`, postContent, { 
+    headers: {
+      "Authorization" : `Bearer ${token}`
+    }
+  });
+
+  return response.data;
 }
 
-export { getAllService, getPostLikes };
+export { getAllService, getPostLikes, createPost };

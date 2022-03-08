@@ -15,14 +15,16 @@ export default function userReducer(state = null, action) {
 
       const { token, name, username, profImgSrc } = action.data;
 
-      window.localStorage.setItem("socialMediaAppUser", JSON.stringify({ name, username, token,profImgSrc }));
-
       return state = { name, username, token, profImgSrc };
 
     case "SET_USER": 
 
       return state = { name: action.data.name, username: action.data.username, token: action.data.token, profImgSrc: action.data.profImgSrc };
     
+    case "LOG_OUT":
+
+      return state = action.data;
+
     default:
       return state;
   };
@@ -52,6 +54,11 @@ function dispatchRegister(userDetails) {
 function dispatchLogin(userDetails) {
   return async dispatch => {
     const resUserDetails = await loginUser(userDetails);
+    const { token, name, username, profImgSrc } = resUserDetails;
+    window.localStorage.setItem("socialMediaAppUser", JSON.stringify({
+      name, username, profImgSrc, token
+    }));
+
     dispatch({
       type: "LOGIN",
       data: resUserDetails
@@ -59,4 +66,14 @@ function dispatchLogin(userDetails) {
   };
 };
 
-export { initializeUser, dispatchRegister, dispatchLogin };
+function dispatchLogOut() {
+  return dispatch => {
+    window.localStorage.removeItem("socialMediaAppUser");
+    dispatch({
+      type: "LOG_OUT",
+      data: null
+    });
+  };
+};
+
+export { initializeUser, dispatchRegister, dispatchLogin ,dispatchLogOut };
