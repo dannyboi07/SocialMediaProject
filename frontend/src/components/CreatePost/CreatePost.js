@@ -7,7 +7,7 @@ function CreatePost() {
   const dispatch = useDispatch();
   const userToken = useSelector(state => state.user.token);
   const [postText, setPostText] = useState("");
-  const [postImages, setPostImages] = useState([]);
+  const [postImages, setPostImages] = useState();
   let tx = null;
 
   useEffect(() => {
@@ -26,8 +26,10 @@ function CreatePost() {
 
     const postContent = new FormData();
     postContent.append("postText", postText);
-    postContent.append("photos", postImages);
-    console.log("postContent",postContent);
+
+    Array.from(postImages).forEach(postImage => {
+      postContent.append("photos", postImage);
+    });
 
     dispatch(sendPost(postContent, userToken));
   }
@@ -53,7 +55,7 @@ function CreatePost() {
 
           <input id="upld-pst" type="file" name="photos" 
             accept=".jpg,.jpeg,.png,.gif" 
-            onChange={(e) => setPostImages([...e.target.files])} multiple
+            onChange={(e) => setPostImages(e.target.files)} multiple
           /> 
         </label>
 

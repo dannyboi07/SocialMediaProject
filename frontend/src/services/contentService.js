@@ -19,6 +19,13 @@ async function createPost(postContent, token) {
   });
 
   return response.data;
+};
+
+async function likedOrNot(postId, userId) {
+  // console.log(userId)
+  const response = await axios.get(`${baseUrl}/post/liked/${postId}?user_id=${(userId).toString()}`);
+
+  return response.data;
 }
 
-export { getAllService, getPostLikes, createPost };
+export { getAllService, getPostLikes, createPost, likedOrNot };

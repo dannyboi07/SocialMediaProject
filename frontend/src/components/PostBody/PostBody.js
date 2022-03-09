@@ -9,7 +9,7 @@ function PostBody({ post }) {
   return (
         <div className="post-body-ctn">
             <Profile name={ post.name } username={ post.username } profImgSrc={ post.imgloc }/>
-            <PostContent content={ post.text }/>
+            <PostContent postId={ post.p_id } postText={ post.text } postImages={ post.p_pics } />
             <PostDetails postId={ post.p_id } likes={ post.likes }/>
         </div>
     );

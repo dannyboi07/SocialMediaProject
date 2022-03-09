@@ -16,7 +16,7 @@ function PostsCtn() {
   }
 
   posts = posts.posts;
-  console.log(posts);
+  // console.log(posts);
   return (
     <div className="posts-blogs-ctn">
       { 

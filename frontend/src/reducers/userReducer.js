@@ -13,13 +13,13 @@ export default function userReducer(state = null, action) {
   switch(action.type) {
     case "LOGIN":
 
-      const { token, name, username, profImgSrc } = action.data;
+      const { token, name, username, profImgSrc, uId } = action.data;
 
-      return state = { name, username, token, profImgSrc };
+      return state = { name, username, token, profImgSrc, uId };
 
     case "SET_USER": 
 
-      return state = { name: action.data.name, username: action.data.username, token: action.data.token, profImgSrc: action.data.profImgSrc };
+      return state = { name: action.data.name, username: action.data.username, uId: action.data.uId, token: action.data.token, profImgSrc: action.data.profImgSrc };
     
     case "LOG_OUT":
 
@@ -54,9 +54,9 @@ function dispatchRegister(userDetails) {
 function dispatchLogin(userDetails) {
   return async dispatch => {
     const resUserDetails = await loginUser(userDetails);
-    const { token, name, username, profImgSrc } = resUserDetails;
+    const { token, name, username, profImgSrc, uId } = resUserDetails;
     window.localStorage.setItem("socialMediaAppUser", JSON.stringify({
-      name, username, profImgSrc, token
+      name, username, profImgSrc, token, uId
     }));
 
     dispatch({
