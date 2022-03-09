@@ -22,7 +22,8 @@ loginRouter.post("/", async(req, res, next) => {
     const token = jwt.sign(preToken, process.env.SECRET);
 
     res.status(200).json({ 
-      token, 
+      token,
+      uId: doesExist.rows[0].u_id,
       username: doesExist.rows[0].username, 
       name: doesExist.rows[0].name, 
       profImgSrc: doesExist.rows[0].imgloc });

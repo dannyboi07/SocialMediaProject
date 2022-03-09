@@ -24,9 +24,20 @@ const upload = multer({ storage });
 
 contentRouter.get("/", async (req, res, next) => {
 
-  const allPosts = await db.query("SELECT post.p_id, post.text, post.likes, post.date, users.u_id, users.name, users.username, users.imgloc FROM post JOIN users on users.u_id = post.user_id ORDER BY date desc");
+  try {
+    const allPosts = await db.query("SELECT post.p_id, post.text, post.likes, post.date, p_pics, users.u_id, users.name, users.username, users.imgloc FROM post JOIN users on users.u_id = post.user_id ORDER BY date desc");
   
-  const allBlogs = await db.query("SELECT blog.b_id, blog.text, blog.images, blog.likes, blog.date, users.u_id, users.name, users.username, users.imgloc FROM blog JOIN users on users.u_id = blog.user_id ORDER BY date desc");
+    const allBlogs = await db.query("SELECT blog.b_id, blog.text, blog.images, blog.likes, blog.date, users.u_id, users.name, users.username, users.imgloc FROM blog JOIN users on users.u_id = blog.user_id ORDER BY date desc");
+
+    const allContent = { 
+      blogs: [...allBlogs.rows], 
+      posts: [...allPosts.rows]
+    };
+    res.json(allContent);
+  } catch(err) {
+    console.error(err);
+    next();
+  }
 
   // let postsLikes = [];
   // for (let i = 0; i < allPosts.rows.length; i++) {
@@ -39,19 +50,38 @@ contentRouter.get("/", async (req, res, next) => {
   //   // allPosts.rows[i].likes = temp;
   //   // console.log("loop",allPosts.rows[i])
   // }
-  
-  const allContent = { blogs: [...allBlogs.rows], posts: [...allPosts.rows] };
-  console.log("done");
-  res.json(allContent);
 });
 
 contentRouter.get("/post/likes/:id", async (req, res, next) => {
+
   const post_id = parseInt(req.params.id);
 
-  const usersThatLiked = await db.query("SELECT like_id, date, p_id_fk, users.u_id, users.name, users.username, users.imgloc FROM likes_post_rel JOIN users ON users.u_id = likes_post_rel.u_id_fk WHERE p_id_fk=$1 ORDER BY date DESC", [post_id]);
+  try {
 
-  res.json(usersThatLiked.rows);
+    const usersThatLiked = await db.query("SELECT like_id, date, p_id_fk, users.u_id, users.name, users.username, users.imgloc FROM likes_post_rel JOIN users ON users.u_id = likes_post_rel.u_id_fk WHERE p_id_fk=$1 ORDER BY date DESC", [post_id]);
+
+    res.json(usersThatLiked.rows);
+  } catch(err) {
+    console.error(err);
+    next();
+  }
 });
+
+contentRouter.get("/post/liked/:id", async (req, res, next) => {
+  const post_id = parseInt(req.params.id);
+  const { user_id } = req.query;
+  console.error(user_id);
+
+  try {
+
+    const likedOrNot = await db.query("SELECT COUNT(*) FROM likes_post_rel WHERE p_id_fk = $1 AND u_id_fk = $2", [post_id, user_id]);
+    res.json(likedOrNot.rows);
+
+  } catch(err) {
+    console.error(err);
+    next();
+  }
+})
 
 contentRouter.post("/createPost", upload.array("photos", 10), async (req, res, next) => {
 
@@ -59,8 +89,6 @@ contentRouter.post("/createPost", upload.array("photos", 10), async (req, res, n
   if ( !decodedToken ) {
     return res.status(401).json({ error: "Token missing or invalid" });
   }
-
-  console.log(decodedToken);
 
   const { postText } = req.body;
 
