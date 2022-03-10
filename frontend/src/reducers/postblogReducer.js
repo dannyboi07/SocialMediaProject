@@ -1,4 +1,4 @@
-import { createPost, getAllService } from "../services/contentService";
+import { createPost, getAllService, likePost, unlikePost } from "../services/contentService";
 
 export default function postblogReducer(state = null, action) {
   switch(action.type) {
@@ -9,10 +9,16 @@ export default function postblogReducer(state = null, action) {
     case "GET_POSTS":
       return state = { ...action.data };
     case "CREATE_POST":
-      return state = {
+      return {
         posts: [ ...action.data, ...state.posts],
         blogs: [ ...state.blogs ]
       };
+    case "LIKE_POST":
+      // console.log(state.posts);
+      return state = { ...state, posts: state.posts.map(post => post.p_id === action.data ? { likes: post.likes += 1, ...post } : post)};
+    case "UNLIKE_POST":
+      // console.log(state.posts);
+      return state = { ...state, posts: state.posts.map(post => post.p_id === action.data ? { likes: post.likes -= 1, ...post } : post)};
     default:
       return state;
   };
@@ -37,6 +43,30 @@ function sendPost(postContent, token) {
       data: response
     });
   };
-}
+};
 
-export { getAll, sendPost };
+function likePostRdx(postId, token) {
+  return async dispatch => {
+    const response = await likePost(postId, token);
+    if (response.success) {
+      dispatch({
+        type: "LIKE_POST",
+        data: postId
+      });
+    };
+  };
+};
+
+function unLikePostRdx(postId, token) {
+  return async dispatch => {
+    const response = await unlikePost(postId, token);
+    if (response.success) {
+      dispatch({
+        type: "UNLIKE_POST",
+        data: postId
+      });
+    };
+  };
+};
+
+export { getAll, sendPost, likePostRdx, unLikePostRdx };

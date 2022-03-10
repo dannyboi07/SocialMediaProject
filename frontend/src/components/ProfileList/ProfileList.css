@@ -1,0 +1,58 @@
+.likes-ctn {
+    position: absolute;
+    opacity: 0;
+    top: 150%;
+    left: 17%;
+    transform: scale(0,0);
+    transform-origin: 50% -15%;
+    transition: all 0.5s;
+    z-index: 5;
+    /* width: 200px; */
+    height: 10em;
+    overflow-y: auto;
+  
+    background-color: white;
+}
+
+.likes-ctn--no-likes {
+  height: 1.5em;
+  overflow-y: hidden;
+}
+
+.show-ctn {
+    transform: scale(1,1);
+    opacity: 1;
+    transition: all 0.5s;
+}
+
+.toggle-btn {
+    padding: 0.25em;
+    height: 100%;
+    padding-right: 0.5em;
+  }
+  
+  @keyframes tgl-btn-anim {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(10%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  .toggle-btn:hover {
+    animation: tgl-btn-anim 0.75s ease-in-out forwards;
+  }
+  
+  .toggle-btn--active {
+    transform: rotate(-180deg);
+  }
+  
+  .likes-ctn .profile-ctn {
+    font-size: 0.925rem;
+    height: 4.5em;
+  }
+  

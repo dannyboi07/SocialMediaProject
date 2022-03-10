@@ -22,10 +22,27 @@ async function createPost(postContent, token) {
 };
 
 async function likedOrNot(postId, userId) {
-  // console.log(userId)
-  const response = await axios.get(`${baseUrl}/post/liked/${postId}?user_id=${(userId).toString()}`);
+  const response = await axios.get(`${baseUrl}/post/liked/${postId}?user_id=${userId}`);
 
   return response.data;
-}
+};
 
-export { getAllService, getPostLikes, createPost, likedOrNot };
+async function likePost(postId, token) {
+  const response = await axios.post(`${baseUrl}/post/like/${postId}`, null, { 
+    headers: {
+      "Authorization": `Bearer ${token}`
+    } 
+  });
+  return response.data;
+};
+
+async function unlikePost(postId, token) {
+  const response = await axios.delete(`${baseUrl}/post/like/${postId}`, {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  });
+  return response.data;
+};
+
+export { getAllService, getPostLikes, createPost, likedOrNot, likePost, unlikePost };

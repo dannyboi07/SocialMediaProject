@@ -4,7 +4,6 @@ import PostBody from "../PostBody/PostBody";
 
 function PostsCtn() {
   let posts = useSelector(state => state.postblog);
-  // console.log("posts", posts);
   
   if (posts === null) {
     // console.log(123)
@@ -14,7 +13,7 @@ function PostsCtn() {
       </>
     )
   }
-
+  // console.log(posts);
   posts = posts.posts;
   // console.log(posts);
   return (

@@ -30,7 +30,30 @@
 
 .like-btn svg {
   margin-left: 0.5em;
+  z-index: -1;
 }
+
+@keyframes like-svg-ani {
+  0% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.1, 1.1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+.like-btn-svg-path path {
+  fill: white;
+  stroke: black;
+  transition: fill 0.25s ease-in-out, stroke 0.25s ease-in-out;
+}
+
+/* .like-btn-svg-path:hover svg {
+  animation: like-svg-anim 0.5s ease-in-out forwards;
+} */
 
 .liked-svg path {
     fill: #FF0000;
