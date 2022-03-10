@@ -70,7 +70,6 @@ contentRouter.get("/post/likes/:id", async (req, res, next) => {
 contentRouter.get("/post/liked/:id", async (req, res, next) => {
   const post_id = parseInt(req.params.id);
   const { user_id } = req.query;
-  console.error(user_id);
 
   try {
 
@@ -80,6 +79,44 @@ contentRouter.get("/post/liked/:id", async (req, res, next) => {
   } catch(err) {
     console.error(err);
     next();
+  }
+});
+
+contentRouter.post("/post/like/:id", async (req, res, next) => {
+  const post_id = parseInt(req.params.id);
+  // const { liked } = req.body;
+  
+  const decodedToken = jwt.verify(req.token, process.env.SECRET);
+  if ( !decodedToken ) {
+    return res.status(401).json({ error: "Token missing or invalid" });
+  };
+
+  try {
+
+    await db.query("INSERT INTO likes_post_rel (p_id_fk, u_id_fk) VALUES ($1, $2)", [post_id, decodedToken.id]);
+    await db.query("UPDATE post SET likes = (SELECT COUNT(*) FROM likes_post_rel WHERE p_id_fk = $1) WHERE p_id = $1", [post_id]);
+    
+    res.json({ success: true });
+  } catch(err) {
+    console.error(err);
+    next();
+  }
+});
+
+contentRouter.delete("/post/like/:id", async (req, res, next) => {
+  const post_id = parseInt(req.params.id);
+
+  const decodedToken = jwt.verify(req.token, process.env.SECRET);
+  if ( !decodedToken ) return res.status(401).json({ error: "Token missing or invalid" });
+  
+  try {
+    await db.query("DELETE FROM likes_post_rel WHERE p_id_fk = $1 AND u_id_fk = $2", [post_id, decodedToken.id]);
+    await db.query("UPDATE post SET likes = (SELECT COUNT (*) FROM likes_post_rel WHERE p_id_fk = $1) WHERE p_id = $1", [post_id]);
+
+    res.json({ success: true });
+  } catch(err) {
+    console.error(err);
+    res.json({ success: true });
   }
 })
 
