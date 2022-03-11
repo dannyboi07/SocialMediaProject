@@ -2,7 +2,7 @@
     position: absolute;
     opacity: 0;
     top: 150%;
-    left: 17%;
+    left: 0%;
     transform: scale(0,0);
     transform-origin: 50% -15%;
     transition: all 0.5s;
@@ -42,13 +42,29 @@
       transform: translateY(0);
     }
   }
+
+  @keyframes tgl-btn-anim--active {
+    0% {
+      transform: rotate(-180deg) translateY(0);
+    }
+    50% {
+      transform: rotate(-180deg) translateY(10%);
+    }
+    100% {
+      transform: rotate(-180deg) translateY(0);
+    }
+  }
   
   .toggle-btn:hover {
-    animation: tgl-btn-anim 0.75s ease-in-out forwards;
+    animation: tgl-btn-anim 1s ease-in-out infinite;
   }
   
   .toggle-btn--active {
     transform: rotate(-180deg);
+  }
+
+  .toggle-btn--active:hover {
+    animation: tgl-btn-anim--active 1s ease-in-out infinite;
   }
   
   .likes-ctn .profile-ctn {

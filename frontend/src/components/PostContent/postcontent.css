@@ -1,4 +1,4 @@
-.post-content-ctn {
+/* .post-content-ctn {
   padding: 1em;
 }
 
@@ -37,7 +37,7 @@
   border-radius: 50%;
   transition: transform 0.25s;
   user-select: none;
-  /* opacity: 0.9; */
+  /* opacity: 0.9;
 }
 
 .post-images-ctn button > img:hover, .post-images-ctn button > img:active {
@@ -50,5 +50,5 @@
 
 .post-images-ctn button:last-child {
   right: 10px;
-}
+} */
 

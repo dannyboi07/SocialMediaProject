@@ -6,6 +6,7 @@ function MediaCarousel({ postId, postImages }) {
     const [imgCtnWidth, setImgCtnWidth] = useState(null);
     const [fullScrn, setFullScrn] = useState(false);
     const [imgPosInx, setImgPosInx] = useState([]);
+    const [curImageDims, setCurImgDims] = useState([]);
 
     useEffect(() => {
         const imgCtn = document.querySelector(".post-images-ctn");
@@ -26,6 +27,15 @@ function MediaCarousel({ postId, postImages }) {
         window.addEventListener("resize", windowResizeListen);
     }, []);
 
+    useEffect(() => {
+        if (fullScrn && postImages) {
+            const listOfImages = document.getElementById(`pst-imgs-ctn-${postId}`).querySelectorAll(".post-content-img");
+            console.log(listOfImages, imgPosInx.indexOf(0));
+            const curImg = Array.from(listOfImages)[imgPosInx.indexOf(0)];
+            setCurImgDims([curImg.naturalWidth, curImg.naturalHeight]);
+        }
+    }, [fullScrn, imgPosInx]);
+
     function slideRight() {
         if (imgPosInx[0] > -1 * (imgPosInx.length - 1)) setImgPosInx(imgPosInx.map(imgPos => imgPos - 1));
     };
@@ -36,11 +46,14 @@ function MediaCarousel({ postId, postImages }) {
 
     function screenSwitch() {
         const pstCntntCtn = document.getElementById(`pst-cntnt-ctn-${postId}`);
+        const body = document.querySelector("body");
 
-        if (fullScrn) {
+        if (!fullScrn) {
             pstCntntCtn.style.position = "static";
+            // body.style.position = "relative";
         } else {
             pstCntntCtn.style.position = "relative";
+            // body.style = undefined
         };
         setFullScrn(!fullScrn)
     }
@@ -53,10 +66,10 @@ function MediaCarousel({ postId, postImages }) {
                     <img src="/close-icon.svg" alt="Close fullscreen"></img>
                 </button>
 
-                <div className="post-images-ctn">
+                <div id={`pst-imgs-ctn-${postId}`} className="post-images-ctn post-images-ctn--flscrn" style={{ width: curImageDims[0], height: curImageDims[1] }}>
                     <button style={{ display: imgPosInx[0] !== 0 ? "block": "none" }}
                     onClick={ slideLeft }>
-                        <img src="/left-chevon.svg" alt="View left image"></img>
+                        <img src="/left-chevron.svg" alt="View left image"></img>
                     </button>
 
                     { postImages.map((postImage, i) => <img key={i} id={`post-img-${postId}-${i}`} style={{ left: imgCtnWidth * imgPosInx[i] }} className="post-content-img" src={postImage} alt={`Post image ${i+1}`}/>) 
@@ -75,7 +88,7 @@ function MediaCarousel({ postId, postImages }) {
 
 
     return (
-        <div onClick={screenSwitch} style={{ height: imgCtnWidth }} className="post-images-ctn">
+        <div style={{ height: imgCtnWidth }} className="post-images-ctn">
 
             <button style={{ display: imgPosInx[0] !== 0 ? "block": "none" }}
             onClick={ slideLeft }>

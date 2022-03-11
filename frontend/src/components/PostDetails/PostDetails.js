@@ -111,6 +111,8 @@ function PostDetails({ postId, likes }) {
           <svg id={`like-svg${postId}`} 
           className={ ulikedOrNot ? "like-btn-svg-path liked-svg" : "like-btn-svg-path" } 
           fill="#000000" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50" width="50px" height="50px"><path fill="none" stroke="#000000" strokeLinecap="round" strokeMiterlimit="10" strokeWidth="2" d="M35,8c-4.176,0-7.851,2.136-10,5.373C22.851,10.136,19.176,8,15,8C8.373,8,3,13.373,3,20c0,14,16,21,22,26c6-5,22-12,22-26C47,13.373,41.627,8,35,8z"/></svg>
+            <ProfileList className="likes-ctn" postId={postId} likestate={likestate} likeResults={likeResults}/>
+
         </button>
 
         <button id={`tglBtn${postId}`} className="toggle-btn" onClick={showLikesAsBlock}>
@@ -119,8 +121,6 @@ function PostDetails({ postId, likes }) {
 
       </div>
       <button>Comments: 10</button>
-
-      <ProfileList className="likes-ctn" postId={postId} likestate={likestate} likeResults={likeResults}/>
     </div>
   );
 }

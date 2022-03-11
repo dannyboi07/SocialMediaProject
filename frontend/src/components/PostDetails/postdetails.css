@@ -60,16 +60,16 @@
     stroke: none;
 }
 
-.likes-ctn {
+/* .likes-ctn {
   position: absolute;
   opacity: 0;
   top: 150%;
-  left: 17%;
+  left: 50%;
   transform: scale(0,0);
   transform-origin: 50% -15%;
   transition: all 0.5s;
   z-index: 5;
-  /* width: 200px; */
+  /* width: 200px;
   height: 10em;
   overflow-y: auto;
 
@@ -112,4 +112,4 @@
   font-size: 0.925rem;
   height: 4.5em;
 }
-
+ */
