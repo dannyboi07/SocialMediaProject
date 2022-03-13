@@ -9,6 +9,7 @@ import Register from './components/Register/Register';
 import Login from './components/Login/Login';
 import { Switch, Route, Redirect } from "react-router-dom";
 import CreatePost from "./components/CreatePost/CreatePost";
+import UserProfile from "./components/UserProfile/UserProfile";
 
 function App() {
   const dispatch = useDispatch();
@@ -21,6 +22,15 @@ function App() {
   }, [dispatch]);
   const user = useSelector(state => state.user);
   // console.log(user);
+
+  // const userUrlObj = useRouteMatch({ path: "/users/:username", 
+  //   strict: true,
+  //   sensitive: true 
+  // });
+  // let userName = null;  
+  // if (userUrlObj) {
+  //   userName = useSelector()
+  // }
 
   return (
     <div>
@@ -36,6 +46,11 @@ function App() {
         <Route path="/login">
           { user ? <Redirect to="/home"/> : <Login />}
         </Route>
+
+        <Route path="/users/:username">
+          <UserProfile/>
+        </Route>
+
         <Route path="/home">
           <Home />
         </Route>
