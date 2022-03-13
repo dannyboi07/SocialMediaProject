@@ -71,7 +71,6 @@ function PostDetails({ postId, likes }) {
   };
 
   async function getLikes(id) {
-    console.log("getting likes");
     setLikeResults(await getPostLikes(id));
   };
 
