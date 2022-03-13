@@ -6,6 +6,7 @@ const middleware = require("./utils/middleware");
 const registerRouter = require("./controller/register");
 const loginRouter = require("./controller/login");
 const contentRouter = require("./controller/content");
+const userRouter = require("./controller/user");
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(middleware.requestLogger);
 app.use("/api/register", registerRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/content", middleware.extractToken, contentRouter);
+app.use("/api/user", middleware.extractToken, userRouter);
 
 app.use("/images", express.static("images"));
 app.use("/public", express.static("public"));
