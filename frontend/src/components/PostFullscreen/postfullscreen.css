@@ -1,0 +1,33 @@
+.flscrn-post-ctn-bg {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5;
+}
+
+.flscrn-post-ctn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 80%;
+  height: 80%;
+  background-color: white;
+}
+
+.flscrn-post-ctn__left-ctn {
+  width: 50%;
+  height: 100%;
+}
+/*# sourceMappingURL=postfullscreen.css.map */

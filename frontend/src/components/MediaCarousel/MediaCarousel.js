@@ -2,15 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import "./mediaCarousel.css";
 
-function MediaCarousel({ postId, postImages }) {
+function MediaCarousel({ postId, postImages, fullscreen, className }) {
     const [imgCtnWidth, setImgCtnWidth] = useState(null);
     const [fullScrn, setFullScrn] = useState(false);
     const [imgPosInx, setImgPosInx] = useState([]);
     const [curImageDims, setCurImgDims] = useState([]);
 
     useEffect(() => {
-        const imgCtn = document.querySelector(".post-images-ctn");
-        setImgCtnWidth(imgCtn.offsetWidth);
 
         if (postImages) {
             let tempArr = [];
@@ -19,6 +17,12 @@ function MediaCarousel({ postId, postImages }) {
             };
             setImgPosInx([...tempArr]);
         };
+
+                
+        const imgCtn = fullscreen 
+        ? document.querySelector(".post-images-ctn")
+        : document.querySelector(".flscrn-post-ctn__left-ctn");
+    setImgCtnWidth(imgCtn.offsetWidth);
 
         function windowResizeListen() {
             setImgCtnWidth(imgCtn.offsetWidth);
@@ -30,7 +34,7 @@ function MediaCarousel({ postId, postImages }) {
     useEffect(() => {
         if (fullScrn && postImages) {
             const listOfImages = document.getElementById(`pst-imgs-ctn-${postId}`).querySelectorAll(".post-content-img");
-            console.log(listOfImages, imgPosInx.indexOf(0));
+            // console.log(listOfImages, imgPosInx.indexOf(0));
             const curImg = Array.from(listOfImages)[imgPosInx.indexOf(0)];
             setCurImgDims([curImg.naturalWidth, curImg.naturalHeight]);
         }
@@ -85,10 +89,8 @@ function MediaCarousel({ postId, postImages }) {
         )
     };
 
-
-
     return (
-        <div style={{ height: imgCtnWidth }} className="post-images-ctn">
+        <div style={{ height: fullscreen ? imgCtnWidth : imgCtnWidth }} className={ className ? `post-images-ctn ${className}` : "post-images-ctn"}>
 
             <button style={{ display: imgPosInx[0] !== 0 ? "block": "none" }}
             onClick={ slideLeft }>
@@ -103,7 +105,7 @@ function MediaCarousel({ postId, postImages }) {
               <img src="/right-chevron.svg" alt="View right image"></img>
             </button>
         </div>
-    )
-}
+    );
+};
 
-export default MediaCarousel
+export default MediaCarousel;
