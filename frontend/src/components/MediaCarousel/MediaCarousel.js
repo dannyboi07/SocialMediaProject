@@ -90,7 +90,7 @@ function MediaCarousel({ postId, postImages, fullscreen, className }) {
     };
 
     return (
-        <div style={{ height: fullscreen ? imgCtnWidth : imgCtnWidth }} className={ className ? `post-images-ctn ${className}` : "post-images-ctn"}>
+        <div style={{ height: fullscreen ? null : imgCtnWidth }} className={ className ? `post-images-ctn ${className}` : "post-images-ctn"}>
 
             <button style={{ display: imgPosInx[0] !== 0 ? "block": "none" }}
             onClick={ slideLeft }>

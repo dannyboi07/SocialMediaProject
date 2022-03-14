@@ -30,4 +30,14 @@
   width: 50%;
   height: 100%;
 }
+
+.close-post-flscrn {
+  position: absolute;
+  top: 10vh;
+  right: 10px;
+}
+
+.close-post-flscrn:hover {
+  cursor: pointer;
+}
 /*# sourceMappingURL=postfullscreen.css.map */

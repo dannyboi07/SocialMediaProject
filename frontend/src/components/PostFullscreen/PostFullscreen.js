@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import MediaCarousel from '../MediaCarousel/MediaCarousel';
+import { useDispatch } from 'react-redux';
 import "./postfullscreen.css";
+import { removeFSData } from '../../reducers/fullScreenReducer';
 
 function PostFullscreen({ post }) {
-    const [flscrnPostWidth, setFlscrnPostWidth] = useState(null);
-    const [leftCtnWidth, setLeftCtnWidth] = useState(null);
-    const [rightCtnWidth, setRightCtnWidth] = useState(null);
+    // const [flscrnPostWidth, setFlscrnPostWidth] = useState(null);
+    // const [leftCtnWidth, setLeftCtnWidth] = useState(null);
+    // const [rightCtnWidth, setRightCtnWidth] = useState(null);
 
     // useEffect(() => {
     //     console.log("started");
@@ -22,10 +24,15 @@ function PostFullscreen({ post }) {
     //     });
 
     // }, []);
+    const dispatch = useDispatch();
+
+    function handleCloseFullscreen() {
+        dispatch(removeFSData());
+    }
 
     return (
         <div className="flscrn-post-ctn-bg">
-            <div className="flscrn-post-ctn" style={{ width: flscrnPostWidth }}>
+            <div className="flscrn-post-ctn">
                 { 
                     post.p_pics && <MediaCarousel className="flscrn-post-ctn__left-ctn" postId={ post.p_id } postImages={ post.p_pics } fullscreen={true}/>
                 }
@@ -40,6 +47,8 @@ function PostFullscreen({ post }) {
                     </div>
                 }
             </div>
+
+            <img className="close-post-flscrn" src="/close-icon.svg" alt="Close" onClick={ handleCloseFullscreen } />
         </div>
     )
 }
