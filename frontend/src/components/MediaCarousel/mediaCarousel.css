@@ -13,12 +13,11 @@
 }
 
 .post-images-ctn {
-  /* margin-top: 1em; */
+  margin-top: 1em;
   position: relative;
   width: 100%;
   height: fit-content;
   overflow: hidden;
-
 }
 
 .post-images-ctn button {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import MediaCarousel from '../MediaCarousel/MediaCarousel';
 import { useDispatch } from 'react-redux';
 import "./postfullscreen.css";
@@ -28,7 +28,22 @@ function PostFullscreen({ post }) {
 
     function handleCloseFullscreen() {
         dispatch(removeFSData());
-    }
+    };
+
+    useEffect(() => {
+        function onEscPress(e) {
+            if (e.key === "Escape") {
+                handleCloseFullscreen();
+            };
+        };
+
+        document.addEventListener("keydown", onEscPress);
+
+        return () => {
+            document.removeEventListener("keydown", onEscPress);
+        };
+        
+    }, []);
 
     return (
         <div className="flscrn-post-ctn-bg">

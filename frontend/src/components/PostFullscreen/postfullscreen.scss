@@ -8,25 +8,31 @@
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 5;
+    z-index: 11;
 }
 
 .flscrn-post-ctn {
     display: flex;
     width: 80%;
-    height: 80%;
+    height: 50vw;
     background-color: white;
 
     &__left-ctn {
-        width: 50%;
+        width: 60%;
         height: 100%;
+    }
+
+    &__right-ctn {
+        width: 40%;
     }
 }
 
 .close-post-flscrn {
     position: absolute;
-    top: 10vh;
+    top: 2.75vh;
     right: 10px;
+    width: 35px;
+    height: 35px;
 
     &:hover {
         cursor: pointer;

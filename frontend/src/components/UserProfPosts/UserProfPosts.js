@@ -15,22 +15,29 @@ function UserProfPosts({ posts }) {
             { 
                 posts.map(post => <div key={ post.p_id } className="user-prof-post-ctn" onClick={ () => handleViewMoreClick(post) }>
                         {
-                            post.p_pics[0] && <img className="user-prof-post-img" src={post.p_pics[0]} alt="Post preview"/>
+                            post.p_pics && <img className="user-prof-post-img" src={post.p_pics[0]} alt="Post preview"/>
                         }
 
-                        <div className="user-prof-post-text-ctn">
+                        <div className="user-prof-post-text-ctn" style={{ height: post.p_pics ? "20%" : "100%" }}>
                             <p>
                                 { post.text }
-                                hi hello this is some more text for testing the css area coverageasdfsaf jsahf kjhasdjkfhjakshfjkhfdjklhfsdjkf
+                                {/* hi hello this is some more text for testing the css area coverageasdfsaf jsahkjhasdjkfhjakshfjkhfdjklhfsdjkfsakdfjhsajkdflsdlfjkhsjkldfhkjlsahsdjfklsajdfkljsalfjasldkjflsajdf
+                                kjhasdjkfhjakshfjkhfdjklhfsdjkfsakdfjhsajkdflsdlfjkhsjkldfhkjlsahsdjfklsajdfkljsalfjasldkjflsajdf
+                                kjhasdjkfhjakshfjkhfdjklhfsdjkfsakdfjhsajkdflsdlfjkhsjkldfhkjlsahsdjfklsajdfkljsalfjasldkjflsajdf
+                                kjhasdjkfhjakshfjkhfdjklhfsdjkfsakdfjhsajkdflsdlfjkhsjkldfhkjlsahsdjfklsajdfkljsalfjasldkjflsajdf
+                                kjhasdjkfhjakshfjkhfdjklhfsdjkfsakdfjhsajkdflsdlfjkhsjkldfhkjlsahsdjfklsajdfkljsalfjasldkjflsajdf
+                                kjhasdjkfhjakshfjkhfdjklhfsdjkfsakdfjhsajkdflsdlfjkhsjkldfhkjlsahsdjfklsajdfkljsalfjasldkjflsajdf
+                                kjhasdjkfhjakshfjkhfdjklhfsdjkfsakdfjhsajkdflsdlfjkhsjkldfhkjlsahsdjfklsajdfkljsalfjasldkjflsajdf
+                                kjhasdjkfhjakshfjkhfdjklhfsdjkfsakdfjhsajkdflsdlfjkhsjkldfhkjlsahsdjfklsajdfkljsalfjasldkjflsajdf
+                                kjhasdjkfhjakshfjkhfdjklhfsdjkfsakdfjhsajkdflsdlfjkhsjkldfhkjlsahsdjfklsajdfkljsalfjasldkjflsajdf */}
                             </p>
                             <div className="text-shadow-box"></div>
                         </div>
                     </div>
                 )    
             }
-            
         </div>
-    );
+    )
 };
 
 export default UserProfPosts;

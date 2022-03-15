@@ -4,42 +4,42 @@ import MediaCarousel from '../MediaCarousel/MediaCarousel';
 import "./postcontent.css"
 
 function PostContent({ postId, postText, postImages }) {
-  const [imgCtnWidth, setImgCtnWidth] = useState(null);
-  // const [curImage, setCurImage] = useState(null);
-  const [imgPosInx, setImgPosInx] = useState([]);
+  // const [imgCtnWidth, setImgCtnWidth] = useState(null);
+  // // const [curImage, setCurImage] = useState(null);
+  // const [imgPosInx, setImgPosInx] = useState([]);
 
-  let imgCtn = null;
+  // let imgCtn = null;
 
-  useEffect(() => {
-    imgCtn = document.querySelector(".post-images-ctn");
-    setImgCtnWidth(imgCtn.offsetWidth);
-    // setCurImage(document.getElementById(`post-img-${postId}-0`));
+  // useEffect(() => {
+  //   imgCtn = document.querySelector(".post-images-ctn");
+  //   setImgCtnWidth(imgCtn.offsetWidth);
+  //   // setCurImage(document.getElementById(`post-img-${postId}-0`));
 
-    if (postImages) {
-      let tempArr = [];
-      for (let i = 0; i < postImages.length; i++) {
-        tempArr.push(i);
-      };
-      setImgPosInx([...tempArr]);
-    };
+  //   if (postImages) {
+  //     let tempArr = [];
+  //     for (let i = 0; i < postImages.length; i++) {
+  //       tempArr.push(i);
+  //     };
+  //     setImgPosInx([...tempArr]);
+  //   };
 
-    function windowResizeListen() {
-      // console.log(1);
-      setImgCtnWidth(imgCtn.offsetWidth);
-    }
+  //   function windowResizeListen() {
+  //     // console.log(1);
+  //     setImgCtnWidth(imgCtn.offsetWidth);
+  //   }
 
-    window.addEventListener("resize", windowResizeListen);
+  //   window.addEventListener("resize", windowResizeListen);
 
-    // return () => window.removeEventListener("resize", windowResizeListen);
-  }, []);
+  //   return () => window.removeEventListener("resize", windowResizeListen);
+  // }, []);
 
-  function slideRight() {
-    if (imgPosInx[0] > -1 * (imgPosInx.length - 1)) setImgPosInx(imgPosInx.map(imgPos => imgPos - 1));
-  }
+  // function slideRight() {
+  //   if (imgPosInx[0] > -1 * (imgPosInx.length - 1)) setImgPosInx(imgPosInx.map(imgPos => imgPos - 1));
+  // }
 
-  function slideLeft() {
-    if (imgPosInx[0] !== 0) setImgPosInx(imgPosInx.map(imgPos => imgPos + 1));
-  }
+  // function slideLeft() {
+  //   if (imgPosInx[0] !== 0) setImgPosInx(imgPosInx.map(imgPos => imgPos + 1));
+  // }
 
   return (
     <div id={`pst-cntnt-ctn-${postId}`} className="post-content-ctn">
