@@ -10,7 +10,7 @@ userRouter.get("/", async (req, res, next) => {
         decodedToken = jwt.verify(req.token, process.env.SECRET);
         if (!decodedToken) return res.status(401).json({ error: "Token missing or invalid" });
     };
-    console.log(req.token);
+    // console.log(req.token);
 
     try {
         const foundUser = await db.query("SELECT u_id, name, username, imgloc, email FROM users WHERE username = $1", [uname]);
@@ -83,6 +83,8 @@ userRouter.post("/follow/:uid", async (req, res, next) => {
     if (!decodedToken) return res.status(401).json({ error: "Token missing or invalid" });
 
     const userToFollowId = parseInt(req.params.uid);
+
+    if (parseInt(decodedToken.id) === userToFollowId) return res.status(400).json({ success: false, error: "Cannot follow your own account" });
 
     try {
         const foundUserToFollow = await db.query("SELECT COUNT(*) FROM users WHERE u_id = $1", [userToFollowId]);
