@@ -11,6 +11,7 @@ function Navbar() {
     const user = useSelector(state => state.user);
     const search = useRef(null);
     const [searchRes, setSearchRes] = useState(null);
+    console.log(searchRes);
 
     function logOut() {
         dispatch(dispatchLogOut());
@@ -34,7 +35,7 @@ function Navbar() {
                 </Link>
 
                 <div className="search-ctn">
-                
+
                     <input type="text" name="search-box" 
                     onChange={e => handleSearchChange(e)} 
                     placeholder="Search..."/>
