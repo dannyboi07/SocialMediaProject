@@ -1,5 +1,5 @@
 .post-details-ctn {
-  position: relative;
+  /* position: relative; */
   display: flex;
   justify-content: space-around;
 
@@ -19,6 +19,7 @@
 
 .like-btn-ctn {
   display: flex;
+  position: relative;
 }
 
 .like-btn {

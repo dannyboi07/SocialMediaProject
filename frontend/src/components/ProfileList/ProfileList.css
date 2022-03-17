@@ -1,8 +1,9 @@
 .likes-ctn {
     position: absolute;
+    min-width: 190px;
     opacity: 0;
     top: 150%;
-    left: 0%;
+    left: -50%;
     transform: scale(0,0);
     transform-origin: 50% -15%;
     transition: all 0.5s;

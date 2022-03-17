@@ -20,7 +20,7 @@ function UserProfile() {
             } else setUserProf(await getUser(params.username));
         };
         getUserEff();
-    }, [user]);
+    }, [user, params.username]);
 
     if (!userProf) return <p>Loading</p>
     console.log(userProf);
