@@ -2,6 +2,7 @@ const contentRouter = require("express").Router();
 const db = require("../db");
 const jwt = require("jsonwebtoken");
 const path = require("path");
+const webpush = require("web-push");
 
 const multer = require("multer");
 const storage = multer.diskStorage({
@@ -37,20 +38,21 @@ contentRouter.get("/", async (req, res, next) => {
   } catch(err) {
     console.error(err);
     next();
-  }
-
-  // let postsLikes = [];
-  // for (let i = 0; i < allPosts.rows.length; i++) {
-  //   let temp;
-  //   db.query("SELECT COUNT(*) FROM likes_post_rel WHERE p_id_fk=$1", [allPosts.rows[i].p_id]).then(res => {
-  //     temp = res.rows[0].count;
-  //     console.log("count",res.rows[0].count);
-  //   });
-  //   console.log(temp)
-  //   // allPosts.rows[i].likes = temp;
-  //   // console.log("loop",allPosts.rows[i])
-  // }
+  };
 });
+
+contentRouter.get("/post/:id", async (req, res, next) => {
+  const post_id = parseInt(req.params.id);
+
+  try {
+    const post = await db.query("SELECT * FROM post WHERE p_id = $1", [post_id]);
+
+    res.json(post.rows[0]);
+  } catch(err) {
+    console.error(err);
+    next();
+  };
+})
 
 contentRouter.get("/post/likes/:id", async (req, res, next) => {
 
@@ -116,7 +118,7 @@ contentRouter.delete("/post/like/:id", async (req, res, next) => {
     res.json({ success: true });
   } catch(err) {
     console.error(err);
-    res.json({ success: true });
+    next();
   }
 })
 
@@ -150,9 +152,35 @@ contentRouter.post("/createPost", upload.array("photos", 10), async (req, res, n
     const resQ = await db.query("SELECT post.p_id, post.text, post.likes, post.date, p_pics, users.u_id, users.name, users.username, users.imgloc FROM post JOIN users on users.u_id = post.user_id WHERE p_id = $1", [pstId.rows[0].p_id]);
 
     res.json(resQ.rows);
+
+    const userFlwrsSubKeys = await db.query("SELECT sub_endpoint, sub_pub_key, sub_auth_key FROM users JOIN user_followers ON user_followers.u_flwr_id_fk = users.u_id WHERE user_followers.u_id_fk = $1", [decodedToken.id]);
+
+    userFlwrsSubKeys.rows.forEach(userFlwrSubKeys => {
+
+      const subscription = {
+        endpoint: userFlwrSubKeys.sub_endpoint,
+        keys: {
+          p256dh: userFlwrSubKeys.sub_pub_key,
+          auth: userFlwrSubKeys.sub_auth_key
+        }
+      }
+
+      const payload = JSON.stringify({
+        title: `New post by ${doesExist.rows[0].name}`,
+        icon: doesExist.rows[0].imgloc,
+        url: `http://192.168.42.206:3000/post/${pstId.rows[0].p_id}`,
+        primaryKey: pstId.rows[0].p_id
+      });
+
+      console.log(subscription, payload);
+      webpush.sendNotification(subscription, payload)
+        .catch(err => {
+          console.error(err);
+        })
+    })
   } catch(err) {
     console.error(err);
-    next(err);
+    next();
   };
 });
 
