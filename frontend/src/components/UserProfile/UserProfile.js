@@ -23,7 +23,7 @@ function UserProfile() {
     }, [user, params.username]);
 
     if (!userProf) return <p>Loading</p>
-    console.log(userProf);
+    // console.log(userProf);
 
     async function handleFollowBtnClick() {
         if (userProf.follows) {
@@ -92,7 +92,7 @@ function UserProfile() {
             </div>
             <hr className="user-cntnt-hr-btm" />
             {
-                userProf && userProf.posts && curView.posts && <UserProfPosts posts={ userProf.posts }/>
+                userProf && userProf.posts && curView.posts && <UserProfPosts username={params.username} posts={ userProf.posts }/>
             }
         </div>
     )

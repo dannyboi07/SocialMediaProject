@@ -21,7 +21,7 @@ function PostDetails({ postId, likes }) {
   let timer = null;
 
   useEffect(() => {
-    setUid(userData.uId);
+    if (userData) setUid(userData.uId);
     async function fetchLiked() {
       const response = await likedOrNot(postId, uId);
 

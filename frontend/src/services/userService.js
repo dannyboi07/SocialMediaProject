@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://192.168.42.230:3500/api/user";
+const baseUrl = "http://192.168.42.206:3500/api/user";
 
 async function getUser(userName, token = null) {
     // console.log(token);
@@ -19,9 +19,8 @@ async function getUser(userName, token = null) {
 };
 
 async function followUser(followUId, token) {
-    console.log(token);
 
-    const response = await axios.post(`${baseUrl}/follow/${followUId}`, null,{
+    const response = await axios.post(`${baseUrl}/follow/${followUId}`, null, {
         headers: {
             "Authorization": `Bearer ${token}`
         },

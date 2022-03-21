@@ -7,9 +7,10 @@ import { getAll } from './reducers/postblogReducer';
 import Home from "./components/Home/Home";
 import Register from './components/Register/Register';
 import Login from './components/Login/Login';
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, useParams } from "react-router-dom";
 import CreatePost from "./components/CreatePost/CreatePost";
 import UserProfile from "./components/UserProfile/UserProfile";
+import PostFullscreen from "./components/PostFullscreen/PostFullscreen";
 
 function App() {
   const dispatch = useDispatch();
@@ -21,6 +22,8 @@ function App() {
     if (userDetails) dispatch(initializeUser(userDetails));
   }, [dispatch]);
   const user = useSelector(state => state.user);
+
+  const fullscreenData = useSelector(state => state.fullscreenData);
   // console.log(user);
 
   // const userUrlObj = useRouteMatch({ path: "/users/:username", 
@@ -36,7 +39,16 @@ function App() {
     <div>
       <Navbar/>
       {/* <WelcomePage /> */}
+      { fullscreenData && <PostFullscreen post={ fullscreenData }/> }
       <Switch>
+        <Route path="/users/:username">
+          <UserProfile/>
+        </Route>
+
+        <Route exact path="/post/:postId">
+          <PostFullscreen onlyPost={true} />
+        </Route>
+        
         <Route path="/createPost">
           { user ? <CreatePost /> : <Redirect to="/login" /> }
         </Route>
@@ -45,10 +57,6 @@ function App() {
         </Route>
         <Route path="/login">
           { user ? <Redirect to="/home"/> : <Login />}
-        </Route>
-
-        <Route path="/users/:username">
-          <UserProfile/>
         </Route>
 
         <Route path="/home">

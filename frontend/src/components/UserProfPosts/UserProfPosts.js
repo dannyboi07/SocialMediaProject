@@ -1,12 +1,15 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { setFSData } from '../../reducers/fullScreenReducer';
+import { useHistory } from 'react-router-dom';
 import "./userprofposts.css"
 
-function UserProfPosts({ posts }) {
+function UserProfPosts({ posts, username }) {
     const dispatch = useDispatch();
+    const history = useHistory();
 
     function handleViewMoreClick(post) {
+        history.push(`/users/${username}/post/${post.p_id}`);
         dispatch(setFSData(post));
     };
 

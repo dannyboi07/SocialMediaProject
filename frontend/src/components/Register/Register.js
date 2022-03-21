@@ -22,16 +22,20 @@ function Register() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const imgFileName = document.getElementById("prof-img").value;
-    const dotIdx = imgFileName.lastIndexOf(".") + 1;
-    const fileExt = imgFileName.substring(dotIdx, imgFileName.length).toLowerCase();
-    if (fileExt !== "jpg" && fileExt !== "jpeg" && fileExt !== "png") {
-      window.alert("Profile image must be either of type .jpg, .jpeg, or .png");
-      return;
-    };
-
     const data = new FormData();
-    data.append("profileimg", profileimg);
+    
+    if (profileimg) {
+      const imgFileName = document.getElementById("prof-img").value;
+      const dotIdx = imgFileName.lastIndexOf(".") + 1;
+      const fileExt = imgFileName.substring(dotIdx, imgFileName.length).toLowerCase();
+      if (fileExt !== "jpg" && fileExt !== "jpeg" && fileExt !== "png") {
+        window.alert("Profile image must be either of type .jpg, .jpeg, or .png");
+        return;
+      };
+
+      data.append("profileimg", profileimg);
+    }
+
     data.append("name", name);
     data.append("username", username);
     data.append("password", password);

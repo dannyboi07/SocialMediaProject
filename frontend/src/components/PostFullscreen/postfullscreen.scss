@@ -11,6 +11,17 @@
     z-index: 11;
 }
 
+.only-post-ctn {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .flscrn-post-ctn {
+        height: 40vw;
+    }
+}
+
 .flscrn-post-ctn {
     display: flex;
     width: 80%;
@@ -20,10 +31,15 @@
     &__left-ctn {
         width: 60%;
         height: 100%;
+        margin-top: 0;
     }
 
     &__right-ctn {
         width: 40%;
+
+        &__text-ctn__text {
+            word-break: break-all;
+        }
     }
 }
 

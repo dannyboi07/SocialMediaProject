@@ -11,7 +11,7 @@ function Navbar() {
     const user = useSelector(state => state.user);
     const search = useRef(null);
     const [searchRes, setSearchRes] = useState(null);
-    console.log(searchRes);
+    // console.log(searchRes);
 
     function logOut() {
         dispatch(dispatchLogOut());

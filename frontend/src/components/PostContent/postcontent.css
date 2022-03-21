@@ -1,3 +1,7 @@
+.post-content-ctn p {
+  word-break: break-all;
+}
+
 /* .post-content-ctn {
   padding: 1em;
 }

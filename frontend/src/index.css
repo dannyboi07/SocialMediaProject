@@ -17,6 +17,10 @@
   --prim-offwhite: #EEEEEE;
 }
 
+#root {
+  min-height: 100vh;
+}
+
 body {
   font-family: "Poppins";
   /* background-color: var(--prim-dgray); */
@@ -29,6 +33,10 @@ a {
 
 button {
   font-family: "Poppins";
+}
+
+hr {
+  border: 1px solid lightgray;
 }
 
 /* body {
