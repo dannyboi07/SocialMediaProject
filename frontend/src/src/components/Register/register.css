@@ -1,0 +1,82 @@
+.register-ctn {
+    border: 1px solid;
+    height: 91.3vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+form {
+    background-color: #004649d3;
+    color: white;
+    width: 350px;
+    height: 410px;
+    padding: 2.5em 2.5em 2.5em 2.5em;
+    box-shadow: 0px 8px 25px #e0e0e031, 
+    -10px 8px 25px #e0e0e031, 10px 8px 15px #e0e0e031;
+
+    /* height: 300px; */
+    /* border: 1px solid red; */
+    border-radius: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    transition: height 0.25s;
+}
+
+.pre-profimg-ctn {
+    margin: 0.5em 0;
+    width: 40%;
+    height: 45%;
+    border-radius: 0.40em;
+    align-self: center;
+}
+
+.pre-profimg {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.40em;
+    object-fit: cover;
+}
+
+label {
+    width: 82.5%;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.925rem;
+}
+
+label input {
+    margin-top: 0.5em;
+    color: black;
+}
+
+.form-modify {
+    height: 475px;
+    /* justify-content: space-between; */
+}
+
+.img-upload-ctn {
+    height: 40%;
+}
+
+.img-upload-ctn span {
+    font-size: 0.75rem;
+}
+
+.register-ctn form button {
+    margin: 0 auto;
+    margin-top: 1em;
+    padding: 0.5em 2em;
+    border-radius: 5px;
+    background-color: var(--prim-blue);
+    color: black;
+    transition: all 0.25s;
+}
+
+.register-ctn form button:hover {
+    background-color: #00acb5bd;
+}

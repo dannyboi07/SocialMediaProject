@@ -1,0 +1,71 @@
+.flscrn-post-ctn-bg {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 11;
+}
+
+.only-post-ctn {
+  min-height: calc(100vh - 80px);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.only-post-ctn .flscrn-post-ctn {
+  height: 40vw;
+}
+
+.flscrn-post-ctn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 80%;
+  height: 50vw;
+  background-color: white;
+}
+
+.flscrn-post-ctn__left-ctn {
+  width: 60%;
+  height: 100%;
+  margin-top: 0;
+}
+
+.flscrn-post-ctn__right-ctn {
+  width: 40%;
+}
+
+.flscrn-post-ctn__right-ctn__text-ctn__text {
+  word-break: break-all;
+}
+
+.close-post-flscrn {
+  position: absolute;
+  top: 2.75vh;
+  right: 10px;
+  width: 35px;
+  height: 35px;
+}
+
+.close-post-flscrn:hover {
+  cursor: pointer;
+}
+/*# sourceMappingURL=postfullscreen.css.map */
