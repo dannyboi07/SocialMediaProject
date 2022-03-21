@@ -1,5 +1,0 @@
-.post-body-ctn {
-  /* border: 1px solid black; */
-  width: clamp(350px, 80%, 500px);
-  margin: 0.5em auto;
-}
