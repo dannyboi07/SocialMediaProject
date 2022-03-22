@@ -12,9 +12,14 @@
 
 :root {
   --prim-blue: #00ADB5;
-  --prim-dgray: #222831;
-  --prim-lgray: #393E46;
+  /* --prim-dgray: #222831; */
+  --prim-lgrey: #393E46;
   --prim-offwhite: #EEEEEE;
+
+  --prim-dgray: #1f2730;
+  --prim-exp-lblue: #b1d1e6;
+  --prim-exp-grey: #6e6f86;
+  --prim-exp-peach: #efc7ba;
 }
 
 #root {

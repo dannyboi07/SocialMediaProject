@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from "react-router-dom";
 import { dispatchLogOut } from '../../reducers/userReducer';
+import { setCrData } from '../../reducers/fullScreenReducer';
 import { getSearch } from '../../services/searchService';
 import Profile from '../Profile/Profile';
 import "./navbar.css";
@@ -15,6 +16,10 @@ function Navbar() {
 
     function logOut() {
         dispatch(dispatchLogOut());
+    };
+
+    function dispatchCrPost() {
+        dispatch(setCrData());
     };
 
     async function handleSearchChange(e) {
@@ -63,13 +68,37 @@ function Navbar() {
                     ? " reg-log-btn-ctn--lgout"
                     : "" }`}>
                     { user 
-                        ? <Link to="/login" className="log-button" onClick={logOut}>
-                                Logout
-                          </Link> 
+                        ? 
+                          <>
+                            <Link to="/home">
+                                <img src="/icon-home.svg" alt="Home" />
+                            </Link>
+
+                            <div className="create-ctn">
+                                <img src="/icon-create.svg" alt="Create"></img>
+
+                                <div className="create-tools-ctn">
+                                    <div className="clip-triangle">
+                                    </div>
+                                    <p onClick={dispatchCrPost}>
+                                        Create Post
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <Link to="/login" onClick={logOut}>
+                                    <img src="/icon-logout.svg" alt="Logout"/>
+                            </Link>
+                          </> 
                         : <>
+                            <Link to="/home">
+                                <img src="/icon-home.svg" alt="Home" />
+                            </Link>
+
                             <Link to="/register" className='reg-button'>
                                 Join Now
                             </Link>
+                            
                             <Link to="/login" className='log-button'>
                                 Sign In
                             </Link>

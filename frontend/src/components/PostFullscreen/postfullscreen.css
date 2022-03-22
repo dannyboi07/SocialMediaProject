@@ -57,15 +57,4 @@
   word-break: break-all;
 }
 
-.close-post-flscrn {
-  position: absolute;
-  top: 2.75vh;
-  right: 10px;
-  width: 35px;
-  height: 35px;
-}
-
-.close-post-flscrn:hover {
-  cursor: pointer;
-}
 /*# sourceMappingURL=postfullscreen.css.map */

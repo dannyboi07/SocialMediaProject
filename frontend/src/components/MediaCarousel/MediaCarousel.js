@@ -1,8 +1,11 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect } from 'react';
+
 import "./mediaCarousel.css";
 
-function MediaCarousel({ postId, postImages, fullscreen = false, className }) {
+function MediaCarousel({ postId, postImages, fullscreen = false, className, handleFsClick }) {
+
+
     const [imgCtnWidth, setImgCtnWidth] = useState(null);
     const [imgPosInx, setImgPosInx] = useState([]);
 
@@ -49,22 +52,24 @@ function MediaCarousel({ postId, postImages, fullscreen = false, className }) {
 
     useEffect(() => {
 
-        function goLeftRightKey(e) {
-            if (e.key === "ArrowRight") {
-                console.log("Going right");
-                slideRight();
-            } else if (e.key === "ArrowLeft") {
-                console.log("Going left");
-                slideLeft();
+        if (fullscreen) {
+            function goLeftRightKey(e) {
+                if (e.key === "ArrowRight") {
+                    console.log("Going right");
+                    slideRight();
+                } else if (e.key === "ArrowLeft") {
+                    console.log("Going left");
+                    slideLeft();
+                };
             };
-        };
-        document.addEventListener("keydown", goLeftRightKey);
-
-        return () => document.removeEventListener("keydown", goLeftRightKey);
-    }, [imgPosInx])
+            document.addEventListener("keydown", goLeftRightKey);
+    
+            return () => document.removeEventListener("keydown", goLeftRightKey);
+        }
+    }, [imgPosInx]);
 
     return (
-        <div style={{ height: fullscreen ? null : imgCtnWidth }} className={ fullscreen ? `post-images-ctn ${className}` : "post-images-ctn"}>
+        <div onClick={ handleFsClick } style={{ height: fullscreen ? null : imgCtnWidth }} className={ fullscreen ? `post-images-ctn ${className}` : "post-images-ctn"}>
 
             <button style={{ display: imgPosInx[0] !== 0 ? "block": "none" }}
             onClick={ slideLeft }>

@@ -1,0 +1,39 @@
+.pos-abs-wrapper {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 15;
+}
+
+.flscrn-post-ctn-bg {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 11;
+}
+
+.close-post-flscrn {
+    position: absolute;
+    top: 3vh;
+    right: 1.5vw;
+    width: 35px;
+    height: 35px;
+}
+  
+.close-post-flscrn:hover {
+    cursor: pointer;
+}  

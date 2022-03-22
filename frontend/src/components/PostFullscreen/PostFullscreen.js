@@ -37,19 +37,6 @@ function PostFullscreen({ post, onlyPost }) {
     };
 
     useEffect(() => {
-        if (!onlyPost) {
-            function onEscPress(e) {
-                if (e.key === "Escape") {
-                    handleCloseFullscreen();
-                };
-            };
-    
-            document.addEventListener("keydown", onEscPress);
-    
-            return () => {
-                document.removeEventListener("keydown", onEscPress);
-            };
-        };
 
         if (onlyPost) {
             const postId = params.postId;
@@ -82,7 +69,7 @@ function PostFullscreen({ post, onlyPost }) {
     }
 
     return (
-        <div className="flscrn-post-ctn-bg">
+        // <div className="flscrn-post-ctn-bg">
             <div className="flscrn-post-ctn">
                 { 
                     post.p_pics && <MediaCarousel className="flscrn-post-ctn__left-ctn" postId={ post.p_id } postImages={ post.p_pics } fullscreen={true}/>
@@ -99,8 +86,8 @@ function PostFullscreen({ post, onlyPost }) {
                 }
             </div>
 
-            <img className="close-post-flscrn" src="/close-icon.svg" alt="Close" onClick={ handleCloseFullscreen } />
-        </div>
+            //<img className="close-post-flscrn" src="/close-icon.svg" alt="Close" onClick={ handleCloseFullscreen } />
+        //</div>
     )
 }
 

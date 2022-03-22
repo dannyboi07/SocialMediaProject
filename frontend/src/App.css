@@ -4,3 +4,13 @@ body {
   font-size: 1.125rem;
   min-height: 100vh;
 }
+
+.clip-triangle {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  top: -25px;
+  left: 35%;
+  background-color: white;
+  clip-path: polygon(50% 50%, 0% 100%, 100% 100%);
+}

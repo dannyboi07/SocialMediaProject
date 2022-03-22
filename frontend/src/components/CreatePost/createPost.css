@@ -6,6 +6,10 @@
   justify-content: center;
 }
 
+#new-post-form {
+  height: auto;
+}
+
 .crtPstTxt {
   font-size: 1rem;
   border: 1px solid;

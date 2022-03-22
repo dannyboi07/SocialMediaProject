@@ -14,6 +14,8 @@ function CreatePost() {
     tx = document.querySelector(".crtPstTxt");
     tx.setAttribute("style", "height:1.8em;overflow-y:hidden;");
     tx.addEventListener("input", OnInput, false);
+
+    return () => tx.removeEventListener("input", OnInput);
   }, []);
 
   function OnInput() {
@@ -40,8 +42,9 @@ function CreatePost() {
 
   return (
     <div className="crtPst">
-     <form id="new-post-form" style={{ height: "auto" }} onSubmit={(e) => handleSubmit(e)}
+     <form id="new-post-form" onSubmit={(e) => handleSubmit(e)}
       encType="multipart/form-data">
+
       <textarea className="crtPstTxt" type="text" 
           name="post-text" 
           onChange={(e) => setPostText(e.target.value)} 
@@ -59,7 +62,9 @@ function CreatePost() {
           /> 
         </label>
 
-        <button type="submit">Post</button>
+        <button type="submit">
+          Post
+        </button>
      </form>
     </div>
   )

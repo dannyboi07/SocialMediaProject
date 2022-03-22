@@ -11,6 +11,7 @@ import { Switch, Route, Redirect, useParams } from "react-router-dom";
 import CreatePost from "./components/CreatePost/CreatePost";
 import UserProfile from "./components/UserProfile/UserProfile";
 import PostFullscreen from "./components/PostFullscreen/PostFullscreen";
+import FullScreenDisp from "./components/FullScreenDisplay/FullScreenDisp";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,7 +40,20 @@ function App() {
     <div>
       <Navbar/>
       {/* <WelcomePage /> */}
-      { fullscreenData && <PostFullscreen post={ fullscreenData }/> }
+      {
+        fullscreenData?.post 
+        && <FullScreenDisp post={ true }>
+            <PostFullscreen post={ fullscreenData.postData }/>
+           </FullScreenDisp>
+      }
+      {
+        fullscreenData?.creation 
+        && 
+        user && 
+        <FullScreenDisp>
+          <CreatePost />
+        </FullScreenDisp>
+      }
       <Switch>
         <Route path="/users/:username">
           <UserProfile/>
@@ -74,3 +88,5 @@ function App() {
 }
 
 export default App;
+
+// { fullscreenData && <PostFullscreen post={ fullscreenData }/> }

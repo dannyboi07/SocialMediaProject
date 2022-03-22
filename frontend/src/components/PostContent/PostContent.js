@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import MediaCarousel from '../MediaCarousel/MediaCarousel';
 import "./postcontent.css"
 
-function PostContent({ postId, postText, postImages }) {
+function PostContent({ postId, postText, postImages, handleFsClick }) {
   // const [imgCtnWidth, setImgCtnWidth] = useState(null);
   // // const [curImage, setCurImage] = useState(null);
   // const [imgPosInx, setImgPosInx] = useState([]);
@@ -46,7 +46,7 @@ function PostContent({ postId, postText, postImages }) {
         <p>
           { postText }
         </p>
-        { postImages && <MediaCarousel postId={postId} postImages={postImages}/> }
+        { postImages && <MediaCarousel handleFsClick={ handleFsClick } postId={postId} postImages={postImages}/> }
     </div>
   );
 }
