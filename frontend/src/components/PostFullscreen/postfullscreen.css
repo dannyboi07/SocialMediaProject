@@ -41,6 +41,7 @@
   width: 80%;
   height: 50vw;
   background-color: white;
+  border-radius: 0 0.25em 0.25em 0;
 }
 
 .flscrn-post-ctn__left-ctn {
@@ -55,6 +56,11 @@
 
 .flscrn-post-ctn__right-ctn__text-ctn__text {
   word-break: break-all;
+}
+
+.loading-gif {
+  width: 75px;
+  height: 75px;
 }
 
 /*# sourceMappingURL=postfullscreen.css.map */

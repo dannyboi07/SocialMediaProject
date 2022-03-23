@@ -1,28 +1,37 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { followUser, getUser, unFollowUser } from '../../services/userService';
 import "./userprofile.css";
 import UserProfPosts from '../UserProfPosts/UserProfPosts';
+import LoadingComp from '../LoadingComp/LoadingComp';
 
 function UserProfile() {
     const params = useParams();
+    const history = useHistory();
     const [userProf, setUserProf] = useState(null);
     const [curView, setCurView] = useState({ posts: true, blogs: false });
     const user = useSelector(state => state.user);
+    // const urlRef = useRef(null);
     // console.log(user);
+
+    // useEffect(() => {
+    //     history.push(`/users/${params.username}`);
+    // }, [])
 
     useEffect(() => {
         async function getUserEff() {
+            // console.log("rendering");
             if (user) {
                 setUserProf(await getUser(params.username, user.token));
             } else setUserProf(await getUser(params.username));
         };
         getUserEff();
+        // urlRef.current = params.username;
     }, [user, params.username]);
 
-    if (!userProf) return <p>Loading</p>
+    if (!userProf) return <LoadingComp />;
     // console.log(userProf);
 
     async function handleFollowBtnClick() {
@@ -49,7 +58,7 @@ function UserProfile() {
             <div className="user-prof-details-ctn">
 
                 <div className="user-prof-img-ctn">
-                    <img className="user-prof-img" src={ userProf.imgloc } alt="Profile picture"></img>
+                    <img className="user-prof-img" src={ userProf.imgloc } alt="Profile picture" />
                 </div>            
                     <div className="user-prof-right-ctn">
                         <p>

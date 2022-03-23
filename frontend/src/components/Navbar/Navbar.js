@@ -73,21 +73,23 @@ function Navbar() {
                             <Link to="/home">
                                 <img src="/icon-home.svg" alt="Home" />
                             </Link>
+                            <div className="create-icon"></div>
+                            {/* <div className="create-ctn"> */}
+                                {/* <img src="/icon-create.svg" alt="Create"></img> */}
 
-                            <div className="create-ctn">
-                                <img src="/icon-create.svg" alt="Create"></img>
 
-                                <div className="create-tools-ctn">
+                                {/* <div className="create-tools-ctn">
                                     <div className="clip-triangle">
                                     </div>
                                     <p onClick={dispatchCrPost}>
                                         Create Post
                                     </p>
-                                </div>
-                            </div>
+                                </div> */}
+                            {/* </div> */}
                             
                             <Link to="/login" onClick={logOut}>
-                                    <img src="/icon-logout.svg" alt="Logout"/>
+                                    {/* <img src="/icon-logout.svg" alt="Logout"/> */}
+                                    <div className="logout-icon"></div>
                             </Link>
                           </> 
                         : <>

@@ -5,6 +5,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import "./postfullscreen.css";
 import { removeFSData } from '../../reducers/fullScreenReducer';
 import { getPost } from '../../services/contentService';
+import LoadingComp from '../LoadingComp/LoadingComp';
 
 function PostFullscreen({ post, onlyPost }) {
     // const [flscrnPostWidth, setFlscrnPostWidth] = useState(null);
@@ -41,12 +42,16 @@ function PostFullscreen({ post, onlyPost }) {
         if (onlyPost) {
             const postId = params.postId;
             console.log("Param PostId", postId);
-            getPost(postId).then(resPost => setSinglePost(resPost));
+            // getPost(postId).then(resPost => setSinglePost(resPost));
         }
     }, []);
 
     if (onlyPost) {
-        if (!singlePost) return <p>Loading</p>
+
+        if (!singlePost) return (
+            <LoadingComp />
+        );
+
         return (
             <div className="only-post-ctn">
                 <div className="flscrn-post-ctn">

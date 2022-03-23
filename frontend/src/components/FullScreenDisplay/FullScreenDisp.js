@@ -1,12 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { removeFSData } from '../../reducers/fullScreenReducer';
 import "./fullscrndisp.css";
 
 function FullScreenDisp({ children, post }) {
     const dispatch = useDispatch();
     const history = useHistory();
+    const location = useLocation();
 
     // const exitBtnRef = useRef(null);
 
@@ -22,7 +23,7 @@ function FullScreenDisp({ children, post }) {
     };
 
     useEffect(() => {
-
+        // console.log(location);
         document.body.style.overflow = "hidden";
         document.addEventListener("keydown", onEscPress);
 
@@ -31,11 +32,14 @@ function FullScreenDisp({ children, post }) {
         // exitBtn.focus();
 
         return () => {
+            console.log(location.pathname)
+            history.replace(`${location.pathname}`);
             document.body.style = undefined;
             document.removeEventListener("keydown", onEscPress);
 
             // exitBtn.removeEventListener("keydown", onEscPress);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

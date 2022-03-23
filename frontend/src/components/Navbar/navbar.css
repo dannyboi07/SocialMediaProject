@@ -1,7 +1,7 @@
 .nav-container {
     position: sticky;
     top: 0;
-    background-color: var(--prim-dgray);
+    background-color: white;
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -36,9 +36,9 @@
     padding: 0.6em;
 }
 
-.logo, .home-btn, .reg-button {
+/* .logo, .home-btn, .reg-button {
     color: white;
-}
+} */
 
 .logo {
     font-size: 2.5rem;
@@ -107,7 +107,7 @@ nav {
 }
 
 .reg-log-btn-ctn {
-    border: 1px solid white;
+    /* border: 1px solid white; */
     display: flex;
     justify-content: space-between;
     height: 57.5%;
@@ -132,6 +132,7 @@ nav {
     top: 150%;
     left: -97.5%;
     background-color: white;
+    border-radius: 0.25em;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     /* -webkit-box-shadow: 0px 5px 30px -6px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px 5px 30px -6px rgba(0,0,0,0.75);
@@ -142,9 +143,39 @@ nav {
     cursor: pointer;
 }
 
-.reg-log-btn-ctn--lgout a {
-    height: 30px;
+.create-icon {
+    /* margin-top: 1.5px !important; */
+    width: 35px;
+    height: 35px;
+    background: url("/public/icon-create.svg") center no-repeat;
+    background-size: contain;
+    transition: transform 0.15s;
 }
+
+.create-icon:hover {
+    cursor: pointer;
+    background: url("/public/icon-create.gif") center no-repeat;
+    background-size: contain;
+    transform: scale(1.25);
+}
+
+.logout-icon {
+    width: 35px;
+    height: 35px;
+    background: url("/public/icon-sign-out.svg") center no-repeat;
+    background-size: contain;
+    transition: transform 0.15s;
+}
+
+.logout-icon:hover {
+    background: url("/public/icon-sign-out.gif") center no-repeat;
+    background-size: contain;
+    transform: scale(1.25);
+}
+
+/* .reg-log-btn-ctn--lgout a {
+    height: 30px;
+} */
 
 .reg-log-btn-ctn--lgout img {
     width: 30px;
@@ -157,8 +188,8 @@ nav {
 }
 
 .reg-log-btn-ctn--lgout a:first-child > img {
-    width: 37px;
-    height: 37px;
+    width: 35px;
+    height: 35px;
 }
 
 .reg-log-btn-ctn--lgout img:hover {

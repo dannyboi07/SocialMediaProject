@@ -1,5 +1,23 @@
 .post-body-ctn {
   /* border: 1px solid black; */
   width: clamp(350px, 80%, 500px);
-  margin: 0.5em auto;
+  margin: 1em auto;
+  position: relative;
+  border-radius: 0.25em;
+  border: 1px solid black;
+}
+
+.post-body-ctn:not(:first-child) {
+  margin-top: 3.75em;
+}
+
+.post-body-ctn:not(:last-child)::after {
+  position: absolute;
+  content: "";
+  width: 80%;
+  height: 1px;
+  left: 10%;
+  bottom: -1.875em;
+  border-radius: 0.25em;
+  background-color: rgba(0, 0, 0, 0.5);
 }

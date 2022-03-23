@@ -2,6 +2,8 @@
   /* position: relative; */
   display: flex;
   justify-content: space-around;
+  padding: 0.5em 0;
+  border-top: 1px solid lightgray;
 
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */

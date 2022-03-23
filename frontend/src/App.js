@@ -63,9 +63,10 @@ function App() {
           <PostFullscreen onlyPost={true} />
         </Route>
         
-        <Route path="/createPost">
+        {/* <Route path="/createPost">
           { user ? <CreatePost /> : <Redirect to="/login" /> }
-        </Route>
+        </Route> */}
+
         <Route path="/register">
           { user ? <Redirect to="/home" /> : <Register />}
         </Route>
@@ -76,8 +77,13 @@ function App() {
         <Route path="/home">
           <Home />
         </Route>
-        <Route path="/">
+
+        <Route exact={ true } path="/">
           <div></div>
+        </Route>
+
+        <Route exact={ true } path="/*">
+          <p>Not found</p>
         </Route>
 
         {/* { user && <Route path="/register" element={<Home />}/>}

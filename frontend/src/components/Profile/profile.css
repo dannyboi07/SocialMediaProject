@@ -1,13 +1,14 @@
 .profile-ctn {
     display: flex;
     height: 75px;
+    border-bottom: 1px solid lightgray;
 }
 
 .prof-img-ctn {
     width: 85px;
     /* max-width: 85px;
     min-width: 60px; */
-    border-radius: 0.5em;
+    border-radius: 0.25em;
     overflow: hidden;
 }
 
@@ -19,7 +20,7 @@
 
 .prof-details-ctn {
     width: 100%;
-    padding-left: 0.75em;
+    padding-left: 1em;
     display: flex;
     flex-direction: column;
     justify-content: center;

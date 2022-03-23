@@ -9,7 +9,8 @@ function MediaCarousel({ postId, postImages, fullscreen = false, className, hand
     const [imgCtnWidth, setImgCtnWidth] = useState(null);
     const [imgPosInx, setImgPosInx] = useState([]);
 
-    function slideRight() {
+    function slideRight(e) {
+        e.stopPropagation();
         if (imgPosInx[0] > -1 * (imgPosInx.length - 1)) {
             console.log(imgPosInx); 
             setImgPosInx(imgPosInx.map(imgPos => imgPos - 1))
@@ -18,7 +19,8 @@ function MediaCarousel({ postId, postImages, fullscreen = false, className, hand
         };
     };
 
-    function slideLeft() {
+    function slideLeft(e) {
+        e.stopPropagation();
         if (imgPosInx[0] !== 0) { 
             console.log(imgPosInx);
             setImgPosInx(imgPosInx.map(imgPos => imgPos + 1))
@@ -56,10 +58,10 @@ function MediaCarousel({ postId, postImages, fullscreen = false, className, hand
             function goLeftRightKey(e) {
                 if (e.key === "ArrowRight") {
                     console.log("Going right");
-                    slideRight();
+                    slideRight(e);
                 } else if (e.key === "ArrowLeft") {
                     console.log("Going left");
-                    slideLeft();
+                    slideLeft(e);
                 };
             };
             document.addEventListener("keydown", goLeftRightKey);

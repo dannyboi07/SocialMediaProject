@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import PostBody from "../PostBody/PostBody";
+import LoadingComp from "../LoadingComp/LoadingComp";
 
 function PostsCtn() {
   let posts = useSelector(state => state.postblog);
@@ -8,9 +9,7 @@ function PostsCtn() {
   if (posts === null) {
     // console.log(123)
     return (
-      <>
-        Loading posts
-      </>
+      <LoadingComp />
     )
   }
   // console.log(posts);

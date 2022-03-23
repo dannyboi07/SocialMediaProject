@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { getAll } from '../../reducers/postblogReducer';
 import PostsCtn from '../PostBodyCtn/PostsCtn';
 import CreateToolsCtn from '../createTools/CreateToolsCtn';
@@ -7,11 +8,12 @@ import "./home.css"
 
 function Home() {
   const dispatch = useDispatch();
+  const history = useHistory();
   dispatch(getAll());
 
   useEffect(() => {
     const userDetails = JSON.parse(window.localStorage.getItem("socialMediaAppUser"));
-
+    
     // if (userDetails) {
     //   if (userDetails.notifications === undefined) {
     //     Notification.requestPermission(status => {
@@ -55,7 +57,7 @@ function Home() {
   return (
     <div className="home-ctn">
       <PostsCtn/>
-      <CreateToolsCtn />
+      {/* <CreateToolsCtn /> */}
     </div>
   );
 }
