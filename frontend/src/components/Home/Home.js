@@ -9,10 +9,10 @@ import "./home.css"
 function Home() {
   const dispatch = useDispatch();
   const history = useHistory();
-  dispatch(getAll());
 
   useEffect(() => {
     const userDetails = JSON.parse(window.localStorage.getItem("socialMediaAppUser"));
+    userDetails ? dispatch(getAll(userDetails.token)) : dispatch(getAll());
     
     // if (userDetails) {
     //   if (userDetails.notifications === undefined) {

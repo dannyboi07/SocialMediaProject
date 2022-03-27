@@ -1,18 +1,18 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import "./mediaCarousel.css";
 
 function MediaCarousel({ postId, postImages, fullscreen = false, className, handleFsClick }) {
 
-
     const [imgCtnWidth, setImgCtnWidth] = useState(null);
     const [imgPosInx, setImgPosInx] = useState([]);
+    const touchStartX = useRef(0);
+    const touchEndX = useRef(0);
 
     function slideRight(e) {
-        e.stopPropagation();
-        if (imgPosInx[0] > -1 * (imgPosInx.length - 1)) {
-            console.log(imgPosInx); 
+        if (e) e.stopPropagation();
+        if (imgPosInx[0] > -1 * (imgPosInx.length - 1)) { 
             setImgPosInx(imgPosInx.map(imgPos => imgPos - 1))
         } else {
             console.log("else slideright", imgPosInx);
@@ -20,13 +20,18 @@ function MediaCarousel({ postId, postImages, fullscreen = false, className, hand
     };
 
     function slideLeft(e) {
-        e.stopPropagation();
+        if (e) e.stopPropagation();
         if (imgPosInx[0] !== 0) { 
-            console.log(imgPosInx);
             setImgPosInx(imgPosInx.map(imgPos => imgPos + 1))
         } else {
             console.log("else slideleft", imgPosInx);
         };
+    };
+
+    function handleSwipe() {
+        console.log(touchStartX.current, touchEndX.current);
+        if (((touchStartX.current - touchEndX.current) > 75) && (touchEndX.current < touchStartX.current)) slideRight();
+        if (((touchEndX.current - touchStartX.current) > 75) && (touchEndX.current > touchStartX.current)) slideLeft();
     };
 
     useEffect(() => {
@@ -50,6 +55,7 @@ function MediaCarousel({ postId, postImages, fullscreen = false, className, hand
         window.addEventListener("resize", windowResizeListen);
 
         return () => window.removeEventListener("resize", windowResizeListen);
+        
     }, []);
 
     useEffect(() => {
@@ -57,10 +63,8 @@ function MediaCarousel({ postId, postImages, fullscreen = false, className, hand
         if (fullscreen) {
             function goLeftRightKey(e) {
                 if (e.key === "ArrowRight") {
-                    console.log("Going right");
                     slideRight(e);
                 } else if (e.key === "ArrowLeft") {
-                    console.log("Going left");
                     slideLeft(e);
                 };
             };
@@ -71,9 +75,16 @@ function MediaCarousel({ postId, postImages, fullscreen = false, className, hand
     }, [imgPosInx]);
 
     return (
-        <div onClick={ handleFsClick } style={{ height: fullscreen ? null : imgCtnWidth }} className={ fullscreen ? `post-images-ctn ${className}` : "post-images-ctn"}>
+        <div onClick={ handleFsClick } 
+        style={{ height: fullscreen ? null : imgCtnWidth }} 
+        className={ fullscreen ? `post-images-ctn ${className}` : "post-images-ctn"} 
+        onTouchStart={e => touchStartX.current = e.changedTouches[0].screenX}
+        onTouchEnd={e => {
+            touchEndX.current = e.changedTouches[0].screenX;
+            handleSwipe();
+        }}>
 
-            <button style={{ display: imgPosInx[0] !== 0 ? "block": "none" }}
+            <button className="sld-lft-btn" style={{ display: imgPosInx[0] !== 0 && window.screen.width > 768 ? "block": "none" }}
             onClick={ slideLeft }>
                 <img src="/left-chevron.svg" alt="View left image"></img>
             </button>
@@ -81,7 +92,7 @@ function MediaCarousel({ postId, postImages, fullscreen = false, className, hand
             { postImages.map((postImage, i) => <img key={i} id={`post-img-${postId}-${i}`} style={{ left: imgCtnWidth * imgPosInx[i] }} className="post-content-img" src={postImage} alt={`Post image ${i+1}`}/>) 
             }
 
-            <button style={{ display: imgPosInx[0] > -1 * (imgPosInx.length - 1) ? "block" : "none" }} 
+            <button className="sld-rgt-btn" style={{ display: imgPosInx[0] > -1 * (imgPosInx.length - 1) && window.screen.width > 768 ? "block" : "none" }} 
             onClick={slideRight}>
               <img src="/right-chevron.svg" alt="View right image"></img>
             </button>

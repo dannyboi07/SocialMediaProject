@@ -1,0 +1,12 @@
+.comment-ctn {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid lightgray;
+    padding: 0.25em 0;
+}
+
+.comment-ctn hr {
+    width: 1px;
+    height: 45px;
+    margin-right: 1em;
+}

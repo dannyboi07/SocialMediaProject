@@ -5,6 +5,7 @@ import "./register.css";
 
 function Register() {
   const [profileimg, setProfileimg] = useState(null);
+  const [profPrev, setProfPrev] = useState(null);
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -12,12 +13,15 @@ function Register() {
 
   useEffect(() => {
     URL.revokeObjectURL(profileimg);
-
+    setProfPrev(null);
     const regForm = document.getElementById("register-form");
-    if (profileimg) {regForm.classList.add("form-modify")}
+    if (profileimg) {
+      regForm.classList.add("form-modify");
+      setProfPrev(URL.createObjectURL(profileimg));
+    }
     else {regForm.classList.remove("form-modify")};
 
-  }, [profileimg])
+  }, [profileimg]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -56,7 +60,7 @@ function Register() {
         <label className="img-upload-ctn">
           Upload a profile image: { !profileimg && <span>(A default will be chosen if not uploaded)</span> }
           { profileimg && <div className="pre-profimg-ctn">
-            <img className="pre-profimg" src={URL.createObjectURL(profileimg)} alt="Profile"/>
+            <img className="pre-profimg" src={profPrev} alt="Profile"/>
           </div> }
 
           <input id="prof-img" type="file" name="profileimg" accept='.jpg,.jpeg,.png' onChange={(e) => handleProfChange(e)}/>

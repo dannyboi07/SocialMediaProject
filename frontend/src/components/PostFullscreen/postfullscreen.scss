@@ -36,6 +36,13 @@
 
     &__right-ctn {
         width: 40%;
+        display: flex;
+        flex-direction: column;
+
+        &__text-ctn {
+            padding: 1em;
+            height: 100%;
+        }
 
         &__text-ctn__text {
             word-break: break-all;

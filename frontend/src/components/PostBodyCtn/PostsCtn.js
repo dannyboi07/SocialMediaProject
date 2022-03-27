@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import PostBody from "../PostBody/PostBody";
 import LoadingComp from "../LoadingComp/LoadingComp";
+import "./postsctn.css";
 
 function PostsCtn() {
   let posts = useSelector(state => state.postblog);

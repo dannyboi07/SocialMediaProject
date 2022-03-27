@@ -1,0 +1,43 @@
+.comments-list-ctn {
+    font-size: 0.925rem;
+    position: absolute;
+    border-radius: 75%;
+    padding: 0.5em 1em;
+    width: 100%;
+    height: 250px;
+    bottom: -250px;
+
+    /* background-color: var(--prim-ghost-white); */
+    background-color: white;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);;
+    transform: scale(0,0);
+    transform-origin: 80% -25%;
+    transition: all 0.4s;
+    opacity: 0;
+    overflow-y: auto;
+    user-select: text;
+    z-index: 1;
+}
+
+.cmt-lst-ctn--mdfy {
+    bottom: 125px;
+}
+
+.comments-list-ctn--nocms {
+    bottom: -150px;
+    height: 150px;
+}
+
+.no-cms-ctn {
+    color: gray;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.show-comm-ctn {
+    transform: scale(1,1);
+    border-radius: 0.25em;
+    opacity: 1;
+}

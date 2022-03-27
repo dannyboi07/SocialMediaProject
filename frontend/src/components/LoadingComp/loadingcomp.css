@@ -6,6 +6,11 @@
     align-items: center;
 }
 
+.smaller-ctn {
+    width: 100%;
+    height: 100%;
+}
+
 .loader {
     position: relative;
     width: 60px;
@@ -14,6 +19,11 @@
     /* background: linear-gradient(#f07e6e, #84cdfa, #5ad1cd); */
     background: linear-gradient(white, gray, black);
     animation: loading-anim 1s linear infinite;
+}
+
+.smaller-ctn > .loader {
+    width: 30px;
+    height: 30px;
 }
 
 @keyframes loading-anim {

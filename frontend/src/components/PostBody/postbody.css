@@ -1,10 +1,21 @@
+.post-body-ctn-wrapper {
+  margin: 1em auto;
+
+  /* width: 100%; */
+  background-color: white;
+  z-index: -9;
+}
+
 .post-body-ctn {
   /* border: 1px solid black; */
-  width: clamp(350px, 80%, 500px);
-  margin: 1em auto;
   position: relative;
+  width: 100%;
+  margin: 1em auto;
   border-radius: 0.25em;
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  background-color: white;
 }
 
 .post-body-ctn:not(:first-child) {
@@ -20,4 +31,8 @@
   bottom: -1.875em;
   border-radius: 0.25em;
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+.post-body-ctn:last-child {
+  margin-bottom: 5em;
 }
