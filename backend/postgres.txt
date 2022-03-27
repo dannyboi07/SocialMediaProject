@@ -1,3 +1,4 @@
+17097da6-ead1-4fd2-ac39-2dc313c5b418
 CREATE TABLE users (
 id BIGSERIAL NOT NULL PRIMARY KEY,
 name VARCHAR(50) NOT NULL,
@@ -44,7 +45,8 @@ UPDATE post set date = date_trunc('second', current_timestamp);
 INSERT INTO blog (text, likes, user_id) VALUES ('First blog for testing', 27, 1);
 SELECT * FROM users JOIN blog ON blog.user_id = users.id;
 
-SELECT post.p_id, post.text, post.likes, post.date, users.u_id, users.name, users.username, users.imgloc FROM post JOIN users on users.u_id = post.user_id ORDER BY date desc;
+SELECT post.p_id, post.text, post.likes, post.date, users.u_id, users.name, users.username, users.imgloc FROM post 
+JOIN users on users.u_id = post.user_id ORDER BY date desc;
 
 SELECT blog.b_id, blog.text, blog.images, blog.likes, blog.date, users.u_id, users.name, users.username, users.imgloc FROM blog JOIN users on users.u_id = blog.user_id ORDER BY date desc;
 
@@ -62,6 +64,9 @@ INSERT INTO likes_post_rel (p_id_fk, u_id_fk) values (1, 35);
 SELECT id, date, p_id_fk, users.u_id, users.name, users.username, users.imgloc from likes_post_rel JOIN users on users.u_id = likes_post_rel.u_id_fk ORDER BY date DESC;
 
 SELECT id, date, p_id_fk, users.u_id, users.name, users.username, users.imgloc from likes_post_rel JOIN users on users.u_id = likes_post_rel.u_id_fk WHERE p_id_fk=1 ORDER BY date DESC;
+
+SELECT *, COUNT(*) OVER (PARTITION BY p_id_fk = 1) FROM likes_post_rel WHERE p_id_fk = 1;
+SELECT *, (SELECT COUNT(*) FROM likes_post_rel WHERE p_id_fk = 1) FROM likes_post_rel WHERE p_id_fk = 1;
 
 CREATE TABLE comments_post_rel (
 id BIGSERIAL NOT NULL PRIMARY KEY,
@@ -86,3 +91,41 @@ INSERT INTO comments_post_rel (comment, p_id_fk, u_id_fk) VALUES (
 SELECT id, comment, date, p_id_fk, u_id_fk, users.u_id, users.name, users.username, users.imgloc FROM comments_post_rel JOIN users on users.u_id = comments_post_rel.u_id_fk ORDER BY date DESC;
 
 SELECT id, comment, date, p_id_fk, u_id_fk, users.u_id, users.name, users.username, users.imgloc FROM comments_post_rel JOIN users on users.u_id = comments_post_rel.u_id_fk WHERE p_id_fk=1;
+
+Hey Jared, so glad you are my rightful over seer and giver of judgement, guessing in the real world, you don't have stones to say if for real.  I love when people keep saying KGB dictator, as if they know anything about the KGB, or the Cheka, GPU, OGPU, NKGB, NKVD and MGB, or anything about the history of Russia and the Russian people.  How about the Green police of Warsa, in occupied Poland, or that the KGB was the biggest force in destroying the SS, and Russian the biggest force in destroying the Nazis, oh, yes you never actually learned history on your own, never traveled and converse with people who know more than you, oh no, not you, you are perfect.  The Us bio labs were on the USEmbassy web site just 3 days ago, most of us KNEW this YEARS ago because we were paying attention!  You woke up yesterday, and started nursing on elitist propaganda, I get it, sucking the teat is easy.  How about this, Trotsky and Lenin, two rich kids, meet in London, educate by the same Mi6 office that trained Marx, get inserted into Russia, RIGHT BEFORE WW!.  Russia was never Communist, that was what LONDON wanted, not Russia.  Stalin was brutal, but Russia was badly wounded after WW2, after sacrificing MORE than ANY other country.  But wait, after Germany started 1 and 2, and Japan bombed the US, did we help our greatest ally EVER.  NO.  WE turned our backs and rebuilt Germany and Japan, and France.  You  have been swallowing 60 years of propaganda, and you think I am the crazy one, as I always say, Americans got fat, sloth filled, conceited, lost all their heart and callouses, and think their farts dont stink.  Love my country, Love my Constitution, Love the old American Rebel Spirit, but the people in this country are lazy and dumb as rocks.  Oh, BTW, I just proved I know 1000% more about this situation and history of this situation then you, so have a modicum of spirit, and apologize.
+
+CREATE TABLE user_followers (
+id BIGSERIAL NOT NULL PRIMARY KEY,
+u_id_fk BIGSERIAL REFERENCES users(u_id) NOT NULL,
+u_flwr_id_fk BIGSERIAL REFERENCES users(u_id) NOT NULL,
+UNIQUE CONSTRAINT (u_id_fk, u_flwr_id_fk)
+);
+
+ALTER TABLE user_followers ADD UNIQUE CONSTRAINT (u_id_fk, u_flwr_id_fk);
+
+CREATE TABLE user_following (
+u_following_id BIGSERIAL NOT NULL PRIMARY KEY,
+u_id_fk BIGSERIAL REFERENCES users(u_id) NOT NULL,
+u_flwng_id_fk BIGSERIAL REFERENCES users(u_id) NOT NULL,
+UNIQUE (u_id_fk, u_flwng_id_fk)
+);
+
+SELECT u_id FROM users JOIN user_followers ON user_followers.u_flwr_id_fk = users.u_id WHERE user_followers.u_id_fk = 36;
+
+SELECT sub_endpoint, sub_pub_key, sub_auth_key FROM users WHERE u_id = (SELECT u_id FROM users JOIN user_followers ON user_followers.u_flwr_id_fk = users.u_id WHERE user_followers.u_id_fk = 36
+);
+
+SELECT sub_endpoint, sub_pub_key, sub_auth_key FROM users JOIN user_followers ON user_followers.u_flwr_id_fk = users.u_id WHERE user_followers.u_id_fk = 36;
+
+SELECT post.p_id, post.text, (SELECT COUNT(*) FROM likes_post_rel WHERE p_id_fk = post.p_id) AS likes, 
+(SELECT EXISTS (SELECT TRUE FROM likes_post_rel WHERE p_id_fk = post.p_id AND u_id_fk = 36) AS liked) FROM post;
+
+INSERT INTO comments_post_rel (comment, p_id_fk, u_id_fk) VALUES ('testing query', 4, 36) RETURNING (SELECT * FROM users WHERE users.u_id = CAST('36' AS BIGINT));
+
+
+SELECT post.p_id, post.text, (SELECT COUNT(*) FROM likes_post_rel WHERE p_id_fk = post.p_id) AS likes, 
+(SELECT TRUE FROM likes_post_rel WHERE p_id_fk = post.p_id AND u_id_fk = 36) AS liked FROM post;
+
+SELECT EXISTS (SELECT TRUE FROM user_followers WHERE u_id_fk = 36 AND u_flwr_id_fk = 32) AS friends
+
+SELECT post.p_id, post.text, (SELECT COUNT(*) FROM likes_post_rel WHERE p_id_fk = post.p_id) as likes, (SELECT TRUE FROM likes_post_rel WHERE p_id_fk = post.p_id AND u_id_fk = 36) AS liked, (SELECT COUNT(*) FROM comments_post_rel WHERE p_id_fk = post.p_id) as no_comments, (SELECT EXISTS (SELECT TRUE FROM user_followers WHERE u_id_fk = 36 AND u_flwr_id_fk = users.u_id OR u_id_fk = users.u_id AND u_flwr_id_fk = 36)) AS friends, post.date, p_pics, users.u_id, users.name, users.username, users.imgloc FROM post JOIN users on users.u_id = post.user_id ORDER BY date desc;
