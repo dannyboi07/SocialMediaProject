@@ -2,7 +2,7 @@ const searchRouter = require("express").Router();
 const db = require("../db");
 
 searchRouter.get("/", async (req, res, next) => {
-    const { uname } = req.query;
+    const { query } = req.query;
 
     let decodedToken = null;
     if (req.token) {
@@ -12,7 +12,7 @@ searchRouter.get("/", async (req, res, next) => {
     // console.log(req.token);
 
     try {
-        const foundUsers = await db.query("SELECT u_id, name, username, imgloc, email FROM users WHERE username ILIKE '%' || $1 || '%' OR name ILIKE '%' || $1 || '%'", [uname]);
+        const foundUsers = await db.query("SELECT u_id, name, username, imgloc, email FROM users WHERE username ILIKE '%' || $1 || '%' OR name ILIKE '%' || $1 || '%'", [query]);
 
         if (foundUsers.rows.length > 0) {
             // const userPosts = await db.query("SELECT * from post WHERE user_id = $1", [foundUser.rows[0].u_id]);

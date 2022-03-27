@@ -25,8 +25,18 @@ const upload = multer({ storage });
 
 contentRouter.get("/", async (req, res, next) => {
 
+  let decodedToken = null;
+  if (req.token) decodedToken = jwt.verify(req.token, process.env.SECRET);
+  
+  if (!decodedToken && req.token) return res.status(401).json({ error: "Token missing or invalid" });
+
   try {
-    const allPosts = await db.query("SELECT post.p_id, post.text, post.likes, post.date, p_pics, users.u_id, users.name, users.username, users.imgloc FROM post JOIN users on users.u_id = post.user_id ORDER BY date desc");
+    let allPosts;
+    if (decodedToken) {
+      allPosts = await db.query("SELECT post.p_id, post.text, (SELECT COUNT(*) FROM likes_post_rel WHERE p_id_fk = post.p_id) as likes, (SELECT TRUE FROM likes_post_rel WHERE p_id_fk = post.p_id AND u_id_fk = $1) AS liked, (SELECT COUNT(*) FROM comments_post_rel WHERE p_id_fk = post.p_id) as no_comments, (SELECT EXISTS (SELECT TRUE FROM user_followers WHERE u_id_fk = $1 AND u_flwr_id_fk = users.u_id OR u_id_fk = users.u_id AND u_flwr_id_fk = $1)) AS friends, post.date, p_pics, users.u_id, users.name, users.username, users.imgloc FROM post JOIN users on users.u_id = post.user_id ORDER BY date desc", [decodedToken.id]);
+    } else {
+      allPosts = await db.query("SELECT post.p_id, post.text, (SELECT COUNT(*) FROM likes_post_rel WHERE p_id_fk = post.p_id) as likes, post.date, p_pics, users.u_id, users.name, users.username, users.imgloc FROM post JOIN users on users.u_id = post.user_id ORDER BY date desc");
+    }
   
     const allBlogs = await db.query("SELECT blog.b_id, blog.text, blog.images, blog.likes, blog.date, users.u_id, users.name, users.username, users.imgloc FROM blog JOIN users on users.u_id = blog.user_id ORDER BY date desc");
 
@@ -45,14 +55,14 @@ contentRouter.get("/post/:id", async (req, res, next) => {
   const post_id = parseInt(req.params.id);
 
   try {
-    const post = await db.query("SELECT * FROM post WHERE p_id = $1", [post_id]);
+    const post = await db.query("SELECT post.p_id, post.text, post.likes, post.date, p_pics, users.u_id, users.name, users.username, users.imgloc FROM post JOIN users on users.u_id = post.user_id WHERE post.p_id = $1", [post_id]);
 
     res.json(post.rows[0]);
   } catch(err) {
     console.error(err);
     next();
   };
-})
+});
 
 contentRouter.get("/post/likes/:id", async (req, res, next) => {
 
@@ -85,9 +95,11 @@ contentRouter.get("/post/liked/:id", async (req, res, next) => {
 });
 
 contentRouter.post("/post/like/:id", async (req, res, next) => {
+
   const post_id = parseInt(req.params.id);
   // const { liked } = req.body;
-  
+  if (!req.token) return res.status(400).json({ error: "Missing token" });
+
   const decodedToken = jwt.verify(req.token, process.env.SECRET);
   if ( !decodedToken ) {
     return res.status(401).json({ error: "Token missing or invalid" });
@@ -96,9 +108,33 @@ contentRouter.post("/post/like/:id", async (req, res, next) => {
   try {
 
     await db.query("INSERT INTO likes_post_rel (p_id_fk, u_id_fk) VALUES ($1, $2)", [post_id, decodedToken.id]);
-    await db.query("UPDATE post SET likes = (SELECT COUNT(*) FROM likes_post_rel WHERE p_id_fk = $1) WHERE p_id = $1", [post_id]);
+    // await db.query("UPDATE post SET likes = (SELECT COUNT(*) FROM likes_post_rel WHERE p_id_fk = $1) WHERE p_id = $1", [post_id]);
     
     res.json({ success: true });
+    const userThatLiked = await db.query("SELECT name, imgloc FROM users WHERE u_id = $1", [decodedToken.id]);
+    const userToNotify = await db.query("SELECT sub_endpoint, sub_pub_key, sub_auth_key FROM users WHERE u_id = (SELECT user_id FROM post WHERE p_id = $1)", [post_id]);
+
+    if (userToNotify.rows[0].sub_endpoint) {
+      
+      const subscription = {
+        endpoint: userToNotify.rows[0].sub_endpoint,
+        keys: {
+          p256dh: userToNotify.rows[0].sub_pub_key,
+          auth: userToNotify.rows[0].sub_auth_key
+        }
+      };
+
+      const payload = {
+        title: `${userThatLiked.rows[0].name} liked your post!`,
+        icon: userThatLiked.rows[0].imgloc,
+        url: `http://192.168.42.206:3000/post/${post_id}`,
+        primaryKey: post_id
+      };
+
+      webpush.sendNotification(subscription, JSON.stringify(payload))
+        .catch(err => console.error(err));
+    }
+
   } catch(err) {
     console.error(err);
     next();
@@ -107,6 +143,8 @@ contentRouter.post("/post/like/:id", async (req, res, next) => {
 
 contentRouter.delete("/post/like/:id", async (req, res, next) => {
   const post_id = parseInt(req.params.id);
+
+  if (!req.token) return res.status(400).json({ error: "Missing token" });
 
   const decodedToken = jwt.verify(req.token, process.env.SECRET);
   if ( !decodedToken ) return res.status(401).json({ error: "Token missing or invalid" });
@@ -123,6 +161,8 @@ contentRouter.delete("/post/like/:id", async (req, res, next) => {
 })
 
 contentRouter.post("/createPost", upload.array("photos", 10), async (req, res, next) => {
+
+  if (!req.token) return res.status(400).json({ error: "Missing token" });
 
   const decodedToken = jwt.verify(req.token, process.env.SECRET);
   if ( !decodedToken ) {
@@ -184,10 +224,82 @@ contentRouter.post("/createPost", upload.array("photos", 10), async (req, res, n
   };
 });
 
-// contentRouter.get("/post/comments/:id", async (req, res, next) => {
-//   const post_id = parseInt(req.params.id);
+contentRouter.get("/post/:id/comments", async (req, res, next) => {
 
-//   const 
-// })
+  const postId = parseInt(req.params.id);
+
+  try {
+    const postComments = await db.query("SELECT comments_post_rel.comment_id, comments_post_rel.p_id_fk, comments_post_rel.comment, comments_post_rel.date, users.u_id, users.name, users.username, users.imgloc FROM comments_post_rel JOIN users ON users.u_id = u_id_fk WHERE comments_post_rel.p_id_fk = $1", [postId]);
+    
+    res.json(postComments.rows);
+  } catch (err) {
+    console.log(err);
+    next();
+  };
+});
+
+contentRouter.post("/post/:id/comment", (req, res, next) => {
+  if (!req.token) return res.status(400).json({ error: "Missing token" });
+
+  const decodedToken = jwt.verify(req.token, process.env.SECRET);
+  if (!decodedToken) return res.status(401).json({ error: "Unauthorized: Invalid token" });
+
+  const postId = parseInt(req.params.id);
+
+  db.query("INSERT INTO comments_post_rel (comment, p_id_fk, u_id_fk) VALUES ($1, $2, $3) RETURNING *", [req.body.comment, postId, decodedToken.id])
+    .then(comPostRes => {
+
+      db.query("SELECT u_id, name, username, imgloc FROM USERS WHERE u_id = $1", [decodedToken.id])
+        .then(async userDetails => {
+
+          res.status(200).json({
+            ...comPostRes.rows[0],
+            ...userDetails.rows[0]
+          });
+
+          const userToNotify = await db.query("SELECT sub_endpoint, sub_pub_key, sub_auth_key FROM users WHERE u_id = (SELECT user_id FROM post WHERE p_id = $1)", [postId]);
+
+          const subscription = {
+            endpoint: userToNotify.rows[0].sub_endpoint,
+            keys: {
+              p256dh: userToNotify.rows[0].sub_pub_key,
+              auth: userToNotify.rows[0].sub_auth_key
+            }
+          };
+
+          const payload = {
+            title: `${userDetails.rows[0].name} commented on your post`,
+            icon: userDetails.rows[0].imgloc,
+            url: `http://192.168.42.206:3000/post/${postId}`,
+            primaryKey: postId
+          }
+
+          webpush.sendNotification(subscription, JSON.stringify(payload))
+            .catch(err => console.error(err));
+
+        }).catch(err => {
+
+          console.error(err);
+          next();
+        })
+    }).catch(err => {
+      
+      console.error(err);
+      next();
+    });
+  // try {
+  //   const comPostRes = await db.query("INSERT INTO comments_post_rel (comment, p_id_fk, u_id_fk) VALUES ($1, $2, $3) RETURNING *", [req.body.comment, postId, decodedToken.id]);
+  //   const userDetails = await db.query("SELECT u_id, name, username, imgloc FROM USERS WHERE u_id = $1", [decodedToken.id]);
+    
+  //   res.status(200).json({
+  //      ...comPostRes.rows[0],
+  //      ...userDetails[0]
+  //   });
+
+  // } catch (err) {
+  //   console.error(err);
+  //   next();
+  // }
+});
 
 module.exports = contentRouter;
