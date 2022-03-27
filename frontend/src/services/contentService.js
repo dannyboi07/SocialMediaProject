@@ -1,7 +1,15 @@
 import axios from "axios";
-const baseUrl = "http://192.168.42.206:3500/api/content";
+const baseUrl = "http://localhost:3500/api/content";
 
-async function getAllService() {
+async function getAllService(token) {
+  if (token) {
+    const response = await axios.get(baseUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+  };
   const response = await axios.get(baseUrl);
   return response.data;
 };
@@ -11,7 +19,7 @@ async function getPost(postId) {
   return response.data;
 }
 
-async function getPostLikes(postId) {
+async function getPostLikers(postId) {
   const response = await axios.get(`${baseUrl}/post/likes/${postId}`);
   return response.data;
 };
@@ -50,4 +58,20 @@ async function unlikePost(postId, token) {
   return response.data;
 };
 
-export { getAllService, getPost, getPostLikes, createPost, likedOrNot, likePost, unlikePost };
+async function getPostComms(postId) {
+  const response = await axios.get(`${baseUrl}/post/${postId}/comments`);
+  return response.data;
+};
+
+async function postComm(postId, comment ,token) {
+  console.log(postId, comment, token);
+  const response = await axios.post(`${baseUrl}/post/${postId}/comment`, { comment }, {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  });
+  
+  return response.data;
+};
+
+export { getAllService, getPost, getPostLikers, createPost, likedOrNot, likePost, unlikePost, getPostComms, postComm };

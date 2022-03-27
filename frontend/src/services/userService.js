@@ -1,15 +1,13 @@
 import axios from "axios";
-const baseUrl = "http://192.168.42.206:3500/api/user";
+const baseUrl = "http://localhost:3500/api/user";
 
 async function getUser(userName, token = null) {
-    // console.log(token);
     if (token) {
         const response = await axios.get(`${baseUrl}?uname=${userName}`, {
             headers: {
                 "Authorization": `Bearer ${token}`
             },
         });
-        // console.log(response.data);
         return response.data;
     } else {
                 
