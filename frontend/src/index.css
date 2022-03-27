@@ -20,6 +20,11 @@
   --prim-exp-lblue: #b1d1e6;
   --prim-exp-grey: #6e6f86;
   --prim-exp-peach: #efc7ba;
+  /* Coolors */
+  --prim-yellow: #EDCD15;
+  --prim-black: #0F1A20;
+  --prim-off-white: #F2F4FF;
+  --prim-ghost-white: #F0EFF4;
 }
 
 #root {
@@ -28,7 +33,11 @@
 
 body {
   font-family: "Poppins";
-  /* background-color: var(--prim-dgray); */
+  background-color: var(--prim-ghost-white);
+  /* background-color: #e2e1e0; */
+  min-width: 860px;
+  position: relative;
+  z-index: -10;
 }
 
 a {
@@ -57,3 +66,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 } */
+
+@media only screen and (max-width: 768px) {
+  body {
+    position: relative;
+    min-width: initial;
+  }
+}

@@ -7,7 +7,7 @@ import { getAll } from './reducers/postblogReducer';
 import Home from "./components/Home/Home";
 import Register from './components/Register/Register';
 import Login from './components/Login/Login';
-import { Switch, Route, Redirect, useParams } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import CreatePost from "./components/CreatePost/CreatePost";
 import UserProfile from "./components/UserProfile/UserProfile";
 import PostFullscreen from "./components/PostFullscreen/PostFullscreen";
@@ -18,9 +18,13 @@ function App() {
 
   useEffect(() => {
     const userDetails = JSON.parse(window.localStorage.getItem("socialMediaAppUser"));
-    dispatch(getAll());
 
-    if (userDetails) dispatch(initializeUser(userDetails));
+    if (userDetails) {
+      dispatch(initializeUser(userDetails));
+      // dispatch(getAll(userDetails.token));
+      // window.addEventListener("message", )
+    }
+    // else dispatch(getAll());
   }, [dispatch]);
   const user = useSelector(state => state.user);
 
@@ -40,21 +44,44 @@ function App() {
     <div>
       <Navbar/>
       {/* <WelcomePage /> */}
-      {
+      {/* {
         fullscreenData?.post 
         && <FullScreenDisp post={ true }>
             <PostFullscreen post={ fullscreenData.postData }/>
            </FullScreenDisp>
-      }
+      } */}
       {
         fullscreenData?.creation 
         && 
-        user && 
-        <FullScreenDisp>
+        user &&
+        <FullScreenDisp displayPost={false}>
           <CreatePost />
         </FullScreenDisp>
       }
       <Switch>
+
+        <Route path="/users/:username/post/:postId">
+          <UserProfile />
+          <FullScreenDisp displayPost={ true }>
+            {
+              fullscreenData?.post 
+              && 
+                <PostFullscreen post={ fullscreenData.postData }/>
+            }
+           </FullScreenDisp>
+        </Route>
+
+        <Route path="/home/post/:postId">
+          <Home />
+          <FullScreenDisp displayPost={ true }>
+            {
+              fullscreenData?.post 
+              && 
+                <PostFullscreen post={ fullscreenData.postData }/>
+            }
+           </FullScreenDisp>
+        </Route>
+
         <Route path="/users/:username">
           <UserProfile/>
         </Route>
@@ -66,6 +93,15 @@ function App() {
         {/* <Route path="/createPost">
           { user ? <CreatePost /> : <Redirect to="/login" /> }
         </Route> */}
+
+        <Route path="/createPost">
+          { user ? 
+            <FullScreenDisp displayPost={false}>
+              <CreatePost />
+            </FullScreenDisp>
+            : <Redirect to="/login" /> 
+          }
+        </Route>
 
         <Route path="/register">
           { user ? <Redirect to="/home" /> : <Register />}
