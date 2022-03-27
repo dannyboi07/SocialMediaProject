@@ -1,4 +1,5 @@
 export default function fullScreenReducer(state = null, action) {
+    // console.log(action.data);
     switch(action.type) {
         case "SET_FS_TRUE":
             return state = { ...action.data };

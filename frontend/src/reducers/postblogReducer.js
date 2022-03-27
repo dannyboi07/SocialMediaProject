@@ -24,9 +24,9 @@ export default function postblogReducer(state = null, action) {
   };
 };
 
-function getAll() {
+function getAll(token) {
   return async dispatch => {
-    const all = await getAllService();
+    const all = await getAllService(token);
     dispatch({
       type: "GET_ALL",
       data: all
