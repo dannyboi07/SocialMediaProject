@@ -7,7 +7,7 @@ function requestLogger(req, res, next) {
 };
 
 function extractToken(req, res, next) {
-  const auth = req.get("authorization");
+  const auth = req.get("Authorization");
   if (auth && auth.toLowerCase().startsWith("bearer")) {
     req.token = auth.substring(7);
   };
