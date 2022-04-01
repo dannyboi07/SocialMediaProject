@@ -2,6 +2,7 @@ import axios from "axios";
 const baseUrl = "http://localhost:3500/api/user";
 
 async function getUser(userName, token = null) {
+    // console.log("sent req", token);
     if (token) {
         const response = await axios.get(`${baseUrl}?uname=${userName}`, {
             headers: {
@@ -9,11 +10,9 @@ async function getUser(userName, token = null) {
             },
         });
         return response.data;
-    } else {
-                
-        const response = await axios.get(`${baseUrl}?uname=${userName}`);
-        return response.data;
-    };
+    }           
+    const response = await axios.get(`${baseUrl}?uname=${userName}`);
+    return response.data;
 };
 
 async function followUser(followUId, token) {

@@ -1,4 +1,5 @@
 import { createPost, getAllService, likePost, unlikePost } from "../services/contentService";
+import { setFailure } from "./failureReducer";
 
 export default function postblogReducer(state = null, action) {
   switch(action.type) {
@@ -14,10 +15,8 @@ export default function postblogReducer(state = null, action) {
         blogs: [ ...state.blogs ]
       };
     case "LIKE_POST":
-      // console.log(state.posts);
       return state = { ...state, posts: state.posts.map(post => post.p_id === action.data ? { likes: post.likes += 1, ...post } : post)};
     case "UNLIKE_POST":
-      // console.log(state.posts);
       return state = { ...state, posts: state.posts.map(post => post.p_id === action.data ? { likes: post.likes -= 1, ...post } : post)};
     default:
       return state;
@@ -26,7 +25,21 @@ export default function postblogReducer(state = null, action) {
 
 function getAll(token) {
   return async dispatch => {
-    const all = await getAllService(token);
+
+    let all;
+    try {
+
+      all = await getAllService(token);
+    } catch (error) {
+
+      console.error(error);
+      dispatch(setFailure("CONTENT", {
+        func: getAll,
+        param: token
+      }));
+      return;
+    };
+    // Finally, if all good
     dispatch({
       type: "GET_ALL",
       data: all
@@ -37,7 +50,6 @@ function getAll(token) {
 function sendPost(postContent, token) {
   return async dispatch => {
     const response = await createPost(postContent, token);
-    // console.log(1, response);
     dispatch({
       type: "CREATE_POST",
       data: response

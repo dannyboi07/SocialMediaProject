@@ -1,14 +1,20 @@
 import { registerUser } from "../services/registerService";
 import { loginUser } from "../services/loginService";
 
-const initialState = {
-  profImgSrc: null,
-  name: "",
-  username: "",
-  password: "",
-};
+const userDetails = JSON.parse(window.localStorage.getItem("socialMediaAppUser"));
+let initialState = null;
 
-export default function userReducer(state = null, action) {
+if (userDetails) {
+  initialState = {
+    name: userDetails.name,
+    username: userDetails.username,
+    profImgSrc: userDetails.profImgSrc,
+    token: userDetails.token,
+    uId: userDetails.uId
+  };
+}
+
+export default function userReducer(state = initialState, action) {
   // console.log(action);
   switch(action.type) {
     case "LOGIN":
