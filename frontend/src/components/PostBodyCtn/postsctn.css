@@ -1,5 +1,6 @@
 .posts-blogs-ctn {
     width: clamp(350px, 40%, 660px);
+    min-height: 100vh;
 }
 
 @media only screen and (max-width: 768px) {

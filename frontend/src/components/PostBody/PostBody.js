@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Profile from '../Profile/Profile';
 import PostContent from '../PostContent/PostContent';
 import PostDetails from '../PostDetails/PostDetails';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { setFSData } from '../../reducers/fullScreenReducer';
 
@@ -14,7 +14,7 @@ function PostBody({ post }) {
     // const userDetails = useSelector(state => state.user);
     // const [ friend, setFriend ] = useState(post.friends);
 
-    console.log(post);
+    // console.log(post);
     function handleFsClick() {
         dispatch(setFSData(post));
         history.push(`/home/post/${post.p_id}`);

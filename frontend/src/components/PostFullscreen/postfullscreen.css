@@ -47,6 +47,7 @@
   width: 60%;
   height: 100%;
   margin-top: 0;
+  border-right: 1px solid gray;
 }
 
 .flscrn-post-ctn__right-ctn {

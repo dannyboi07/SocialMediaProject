@@ -1,47 +1,54 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-import { useHistory, useParams } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
+import { useHistory, useParams, useLocation } from 'react-router-dom';
 import { setFSData, removeFSData } from '../../reducers/fullScreenReducer';
 import { getPost } from '../../services/contentService';
+import { setStatusNotif } from '../../reducers/statusNotifReducer';
+// import { setFailure } from '../../reducers/failureReducer';
 import "./fullscrndisp.css";
+import { setFailure } from '../../reducers/failureReducer';
 
 function FullScreenDisp({ children, displayPost }) {
     const storeHasAllFsData = useSelector(state => state.fullscreenData ? true : false);
     const dispatch = useDispatch();
     const history = useHistory();
     const params = useParams();
-    const location = useLocation()
-    // const location = useLocation();
-
-    // const exitBtnRef = useRef(null);
+    const location = useLocation();
+    // console.log(location.pathname.split("/"));
 
     function handleCloseFullscreen() {
+        console.log("going back", displayPost);
         if (displayPost) history.goBack();
         dispatch(removeFSData());
     };
 
     function onEscPress(e) {
         if (e.key === "Escape") {
-            console.log(history);
             handleCloseFullscreen();
         };
     };
 
     useEffect(() => {
-        // console.log(location);
         document.body.style.overflow = "hidden";
         document.addEventListener("keydown", onEscPress);
-        console.log(storeHasAllFsData);
+        // console.log(storeHasAllFsData);
+        // window.addEventListener("beforeunload", () => history.push("/home"));
 
         if (!storeHasAllFsData && displayPost) {
             console.log("fsd post");
-            getPost(params.postId).then(resPost => dispatch(setFSData(resPost)));
+            // history.goBack();
+            getPost(params.postId)
+            .then(resPost => dispatch(setFSData(resPost)))
+            .catch(err => {
+                console.error(err);
+                const newPath = location.pathname.split("/");
+                dispatch(setStatusNotif("SET_ERR_NOTIF", "Failed to retrieve post or resource doesn't exist", 3));
+                history.replace(`/${newPath[1]}/${newPath[2]}`, null);
+                // dispatch(setFailure("POST", null));
+                // window.alert("Failed to retrieve post or resource doesn't exist");
+            });
         }
-
-        // const exitBtn = exitBtnRef.current;
-        // exitBtn.addEventListener("keydown", onEscPress);
-        // exitBtn.focus();
 
         return () => {
             // const link = location.pathname.split("/");
@@ -49,8 +56,7 @@ function FullScreenDisp({ children, displayPost }) {
             // history.replace(`${link[1]}/${link[2]}`);
             document.body.style = undefined;
             document.removeEventListener("keydown", onEscPress);
-            dispatch(removeFSData());
-            // exitBtn.removeEventListener("keydown", onEscPress);
+            // window.removeEventListener("beforeunload", () => history.push("/home"));
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

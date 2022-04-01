@@ -1,6 +1,6 @@
 .loader-ctn {
-    width: 100vw;
-    height: calc(100vh - 80px);
+    width: 100%;
+    min-height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;

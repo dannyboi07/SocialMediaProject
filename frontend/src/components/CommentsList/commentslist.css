@@ -19,8 +19,14 @@
     z-index: 1;
 }
 
+.post-body-ctn:last-child .comments-list-ctn {
+    bottom: 127px;
+    transform-origin: 80% 125%;
+}
+
 .cmt-lst-ctn--mdfy {
     bottom: 125px;
+    transform-origin: 80% 125%;
 }
 
 .comments-list-ctn--nocms {

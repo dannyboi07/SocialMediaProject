@@ -11,7 +11,7 @@ function Profile({ name, username, profImgSrc, postUid, friends, inCmt, inMain }
   // function handleUsernameClick() {
   //   history.push(`/users/${username}`);
   // };
-  console.log(name, friends);
+  // console.log(name, friends);
 
   async function friendClickHandle() {
     try {
@@ -45,12 +45,12 @@ function Profile({ name, username, profImgSrc, postUid, friends, inCmt, inMain }
         </div>
 
         { inMain && userDetails?.uId !== postUid && 
-          <button className="friend-btn" onClick={ friendClickHandle }>
+          <button className={`friend-btn ${friend ? "unfrnd-btn" : "frnd-btn" }`} onClick={ friendClickHandle }>
             {
               userDetails ? 
                 friend ? 
-                  "Unfollow"
-                : "Follow"
+                  "Unfriend"
+                : "Add friend"
               : "Follow"
             }
           </button>

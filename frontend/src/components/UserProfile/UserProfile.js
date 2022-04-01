@@ -1,48 +1,112 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from "react-router-dom";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { followUser, getUser, unFollowUser } from '../../services/userService';
 import "./userprofile.css";
 import UserProfPosts from '../UserProfPosts/UserProfPosts';
 import LoadingComp from '../LoadingComp/LoadingComp';
+import useIsMount from '../../hooks/useIsMount';
+import { setFailure } from '../../reducers/failureReducer';
+import FailureComp from '../FailureComp/FailureComp';
+import { getUserThunk } from '../../reducers/usersReducer';
 
 function UserProfile() {
     const params = useParams();
-    const history = useHistory();
-    const [userProf, setUserProf] = useState(null);
-    const [curView, setCurView] = useState({ posts: true, blogs: false });
+    const dispatch = useDispatch();
     const user = useSelector(state => state.user);
+    const failureState = useSelector(state => state.failure?.type === "USER_PROF");
+    const userProf = useSelector(state => state.users);
+    // const history = useHistory();
+    // const isFirstRender = useIsMount();
+    // const [userProf, setUserProf] = useState(null);
+    const [follows, setFollows] = useState(userProf?.friends);
+    const [curView, setCurView] = useState({ posts: true, blogs: false });
     // const urlRef = useRef(null);
-    // console.log(user);
 
     // useEffect(() => {
     //     history.push(`/users/${params.username}`);
     // }, [])
+    // console.log(isFirstRender);
 
     useEffect(() => {
-        async function getUserEff() {
-            // console.log("rendering");
-            if (user) {
-                setUserProf(await getUser(params.username, user.token));
-            } else setUserProf(await getUser(params.username));
-        };
-        getUserEff();
+        if (user) {
+            // console.log("useef if", user.token);
+            dispatch(getUserThunk(params.username, user.token)); 
+        }
+        else {
+            dispatch(getUserThunk(params.username)); 
+            // console.log("useef else");
+        }
+        // async function getUserEff() {
+            // console.log("rendering", isFirstRender);
+            // if (user) {
+            //     console.log("if");
+            //     getUser(params.username, user.token)
+            //         .then(res => setUserProf(res))
+            //         .catch(error => {
+            //             console.error(error);
+            //             dispatch(setFailure("USER_PROF", { 
+            //                 func: getUser, 
+            //                 param: {
+            //                     ...params.username, 
+            //                     ...user.token
+            //                 } 
+            //             }));
+            //         });
+            // } else {
+            //     console.log("else");
+            //     getUser(params.username)
+            //         .then(res => setUserProf(res))
+            //         .catch(error => {
+            //             console.error(error);
+            //             dispatch(setFailure("USER_PROF", params.username));
+            //         });
+            // };
+        //};
+        // getUserEff();
         // urlRef.current = params.username;
-    }, [user, params.username]);
+    }, []);
 
-    if (!userProf) return <LoadingComp />;
-    // console.log(userProf);
+    useEffect(() => {
+        setFollows(userProf?.friends);
+    }, [userProf]);
+
+    if (failureState) {
+        return (
+            <div className="user-prof-ctn--loading">
+                <FailureComp />
+            </div>
+        )
+    }
+
+    if (!userProf) {
+    return (
+        <div className="user-prof-ctn--loading">
+            <LoadingComp />
+        </div>
+    )};
 
     async function handleFollowBtnClick() {
-        if (userProf.follows) {
-            await unFollowUser(userProf.u_id, user.token);
-            document.getElementById("user-flw-btn").textContent = "Follow";
+        if (follows) {
+            try {
+                await unFollowUser(userProf.u_id, user.token);
+                setFollows(!follows);
+            } catch(err) {
+                console.error(err);
+                window.alert(`Failed to unfollow ${userProf.name}, try again`);
+            };
+            // document.getElementById("user-flw-btn").textContent = "Follow";
         } else {
-            await followUser(userProf.u_id, user.token);
-            document.getElementById("user-flw-btn").textContent = "Unfollow";
+            try {
+                await followUser(userProf.u_id, user.token);
+                setFollows(!follows);
+            } catch(err) {
+                console.error(err);
+                window.alert(`Failed to follow ${userProf.name}, try again`);
+            };
+            // document.getElementById("user-flw-btn").textContent = "Unfollow";
         };
-        userProf.follows = !userProf.follows;
     };
 
     function handlePostsClick() {
@@ -74,8 +138,8 @@ function UserProfile() {
                         {  
 
                             user && user.uId !== userProf.u_id 
-                            ? <button id="user-flw-btn" onClick={ handleFollowBtnClick }>
-                                { userProf.follows ? "Unfollow" : "Follow" }
+                            ? <button id="user-flw-btn" className={`${follows ? "unfrnd-btn" : "frnd-btn"}`} onClick={ handleFollowBtnClick }>
+                                { follows ? "Unfriend" : "Add Friend" }
                             </button>
                             : <button>
                                 Edit Profile
@@ -101,7 +165,7 @@ function UserProfile() {
             </div>
             <hr className="user-cntnt-hr-btm" />
             {
-                userProf && userProf.posts && curView.posts && <UserProfPosts username={params.username} posts={ userProf.posts }/>
+                userProf && userProf.posts && curView.posts && <UserProfPosts name={ userProf.name } imgloc={userProf.imgloc} username={userProf.username} posts={ userProf.posts }/>
             }
         </div>
     )

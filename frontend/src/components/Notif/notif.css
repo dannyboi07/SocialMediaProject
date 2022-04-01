@@ -1,0 +1,56 @@
+.notif {
+    display: flex;
+    padding: 0.5em;
+    border-bottom: 1px solid lightgray;
+    max-height: 100px;
+}
+
+.notif-icon-ctn {
+    width: 20%;
+}
+
+.notif-icon-ctn > img {
+    width: auto;
+    height: 100%;
+    /* display: block; */
+}
+
+.notif-icon-ctn > img:hover {
+    cursor: default;
+}
+
+.notif-body-ctn {
+    position: relative;
+    /* border: 1px solid; */
+    width: 80%;
+    /* margin-left: 0.5em; */
+    margin: 0.35em 0;
+}
+
+.notif-body-ctn > h4 {
+    font-size: 1.025rem;
+}
+
+.notif-body-ctn > p {
+    font-size: 0.925rem;
+}
+
+.notif-body-ctn:hover {
+    cursor: pointer;
+}
+
+.mrk-rd-btn {
+    padding: 0;
+    height: fit-content;
+    align-self: center;
+    background-color: transparent;
+}
+
+.mrk-rd-svg {
+    display: block;
+    transition: fill 0.25s;
+}
+
+.mrk-rd-svg:hover {
+    fill: #000000;
+}

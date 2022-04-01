@@ -26,22 +26,24 @@ function PostDetails({ postUid, postId, likes, liked, noComments, inFlscrn }) {
   const comSubRef = useRef(null);
   const cmtArwBtn = useRef(null);
 
-  console.log(comInputState);
+  // console.log(comCount, noComments);
+
+  function OnInput() {
+    this.style.height = "2.5em";
+    this.style.height = this.scrollHeight + "px";
+  };
 
   useEffect(() => {
-    function OnInput() {
-      this.style.height = "2.5em";
-      this.style.height = this.scrollHeight + "px";
-    };
 
     comInputRef.current.style = "height: 2.5em; overflow-y: hidden;";
     comInputRef.current.addEventListener("input", OnInput);
     comInputRef.current.addEventListener("keyup", handleEntClick);
 
-    return () => {
-      comInputRef.current.removeEventListener("input", OnInput);
-      comInputRef.current.removeEventListener("keyup", handleEntClick);
-    };
+    // return () => {
+    //   console.log(comInputRef.current);
+    //   comInputRef.current.removeEventListener("input", OnInput);
+    //   comInputRef.current.removeEventListener("keyup", handleEntClick);
+    // };
   }, []);
 
   let timer = null;
@@ -49,7 +51,6 @@ function PostDetails({ postUid, postId, likes, liked, noComments, inFlscrn }) {
   function handleEntClick(e) {
     e.preventDefault();
     if (e.key === "Enter" && comInputState !== "") {
-      console.log("Entered");
       comSubRef.current.click();
     }
   }
@@ -117,7 +118,7 @@ function PostDetails({ postUid, postId, likes, liked, noComments, inFlscrn }) {
 
   function showComms() {
     if (!comsResults) getComms();
-    console.log(comsResults);
+    // console.log(comsResults);
 
     if (commTimer) clearTimeout(commTimer);
     commTimer = setTimeout(() => {
@@ -157,7 +158,6 @@ function PostDetails({ postUid, postId, likes, liked, noComments, inFlscrn }) {
       setComCount(comCount + 1);
 
       if (comsResults) {
-        console.log("if block");
         setComsResults([ ...comsResults, newComResp])
       }
       else getComms();

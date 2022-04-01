@@ -14,22 +14,17 @@ function MediaCarousel({ postId, postImages, fullscreen = false, className, hand
         if (e) e.stopPropagation();
         if (imgPosInx[0] > -1 * (imgPosInx.length - 1)) { 
             setImgPosInx(imgPosInx.map(imgPos => imgPos - 1))
-        } else {
-            console.log("else slideright", imgPosInx);
-        };
+        }
     };
 
     function slideLeft(e) {
         if (e) e.stopPropagation();
         if (imgPosInx[0] !== 0) { 
             setImgPosInx(imgPosInx.map(imgPos => imgPos + 1))
-        } else {
-            console.log("else slideleft", imgPosInx);
-        };
+        }
     };
 
     function handleSwipe() {
-        console.log(touchStartX.current, touchEndX.current);
         if (((touchStartX.current - touchEndX.current) > 75) && (touchEndX.current < touchStartX.current)) slideRight();
         if (((touchEndX.current - touchStartX.current) > 75) && (touchEndX.current > touchStartX.current)) slideLeft();
     };

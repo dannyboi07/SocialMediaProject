@@ -18,7 +18,9 @@ function ProfileList({ postId, className, likestate, likeResults, profListRef })
         // console.log("No one")
         return (
             <div id={`likes${postId}`} className={`${className} likes-ctn--no-likes`} style={ likestate } ref={ profListRef }>
-                <p>No one here :(</p>
+                <div className="no-likes-ctn">
+                    <p>No one here :(</p>
+                </div>
             </div>
         )
     }

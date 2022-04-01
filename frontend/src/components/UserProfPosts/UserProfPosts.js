@@ -4,13 +4,14 @@ import { setFSData } from '../../reducers/fullScreenReducer';
 import { useHistory } from 'react-router-dom';
 import "./userprofposts.css"
 
-function UserProfPosts({ posts, username }) {
+function UserProfPosts({ posts, name, username, imgloc }) {
     const dispatch = useDispatch();
     const history = useHistory();
 
     function handleViewMoreClick(post) {
+        console.log(post);
         history.push(`/users/${username}/post/${post.p_id}`);
-        dispatch(setFSData(post));
+        dispatch(setFSData({ ...post, name, username, imgloc }));
     };
 
     return (
@@ -24,15 +25,6 @@ function UserProfPosts({ posts, username }) {
                         <div className="user-prof-post-text-ctn" style={{ height: post.p_pics ? "20%" : "100%" }}>
                             <p>
                                 { post.text }
-                                {/* hi hello this is some more text for testing the css area coverageasdfsaf jsahkjhasdjkfhjakshfjkhfdjklhfsdjkfsakdfjhsajkdflsdlfjkhsjkldfhkjlsahsdjfklsajdfkljsalfjasldkjflsajdf
-                                kjhasdjkfhjakshfjkhfdjklhfsdjkfsakdfjhsajkdflsdlfjkhsjkldfhkjlsahsdjfklsajdfkljsalfjasldkjflsajdf
-                                kjhasdjkfhjakshfjkhfdjklhfsdjkfsakdfjhsajkdflsdlfjkhsjkldfhkjlsahsdjfklsajdfkljsalfjasldkjflsajdf
-                                kjhasdjkfhjakshfjkhfdjklhfsdjkfsakdfjhsajkdflsdlfjkhsjkldfhkjlsahsdjfklsajdfkljsalfjasldkjflsajdf
-                                kjhasdjkfhjakshfjkhfdjklhfsdjkfsakdfjhsajkdflsdlfjkhsjkldfhkjlsahsdjfklsajdfkljsalfjasldkjflsajdf
-                                kjhasdjkfhjakshfjkhfdjklhfsdjkfsakdfjhsajkdflsdlfjkhsjkldfhkjlsahsdjfklsajdfkljsalfjasldkjflsajdf
-                                kjhasdjkfhjakshfjkhfdjklhfsdjkfsakdfjhsajkdflsdlfjkhsjkldfhkjlsahsdjfklsajdfkljsalfjasldkjflsajdf
-                                kjhasdjkfhjakshfjkhfdjklhfsdjkfsakdfjhsajkdflsdlfjkhsjkldfhkjlsahsdjfklsajdfkljsalfjasldkjflsajdf
-                                kjhasdjkfhjakshfjkhfdjklhfsdjkfsakdfjhsajkdflsdlfjkhsjkldfhkjlsahsdjfklsajdfkljsalfjasldkjflsajdf */}
                             </p>
                             <div className="text-shadow-box"></div>
                         </div>

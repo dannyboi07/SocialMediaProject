@@ -3,8 +3,8 @@
     top: 0;
     /* background-color: var(--prim-off-white); */
     background-color: white;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-    /* box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22); */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    /* box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23); */
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -13,6 +13,7 @@
     height: 75px;
     padding: 0 7em 0 7em;
     z-index: 10;
+    overflow: visible;
 }
 
 .nav-container-mobile {
@@ -118,6 +119,7 @@ nav {
 
 .reg-log-btn-ctn {
     /* border: 1px solid white; */
+    position: relative;
     display: flex;
     justify-content: space-between;
     height: 57.5%;
@@ -135,28 +137,89 @@ nav {
     height: 2em;
     background: url("/public/notification.svg") center no-repeat;
     background-size: contain;
-    transition: transform 0.15s;
+    /* transition: transform 0.15s; */
 }
 
-.noti-icon::after {
+.no-of-notifs {
     position: absolute;
-    content: "0";
+    min-width: 1.25em;
+    min-height: 1.25em;
+    top: -0.5em;
+    right: -0.25em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: orange;
     border-radius: 50%;
-    text-align: center;
-    vertical-align: middle;
-    width: fit-content;
-    min-width: 1em;
-    height: 1.5em;
-    top: -10px;
-    right: 0;
+}
+
+.no-of-notifs > p {
+    font-size: 0.925rem;
 }
 
 .noti-icon:hover {
     cursor: pointer;
     background: url("/public/notification.gif") center no-repeat;
     background-size: contain;
-    transform: scale(1.2);
+    /* transform: scale(1.2); */
+}
+
+.notifs-ctn {
+    position: absolute;
+    top: 50px;
+    right: 25%;
+    width: 400px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+
+    background-color: white;
+    border-radius: 0.15em;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    overflow-y: auto;
+    transform: scale(0);
+    /* opacity: 0; */
+    transform-origin: 95% 0%;
+    transition: transform 0.25s, opacity 0.25s;
+}
+
+.mrk-all-rd {
+    align-self: flex-end;
+    padding: 0;
+    background-color: white;
+    margin: 0.25em 0.5em 0 0;
+    font-size: 0.9rem;
+    color: gray;
+    transition: color 0.25s;
+}
+
+.mrk-all-rd:hover {
+    cursor: pointer;
+    color: black;
+}
+
+/* .notif-clip-tri {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border: 1px solid black;
+    background-color: white;
+    top: -25px;
+    right: 20px;
+    clip-path: polygon(50% 50%, 0% 100%, 100% 100%);
+} */
+
+.no-notifs {
+    font-size: 0.925rem;
+    color: gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notif-ctn--active {
+    opacity: 1;
+    transform: scale(1) !important;
 }
 
 .create-ctn {
@@ -174,9 +237,6 @@ nav {
     background-color: white;
     border-radius: 0.25em;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-    /* -webkit-box-shadow: 0px 5px 30px -6px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 5px 30px -6px rgba(0,0,0,0.75);
-    box-shadow: 0px 5px 30px -6px rgba(0,0,0,0.75); */
 }
 
 .create-tools-ctn p:hover {
@@ -188,14 +248,14 @@ nav {
     height: 2em;
     background: url("/public/icon-create.svg") center no-repeat;
     background-size: contain;
-    transition: transform 0.15s;
+    /* transition: transform 0.15s; */
 }
 
 .create-icon:hover {
     cursor: pointer;
     background: url("/public/icon-create.gif") center no-repeat;
     background-size: contain;
-    transform: scale(1.2);
+    /* transform: scale(1.2); */
 }
 
 .logout-icon {
@@ -203,19 +263,19 @@ nav {
     height: 2em;
     background: url("/public/icon-sign-out.svg") center no-repeat;
     background-size: contain;
-    transition: transform 0.15s;
+    /* transition: transform 0.15s; */
 }
 
 .logout-icon:hover {
     background: url("/public/icon-sign-out.gif") center no-repeat;
     background-size: contain;
-    transform: scale(1.2);
+    /* transform: scale(1.2); */
 }
 
 .reg-log-btn-ctn--lgout img {
     width: 2em;
     height: 2em;
-    transition: transform 0.15s;
+    /* transition: transform 0.15s; */
 }
 
 .reg-log-btn-ctn--lgout a:first-child {
@@ -229,7 +289,7 @@ nav {
 
 .reg-log-btn-ctn--lgout img:hover {
     cursor: pointer;
-    transform: scale(1.2);
+    /* transform: scale(1.2); */
 }
 
 .reg-log-btn-ctn--lgout > * {
@@ -260,9 +320,6 @@ nav {
 }
 
 @media only screen and (max-width: 768px) {
-    /* .hmbrgr {
-        display: inline-block;
-    } */
 
     .nav-container-desktop {
         display: none;
@@ -277,4 +334,37 @@ nav {
     .mobile-nav {
         display: flex;
     }
+
+    .notifs-mob-ctn {
+        position: absolute;
+        /* top: initial; */
+        bottom: 50px;
+        left: 0;
+        width: 400px;
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+
+        background-color: white;
+        border-radius: 0.15em;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        overflow-y: auto;
+        opacity: 0;
+        transform: scale(1, 0);
+        transform-origin: 50% 100%;
+        transition: transform 0.25s, opacity 0.25s;
+    } 
+
+    .notif-ctn--active {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    /* .notifs-ctn {
+        top: initial;
+        bottom: 50px;
+        left: 0;
+        transform: scale(1, 0);
+        transform-origin: 50% 100%;
+    } */
 }

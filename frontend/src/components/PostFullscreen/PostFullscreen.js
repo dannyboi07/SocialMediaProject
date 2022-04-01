@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MediaCarousel from '../MediaCarousel/MediaCarousel';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import "./postfullscreen.css";
 import { removeFSData } from '../../reducers/fullScreenReducer';
@@ -8,6 +8,7 @@ import { getPost } from '../../services/contentService';
 import LoadingComp from '../LoadingComp/LoadingComp';
 import Profile from '../Profile/Profile';
 import PostDetails from "../PostDetails/PostDetails";
+import FailureComp from "../FailureComp/FailureComp";
 
 function PostFullscreen({ post, onlyPost }) {
     // const [flscrnPostWidth, setFlscrnPostWidth] = useState(null);
@@ -33,6 +34,8 @@ function PostFullscreen({ post, onlyPost }) {
     const history = useHistory();
     const params = useParams();
     const [singlePost, setSinglePost] = useState(null);
+    const failure = useSelector(state => state.failure?.type === "POST");
+    // console.log(failure);
 
     function handleCloseFullscreen() {
         history.goBack();
@@ -47,9 +50,14 @@ function PostFullscreen({ post, onlyPost }) {
             getPost(postId).then(resPost => setSinglePost(resPost));
         }
     }, []);
-    console.log(post);
+    // console.log(post, singlePost == '');
+
     if (onlyPost) {
 
+        if (singlePost == "") return (
+            <p>Not found</p>
+        )
+        
         if (!singlePost) return (
             <LoadingComp />
         );
@@ -76,7 +84,35 @@ function PostFullscreen({ post, onlyPost }) {
             </div>
         )
     }
-    // console.log(post);
+
+    if (!post) {
+        // console.log("in !post");
+        // if (failure) {
+        //     return (
+        //         <div className="flscrn-post-ctn">
+        //         <FailureComp />
+        //     </div>
+        //     )  
+        // }
+
+        return (
+
+            <div className="flscrn-post-ctn">
+                <div className="flscrn-post-ctn__left-ctn">
+                    <LoadingComp />
+                </div>
+
+                <div className="flscrn-post-ctn__right-ctn">
+
+                    <div className="flscrn-post-ctn__right-ctn__text-ctn">
+                            <LoadingComp mini={ true }/>
+                    </div>
+                </div>
+                
+            </div>
+        )
+    };
+
     return (
             <div className="flscrn-post-ctn">
                 { 
@@ -96,9 +132,6 @@ function PostFullscreen({ post, onlyPost }) {
                 </div>
                 
             </div>
-
-            //<img className="close-post-flscrn" src="/close-icon.svg" alt="Close" onClick={ handleCloseFullscreen } />
-        //</div>
     )
 }
 

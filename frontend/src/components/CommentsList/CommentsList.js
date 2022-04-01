@@ -4,8 +4,7 @@ import LoadingComp from "../LoadingComp/LoadingComp";
 import "./commentslist.css"
 
 function CommentsList({ postId, commentsData, comsState, commListRef, inFlscrn }) {
-    console.log(commentsData);
-
+    
     if (!commentsData) {
         return (
             <div id={`comms${postId}`} className={`comments-list-ctn ${inFlscrn ? "cmt-lst-ctn--mdfy" : "" }`} style={ comsState } ref={ commListRef }>

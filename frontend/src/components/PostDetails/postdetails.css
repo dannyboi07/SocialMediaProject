@@ -20,7 +20,8 @@
 }
 
 .pst-det-ctn--mod .likes-ctn {
-  top: -100%;
+  top: -11.5em;
+  transform-origin: 50% 125%;
 }
 
 .details-ctn {
