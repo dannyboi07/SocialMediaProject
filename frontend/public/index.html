@@ -60,7 +60,6 @@
                 })
                 .then(res => res.json())
                 .then(data => {
-                  console.log(data); 
                   const vapidKey = data.vapidKey;
 
                   const options = {
@@ -85,7 +84,7 @@
                     console.log("Push sent...");
 
                   })
-                });
+                }).catch(err => console.error("Error while trying to subscribe"));
               });
 
               function urlBase64ToUint8Array(base64String) {

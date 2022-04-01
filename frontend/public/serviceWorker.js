@@ -1,20 +1,37 @@
 /*eslint-disable */
 const CACHE_NAME = "social_media";
-const urlsToCache = [
-    "/"
+const filesToCache = [
+    "/manifest.json",
+    "/close-icon.svg",
+    "/heart.svg",
+    "/icon-arrow-down.svg",
+    "/icon-create.svg",
+    "/icon-home.svg",
+    "/icon-sign-out.svg",
+    "/icon-sign-out.gif",
+    "/left-chevron.svg",
+    "/liked-svg.gif",
+    "/notification.gif",
+    "/notification.svg",
+    "/right-chevron.svg"
 ];
 
-self.addEventListener("install", e => {
+self.addEventListener("install", async e => {
     console.log("Service worker installed");
-
+    e.waitUntil(
+        caches.open("cache-v1")
+        .then(cache => {
+            return cache.addAll(filesToCache);
+        })
+    );
     self.skipWaiting();
 });
 
-self.addEventListener("push", e => {
+self.addEventListener("push", async e => {
     const data = e.data.json();
     console.log("Push received...", data);
     const options = {
-        body: "Check it out!",
+        body: data.body || "Check it out",
         icon: data.icon,
         vibrate: [100, 50, 100],
         data: {
@@ -22,13 +39,22 @@ self.addEventListener("push", e => {
             primaryKey: data.pstId,
             url: data.url
         }
-    }
-    e.waitUntil(
-        self.registration.showNotification(data.title, options)
-    );
-})
+    };
 
-self.addEventListener('notificationclick', e => {
+    const allClients = await clients.matchAll({ includeUncontrolled: true });
+    for (const client of allClients){
+        const url = new URL(client.url);
+
+        console.log(client, client.visibilityState);
+        if (url.hostname === "localhost" && client.visibilityState === "visible") {
+            client.postMessage(data);
+            return;
+        }
+    }
+    return self.registration.showNotification(data.title, options);
+});
+
+self.addEventListener('notificationclick', async e => {
     const notification = e.notification;
     const primaryKey = notification.data.primaryKey;
     const action = e.action;
@@ -40,12 +66,44 @@ self.addEventListener('notificationclick', e => {
     } else {
         console.log("clicked");
         clients.openWindow(notification.data.url);
+
+        self.addEventListener("message", e => {
+            fetch(`http://localhost:3500/api/users/notif/${primaryKey}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${e.data.token}`
+                }
+            });
+        });
+        
+        const allClients = await clients.matchAll({ includeUncontrolled: true });
+        for (const client of allClients){
+            const url = new URL(client.url);
+
+            if (url.hostname === "localhost") {
+                client.postMessage({ type: "GET_TOKEN" });
+                return;
+            }
+        }
         notification.close();
     }
   
     console.log('Closed notification: ' + primaryKey);
-  });
+});
 
-// self.addEventListener("register", (e) => {
-//     console.log("Service worker registered");
-// });
+self.addEventListener("activate", e => {
+    console.log("activating new service worker");
+
+    const cacheAllowList = ["cache-v1"];
+    e.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cacheName => {
+                    if (cacheAllowList.indexOf(cacheName) === -1) {
+                        return caches.delete(cacheName);
+                    }
+                })
+            )
+        })
+    )
+})
