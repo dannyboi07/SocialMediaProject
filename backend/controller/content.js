@@ -33,15 +33,15 @@ contentRouter.get("/", async (req, res, next) => {
   try {
     let allPosts;
     if (decodedToken) {
-      allPosts = await db.query("SELECT post.p_id, post.text, (SELECT COUNT(*) FROM likes_post_rel WHERE p_id_fk = post.p_id) as likes, (SELECT TRUE FROM likes_post_rel WHERE p_id_fk = post.p_id AND u_id_fk = $1) AS liked, (SELECT COUNT(*) FROM comments_post_rel WHERE p_id_fk = post.p_id) as no_comments, (SELECT EXISTS (SELECT TRUE FROM user_followers WHERE u_id_fk = $1 AND u_flwr_id_fk = users.u_id OR u_id_fk = users.u_id AND u_flwr_id_fk = $1)) AS friends, post.date, p_pics, users.u_id, users.name, users.username, users.imgloc FROM post JOIN users on users.u_id = post.user_id ORDER BY date desc", [decodedToken.id]);
+      allPosts = await db.query("SELECT post.p_id, post.text, (SELECT COUNT(*) FROM likes_post_rel WHERE p_id_fk = post.p_id) as likes, (SELECT TRUE FROM likes_post_rel WHERE p_id_fk = post.p_id AND u_id_fk = $1) AS liked, (SELECT COUNT(*) FROM comments_post_rel WHERE p_id_fk = post.p_id) AS no_comments, (SELECT EXISTS (SELECT TRUE FROM user_followers WHERE u_id_fk = $1 AND u_flwr_id_fk = users.u_id OR u_id_fk = users.u_id AND u_flwr_id_fk = $1)) AS friends, post.date, p_pics, users.u_id, users.name, users.username, users.imgloc FROM post JOIN users on users.u_id = post.user_id ORDER BY date desc", [decodedToken.id]);
     } else {
-      allPosts = await db.query("SELECT post.p_id, post.text, (SELECT COUNT(*) FROM likes_post_rel WHERE p_id_fk = post.p_id) as likes, post.date, p_pics, users.u_id, users.name, users.username, users.imgloc FROM post JOIN users on users.u_id = post.user_id ORDER BY date desc");
+      allPosts = await db.query("SELECT post.p_id, post.text, (SELECT COUNT(*) FROM likes_post_rel WHERE p_id_fk = post.p_id) as likes, (SELECT COUNT(*) FROM comments_post_rel WHERE p_id_fk = post.p_id) as no_comments, post.date, p_pics, users.u_id, users.name, users.username, users.imgloc FROM post JOIN users on users.u_id = post.user_id ORDER BY date desc");
     }
   
     const allBlogs = await db.query("SELECT blog.b_id, blog.text, blog.images, blog.likes, blog.date, users.u_id, users.name, users.username, users.imgloc FROM blog JOIN users on users.u_id = blog.user_id ORDER BY date desc");
 
     const allContent = { 
-      blogs: [...allBlogs.rows], 
+      // blogs: [...allBlogs.rows], 
       posts: [...allPosts.rows]
     };
     res.json(allContent);
@@ -57,6 +57,10 @@ contentRouter.get("/post/:id", async (req, res, next) => {
   try {
     const post = await db.query("SELECT post.p_id, post.text, post.likes, post.date, p_pics, users.u_id, users.name, users.username, users.imgloc FROM post JOIN users on users.u_id = post.user_id WHERE post.p_id = $1", [post_id]);
 
+    if (post.rows.length === 0) {
+      res.status(404).json(post.rows[0]);
+      return;
+    }
     res.json(post.rows[0]);
   } catch(err) {
     console.error(err);
@@ -112,9 +116,19 @@ contentRouter.post("/post/like/:id", async (req, res, next) => {
     
     res.json({ success: true });
     const userThatLiked = await db.query("SELECT name, imgloc FROM users WHERE u_id = $1", [decodedToken.id]);
-    const userToNotify = await db.query("SELECT sub_endpoint, sub_pub_key, sub_auth_key FROM users WHERE u_id = (SELECT user_id FROM post WHERE p_id = $1)", [post_id]);
+    const userToNotify = await db.query("SELECT u_id, sub_endpoint, sub_pub_key, sub_auth_key FROM users WHERE u_id = (SELECT user_id FROM post WHERE p_id = $1)", [post_id]);
 
     if (userToNotify.rows[0].sub_endpoint) {
+
+      const payload = {
+        title: `${userThatLiked.rows[0].name} liked your post!`,
+        icon: userThatLiked.rows[0].imgloc,
+        url: `http://192.168.42.206:3000/post/${post_id}`,
+        // primaryKey: post_id
+      };
+
+      const notifId = await db.query("INSERT INTO notification (u_id_fk, title, icon, url) VALUES ($1, $2, $3, $4, $5) RETURNING notif_id", 
+        [userToNotify.rows[0].u_id, payload.title, payload.icon, payload.url]);
       
       const subscription = {
         endpoint: userToNotify.rows[0].sub_endpoint,
@@ -124,14 +138,7 @@ contentRouter.post("/post/like/:id", async (req, res, next) => {
         }
       };
 
-      const payload = {
-        title: `${userThatLiked.rows[0].name} liked your post!`,
-        icon: userThatLiked.rows[0].imgloc,
-        url: `http://192.168.42.206:3000/post/${post_id}`,
-        primaryKey: post_id
-      };
-
-      webpush.sendNotification(subscription, JSON.stringify(payload))
+      webpush.sendNotification(subscription, JSON.stringify({ ...payload, primaryKey: notifId.rows[0].notif_id }))
         .catch(err => console.error(err));
     }
 
@@ -193,9 +200,9 @@ contentRouter.post("/createPost", upload.array("photos", 10), async (req, res, n
 
     res.json(resQ.rows);
 
-    const userFlwrsSubKeys = await db.query("SELECT sub_endpoint, sub_pub_key, sub_auth_key FROM users JOIN user_followers ON user_followers.u_flwr_id_fk = users.u_id WHERE user_followers.u_id_fk = $1", [decodedToken.id]);
+    const userFlwrsSubKeys = await db.query("SELECT u_id, sub_endpoint, sub_pub_key, sub_auth_key FROM users JOIN user_followers ON user_followers.u_flwr_id_fk = users.u_id WHERE user_followers.u_id_fk = $1", [decodedToken.id]);
 
-    userFlwrsSubKeys.rows.forEach(userFlwrSubKeys => {
+    userFlwrsSubKeys.rows.forEach(async userFlwrSubKeys => {
 
       const subscription = {
         endpoint: userFlwrSubKeys.sub_endpoint,
@@ -205,15 +212,17 @@ contentRouter.post("/createPost", upload.array("photos", 10), async (req, res, n
         }
       }
 
-      const payload = JSON.stringify({
-        title: `New post by ${doesExist.rows[0].name}`,
+      const payload = {
+        title: `${doesExist.rows[0].name} posted`,
+        body: postText.slice(51),
         icon: doesExist.rows[0].imgloc,
-        url: `http://192.168.42.206:3000/post/${pstId.rows[0].p_id}`,
-        primaryKey: pstId.rows[0].p_id
-      });
+        url: `http://localhost:3000/post/${pstId.rows[0].p_id}`
+      };
+
+      const primaryKey = await db.query("INSERT INTO notification (u_id_fk, title, body, icon, url) VALUES ($1, $2, $3, $4, $5) RETURNING notif_id", [userFlwrSubKeys.u_id, payload.title, payload.body, payload.icon, payload.url])
 
       console.log(subscription, payload);
-      webpush.sendNotification(subscription, payload)
+      webpush.sendNotification(subscription, JSON.stringify({ ...payload, primaryKey: primaryKey.rows[0].primaryKey }))
         .catch(err => {
           console.error(err);
         })
@@ -257,7 +266,17 @@ contentRouter.post("/post/:id/comment", (req, res, next) => {
             ...userDetails.rows[0]
           });
 
-          const userToNotify = await db.query("SELECT sub_endpoint, sub_pub_key, sub_auth_key FROM users WHERE u_id = (SELECT user_id FROM post WHERE p_id = $1)", [postId]);
+          const userToNotify = await db.query("SELECT u_id, sub_endpoint, sub_pub_key, sub_auth_key FROM users WHERE u_id = (SELECT user_id FROM post WHERE p_id = $1)", [postId]);
+
+          const payload = {
+            title: `${userDetails.rows[0].name} commented`,
+            body: req.body.comment.slice(51),
+            icon: userDetails.rows[0].imgloc,
+            url: `http://192.168.42.206:3000/post/${postId}`,
+          };
+
+          const notif_id = await db.query("INSERT INTO notification (u_id_fk, title, body, icon, url) VALUES ($1, $2, $3, $4, $5) RETURNING notif_id", 
+            [userToNotify.rows[0].u_id, payload.title, payload.body, payload.icon, payload.url]);
 
           const subscription = {
             endpoint: userToNotify.rows[0].sub_endpoint,
@@ -267,14 +286,7 @@ contentRouter.post("/post/:id/comment", (req, res, next) => {
             }
           };
 
-          const payload = {
-            title: `${userDetails.rows[0].name} commented on your post`,
-            icon: userDetails.rows[0].imgloc,
-            url: `http://192.168.42.206:3000/post/${postId}`,
-            primaryKey: postId
-          }
-
-          webpush.sendNotification(subscription, JSON.stringify(payload))
+          webpush.sendNotification(subscription, JSON.stringify({ ...payload, primaryKey: notif_id.rows[0].notif_id }))
             .catch(err => console.error(err));
 
         }).catch(err => {
