@@ -164,6 +164,8 @@ userRouter.delete("/notif/:id", async (req, res, next) => {
         if (!decodedToken) return res.status(401).json({ error: "Unauthorized, invalid token" });
         const notifId = parseInt(req.params.id);
 
+        console.log(decodedToken.id, notifId);
+
         await db.query("DELETE FROM notification WHERE notif_id = $1 AND u_id_fk = $2", [notifId, decodedToken.id]);
 
         res.status(200).json({ success: true });

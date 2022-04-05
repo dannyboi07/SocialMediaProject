@@ -184,11 +184,7 @@ contentRouter.post("/createPost", upload.array("photos", 10), async (req, res, n
       console.log(i);
       imgsPath[i] = `http://localhost:3500/public/post-images/${file.filename}`;
     });
-  };
-
-  // const { username, id } = jwt.verify(token, process.env.SECRET, function(err, decoded) {
-  //   console.log("Verified");
-  // })
+  }
 
   try {
     const doesExist = await db.query("SELECT * FROM USERS WHERE username = $1", [decodedToken.username]);
@@ -219,13 +215,14 @@ contentRouter.post("/createPost", upload.array("photos", 10), async (req, res, n
         url: `http://localhost:3000/post/${pstId.rows[0].p_id}`
       };
 
-      const primaryKey = await db.query("INSERT INTO notification (u_id_fk, title, body, icon, url) VALUES ($1, $2, $3, $4, $5) RETURNING notif_id", [userFlwrSubKeys.u_id, payload.title, payload.body, payload.icon, payload.url])
+      const primKey = await db.query("INSERT INTO notification (u_id_fk, title, body, icon, url) VALUES ($1, $2, $3, $4, $5) RETURNING notif_id", [userFlwrSubKeys.u_id, payload.title, payload.body, payload.icon, payload.url]);
 
-      console.log(subscription, payload);
-      webpush.sendNotification(subscription, JSON.stringify({ ...payload, primaryKey: primaryKey.rows[0].primaryKey }))
+      webpush.sendNotification(subscription, JSON.stringify({ ...payload, primaryKey: primKey.rows[0].notif_id }))
         .catch(err => {
           console.error(err);
         })
+
+      // console.log(subscription, payload);
     })
   } catch(err) {
     console.error(err);
@@ -313,5 +310,7 @@ contentRouter.post("/post/:id/comment", (req, res, next) => {
   //   next();
   // }
 });
+
+
 
 module.exports = contentRouter;
