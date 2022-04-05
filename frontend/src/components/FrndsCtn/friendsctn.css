@@ -1,0 +1,24 @@
+.frnds-ctn {
+    width: 35%;
+    height: 100%;
+    border: 1px solid black;
+}
+
+.new-chat {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.new-chat > p {
+    color: lightblue;
+    transition: color 0.25s;
+}
+
+.new-chat > p:hover {
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+}

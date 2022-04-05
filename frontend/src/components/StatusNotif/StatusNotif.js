@@ -5,7 +5,6 @@ import "./statusnotif.css";
 function StatusNotif() {
     const statusNotif = useSelector(state => state.statusNotif);
     // const [classN, setClassN] = useState("");
-    // console.log(statusNotif);
 
     // useEffect(() => {
     //     if (statusNotif) {

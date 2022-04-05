@@ -1,0 +1,42 @@
+.frnd-ctn {
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 85px;
+    padding: 0.5em;
+    background-color: rgb(255, 255, 255);
+    transition: background-color 0.25s, transform 0.25s;
+}
+
+.frnd-ctn--active {
+    background-color: rgb(209, 209, 209);
+    /* transform: scaleY(1.2); */
+    /* background-color: rgba(255, 255, 255, 0); */
+}
+
+.frnd-ctn:not(.frnd-ctn--active):hover {
+    cursor: pointer;
+    background-color: rgb(235, 235, 235);
+    /* transform: scaleY(1.1); */
+}
+
+.frnd-left-ctn {
+    height: 100%;
+    background-color: white;
+    border-radius: 0.25em;
+}
+
+.frnd-left-ctn > img {
+    height: 100%;
+    border-radius: 0.25em;
+}
+
+.frnd-rgt-ctn {
+    width: 100%;
+    padding: 0.35em 0.75em;
+}
+
+.frnd-rgt-ctn > p {
+    font-size: 0.825rem;
+}

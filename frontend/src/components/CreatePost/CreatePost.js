@@ -7,7 +7,7 @@ function CreatePost() {
   const dispatch = useDispatch();
   const userToken = useSelector(state => state.user.token);
   const [postText, setPostText] = useState("");
-  const [postImages, setPostImages] = useState();
+  const [postImages, setPostImages] = useState([]);
   let tx = null;
 
   useEffect(() => {
@@ -29,9 +29,11 @@ function CreatePost() {
     const postContent = new FormData();
     postContent.append("postText", postText);
 
-    Array.from(postImages).forEach(postImage => {
-      postContent.append("photos", postImage);
-    });
+    if (postImages.length > 0) {
+      Array.from(postImages).forEach(postImage => {
+        postContent.append("photos", postImage);
+      });
+    }
 
     dispatch(sendPost(postContent, userToken));
   }

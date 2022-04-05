@@ -24,7 +24,7 @@
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     /* box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22); */
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     min-width: 860px;
@@ -50,7 +50,7 @@
     display: block;
     margin: 0 0.5em;
     width: 40%;
-    min-width: 250px;
+    min-width: 300px;
     max-width: 400px;
     height: 2em;
 }
@@ -75,7 +75,7 @@
 
 .logo {
     width: 25%;
-    width: clamp(160px, 20vw, 250px);
+    width: clamp(160px, 20vw, 300px);
     font-size: 2.5rem;
     color: var(--prim-blue);
     font-weight: 700;
@@ -123,7 +123,7 @@ nav {
     display: flex;
     justify-content: space-between;
     height: 57.5%;
-    width: clamp(160px, 20vw, 250px);
+    width: clamp(160px, 20vw, 300px);
     /* min-width: 260px; */
 }
 
@@ -167,7 +167,7 @@ nav {
 .notifs-ctn {
     position: absolute;
     top: 50px;
-    right: 25%;
+    right: 57.5%;
     width: 400px;
     height: 300px;
     display: flex;
@@ -258,9 +258,23 @@ nav {
     /* transform: scale(1.2); */
 }
 
+.dm-icon {
+    width: 2.25em;
+    height: 2.25em;
+    /* margin-left: 0.25em; */
+    background: url("/public/dm.svg") center no-repeat;
+    background-size: cover;
+}
+
+.dm-icon:hover {
+    background: url("/public/dm.gif") center no-repeat;
+    background-size: cover;
+}
+
 .logout-icon {
-    width: 2em;
-    height: 2em;
+    width: 2.15em;
+    height: 2.15em;
+    margin-left: -0.35em;
     background: url("/public/icon-sign-out.svg") center no-repeat;
     background-size: contain;
     /* transition: transform 0.15s; */
@@ -327,12 +341,24 @@ nav {
 
     .nav-container-mobile {
         display: flex;
-        padding: 0 1em;
+        padding: 0 0.5em;
         min-width: initial;
+    }
+
+    /* .logo {
+        width: 125px !important;
+    } */
+
+    .logo > h3 {
+        font-size: 2.35rem;
     }
 
     .mobile-nav {
         display: flex;
+    }
+
+    .search-ctn {
+        min-width: 250px;
     }
 
     .notifs-mob-ctn {

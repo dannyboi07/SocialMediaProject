@@ -9,7 +9,6 @@ function UserProfPosts({ posts, name, username, imgloc }) {
     const history = useHistory();
 
     function handleViewMoreClick(post) {
-        console.log(post);
         history.push(`/users/${username}/post/${post.p_id}`);
         dispatch(setFSData({ ...post, name, username, imgloc }));
     };
@@ -19,10 +18,16 @@ function UserProfPosts({ posts, name, username, imgloc }) {
             { 
                 posts.map(post => <div key={ post.p_id } className="user-prof-post-ctn" onClick={ () => handleViewMoreClick(post) }>
                         {
-                            post.p_pics && <img className="user-prof-post-img" src={post.p_pics[0]} alt="Post preview"/>
+                            post.p_pics?.length > 0 && <img className="user-prof-post-img" src={post.p_pics[0]} alt="Post preview"/>
                         }
 
-                        <div className="user-prof-post-text-ctn" style={{ height: post.p_pics ? "20%" : "100%" }}>
+                        <div 
+                        className="user-prof-post-text-ctn" 
+                        style={{ 
+                            height: post.p_pics?.length > 0 
+                                ? "20%" 
+                                : "100%" 
+                            }}>
                             <p>
                                 { post.text }
                             </p>

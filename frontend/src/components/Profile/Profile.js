@@ -19,9 +19,11 @@ function Profile({ name, username, profImgSrc, postUid, friends, inCmt, inMain }
         history.push("/login");
       } 
       else if ( friend ) {
+
         await unFollowUser(postUid, userDetails.token);
         setFriend(!friend);
       } else if ( !friend ) {
+        
         await followUser( postUid, userDetails.token );
         setFriend( !friend );
       };

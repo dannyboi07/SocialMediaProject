@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import "./mediaCarousel.css";
 
-function MediaCarousel({ postId, postImages, fullscreen = false, className, handleFsClick }) {
+function MediaCarousel({ postId, postImages, fullscreen = false, className, handleFsClick, inMob = false }) {
 
     const [imgCtnWidth, setImgCtnWidth] = useState(null);
     const [imgPosInx, setImgPosInx] = useState([]);
@@ -40,7 +40,9 @@ function MediaCarousel({ postId, postImages, fullscreen = false, className, hand
         };
                 
         const imgCtn = fullscreen 
-        ? document.querySelector(".flscrn-post-ctn__left-ctn")
+        ? inMob
+            ? document.querySelectorAll(".flscrn-post-ctn__left-ctn")[1] 
+            : document.querySelector(".flscrn-post-ctn__left-ctn")
         : document.querySelector(".post-images-ctn");
         setImgCtnWidth(imgCtn.offsetWidth);
 

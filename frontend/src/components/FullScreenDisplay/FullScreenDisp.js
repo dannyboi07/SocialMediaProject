@@ -15,10 +15,8 @@ function FullScreenDisp({ children, displayPost }) {
     const history = useHistory();
     const params = useParams();
     const location = useLocation();
-    // console.log(location.pathname.split("/"));
 
     function handleCloseFullscreen() {
-        console.log("going back", displayPost);
         if (displayPost) history.goBack();
         dispatch(removeFSData());
     };

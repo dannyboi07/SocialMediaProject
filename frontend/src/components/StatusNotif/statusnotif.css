@@ -5,10 +5,21 @@
     margin: 0 auto;
     height: 40px;
     width: 500px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+
     display: flex;
     justify-content: center;
     align-items: center;
     transition: transform 0.25s;
+    overflow: hidden;
+}
+
+.status-notif::before {
+    position: absolute;
+    height: 85%;
+    width: 15px;
+    left: -7.5px;
+    border-radius: 1em;
 }
 
 .status-notif > p {
@@ -17,15 +28,23 @@
 }
 
 .status-notif--err-active {
-    background-color: #ffcccc;
-    border: 1px solid red;
-    transform: translateY(0px);
+    background-color: #ffdada;
+    transform: translateY(15px);
+}
+
+.status-notif--err-active::before {
+    content: "";
+    background-color: red;
 }
 
 .status-notif--active {
     background-color: #87ff89;
-    border: 1px solid green;
-    transform: translateY(0px);
+    transform: translateY(15px);
+}
+
+.status-notif--active::before {
+    content: "";
+    background-color: green;
 }
 
 @media only screen and (max-width: 786px) {

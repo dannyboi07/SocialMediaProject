@@ -46,7 +46,12 @@ function PostContent({ postId, postText, postImages, handleFsClick }) {
         <p>
           { postText }
         </p>
-        { postImages && <MediaCarousel handleFsClick={ handleFsClick } postId={postId} postImages={postImages}/> }
+        { postImages?.length > 0 
+          && 
+          <MediaCarousel 
+          handleFsClick={ handleFsClick } 
+          postId={postId} 
+          postImages={postImages}/> }
     </div>
   );
 }

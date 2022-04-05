@@ -51,7 +51,6 @@ function Navbar() {
     }, [notifs, user]);
 
     function clrSearchFcs(e) {
-        // console.log(e);
         e.target.value = null;
         search.current = null;
         setSearchRes(null);
@@ -159,9 +158,6 @@ function Navbar() {
                                     <img src="/icon-home.svg" alt="Home" />
                                 </Link>
 
-                                <div className="create-icon" 
-                                onClick={dispatchCrPost}/>
-
                                 <div className="noti-icon" 
                                 onClick={ handleNotifToggle }
                                 ref={ notifRef }>
@@ -199,9 +195,16 @@ function Navbar() {
                                         :   <LoadingComp mini={ true }/>
                                     }
                                 </div>
+
+                                <div className="create-icon" 
+                                onClick={dispatchCrPost}/>
+
+                                <Link to="/messages">
+                                    <div className="dm-icon" />
+                                </Link>
                                 
                                 <Link to="/login" onClick={logOut}>
-                                    <div className="logout-icon"></div>
+                                    <div className="logout-icon" />
                                 </Link>
                             </> 
                             : <>

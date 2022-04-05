@@ -12,7 +12,7 @@
 }
 
 .only-post-ctn {
-    min-height: calc(100vh - 80px);
+    min-height: calc(100vh - 150px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -27,6 +27,10 @@
     width: 80%;
     height: 50vw;
     background-color: white;
+
+    &__mob-ctn {
+        display: none;
+    }
 
     &__left-ctn {
         width: 60%;
@@ -60,5 +64,42 @@
 
     &:hover {
         cursor: pointer;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+
+    .only-post-ctn {
+        min-height: calc(100vh);
+        margin-bottom: 5em;
+        align-items: initial;
+    }
+
+    .flscrn-post-ctn {
+        flex-direction: column;
+        width: 90%;
+        //height: fit-content !important;
+
+        &__dsk-ctn {
+            display: none;
+        }
+
+        &__mob-ctn {
+            display: flex;
+            height: 100% !important; 
+        }
+
+        &__left-ctn {
+            width: 100%;
+            height: 90vw;
+        }
+
+        &__right-ctn {
+            width: 100%;
+
+            &__text-ctn {
+                height: auto;
+            }
+        }
     }
 }

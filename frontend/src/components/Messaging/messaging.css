@@ -1,0 +1,100 @@
+
+.dming-ctn {
+    width: 75vw;
+    height: 82.5vh;
+    margin: 0 auto;
+    background-color: white;
+    display: flex;
+}
+
+.dm-ctn {
+    width: 65%;
+    height: 100%;
+    border: 1px solid black;
+    overflow: hidden;
+}
+
+.frnds-ctn {
+    width: 35%;
+    height: 100%;
+    border: 1px solid black;
+}
+
+.new-chat {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.new-chat > p {
+    color: lightblue;
+    transition: color 0.25s;
+}
+
+.new-chat > p:hover {
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.dms-ctn {
+    /* width: 100%; */
+    height: 82.5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 0.5em;
+    overflow-y: auto;
+}
+
+.dm-sction-date {
+    align-self: center;
+    font-size: 0.925rem;
+    padding: 0.5em 1em;
+    border-radius: 0.75em;
+    background-color: darkslategray;
+    color: white;
+}
+
+.dm-inpt-ctn {
+    border-top: 1px solid lightgray;
+    height: calc(100% - (75px + 82.5%));
+    display: flex;
+    padding: 2px;
+}
+
+.dm-inpt-ctn > input {
+    width: 90%;
+    height: 100%;
+    font-size: 0.925rem;
+    padding: 0 1.25em;
+    border-radius: 0.25em;
+    font-family: "Poppins";
+}
+
+.dm-inpt-ctn > input:focus {
+    outline: 2px solid var(--prim-blue);
+}
+
+.send-dm-btn {
+    width: 10%;
+    background-color: transparent;
+    padding: 0 0 0 0.25em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.25s;
+}
+
+.send-dm-btn > img {
+    width: 90%;
+    height: 90%;
+    display: block;
+}
+
+.dm-btn-disb {
+    pointer-events: none;
+    opacity: 0.5;
+}
