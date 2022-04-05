@@ -100,7 +100,7 @@ function Messaging() {
                 )
             }
             </div>
-
+            
             <div className="dm-ctn">
                 {
                     curChat && 
@@ -109,51 +109,54 @@ function Messaging() {
                     username={ curChat.username }
                     profImgSrc={ curChat.imgloc }/>
                 }
-                <div className="dms-ctn">
-                    {
-                        curChat ? 
-                            
-                            <>
-                                {
-                                    messagingState?.messages.map((message, i) => 
-                                        i === 0 ? 
-                                            <React.Fragment key={message.msg_id}>
-                                            {            
-                                                <p className="dm-sction-date">
-                                                    { message.date }
-                                                </p>
-                                            }
-                                                <Message                                  
-                                                uId={ user.uId } 
-                                                message={ message }
-                                                />
-                                            </React.Fragment>
 
-                                        :   messagingState.messages[i-1].date === message.date ?
-                                            
-                                                <Message 
-                                                key={ message.msg_id } 
-                                                uId={ user.uId } 
-                                                message={ message }
-                                                />
-                                            
-                                            :   <React.Fragment key={message.msg_id}>
+                <div className="dms-ctn-scroll-wrapper">
+                    <div className="dms-ctn">
+                        {
+                            curChat ? 
+                                
+                                <>
+                                    {
+                                        messagingState?.messages.map((message, i) => 
+                                            i === (messagingState.messages.length - 1) ? 
+                                                <React.Fragment key={message.msg_id}>
                                                 {            
                                                     <p className="dm-sction-date">
                                                         { message.date }
                                                     </p>
                                                 }
-                                                    <Message                                            
+                                                    <Message                                  
                                                     uId={ user.uId } 
                                                     message={ message }
                                                     />
                                                 </React.Fragment>
-                                    )
-                                }
-                            </>
-                
-                        :   <p>Select a chat</p>
-                    }
+
+                                            :   messagingState.messages[i+1].date === message.date ?
+                                                
+                                                    <Message 
+                                                    key={ message.msg_id } 
+                                                    uId={ user.uId } 
+                                                    message={ message }
+                                                    />
+                                                
+                                                :   <React.Fragment key={message.msg_id}>
+                                                    {            
+                                                        <p className="dm-sction-date">
+                                                            { message.date }
+                                                        </p>
+                                                    }
+                                                        <Message                                            
+                                                        uId={ user.uId } 
+                                                        message={ message }
+                                                        />
+                                                    </React.Fragment>
+                                        )
+                                    }
+                                </>
+                    
+                            :   <p>Select a chat</p>
+                        }
+                    </div>
                 </div>
 
                 {
