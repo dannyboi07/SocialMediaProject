@@ -30,6 +30,11 @@ export default function failureReducer(state = null, action) {
                 func: action.data.func, 
                 param: action.data.param 
             };
+        case "ONLY_POST":
+
+            return  {
+                type: action.type,
+            }
         default:
             return state;
     };

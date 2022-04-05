@@ -18,6 +18,8 @@ export default function postblogReducer(state = null, action) {
       return state = { ...state, posts: state.posts.map(post => post.p_id === action.data ? { likes: post.likes += 1, ...post } : post)};
     case "UNLIKE_POST":
       return state = { ...state, posts: state.posts.map(post => post.p_id === action.data ? { likes: post.likes -= 1, ...post } : post)};
+    case "CLR_POSTS":
+      return null;
     default:
       return state;
   };
@@ -81,4 +83,11 @@ function unLikePostRdx(postId, token) {
   };
 };
 
-export { getAll, sendPost, likePostRdx, unLikePostRdx };
+function clrPosts() {
+  return({
+    type: "CLR_POSTS",
+    data: null
+  });
+};
+
+export { getAll, sendPost, likePostRdx, unLikePostRdx, clrPosts };

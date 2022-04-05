@@ -14,9 +14,7 @@ export default function statusNotifReducer(state = null, action) {
 let timer = null;
 
 function setStatusNotif(type, data, time) {
-    console.log(type, data, timer);
     if (timer) clearTimeout(timer);
-
     return dispatch => {
         dispatch({
             type,

@@ -18,7 +18,7 @@ export default function notificationReducer(state = null, action) {
             return [ ...action.data ];
         case "ADD_NOTI":
 
-            if (state) return [ ...state, ...action.data ];
+            if (state) return [ ...action.data, ...state ];
             return [ ...action.data ];
         case "REMOVE_NOTI":
             return state.filter(notif => notif.primaryKey !== action.data);
