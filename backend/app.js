@@ -14,11 +14,7 @@ const commsRouter = require("./controller/comms");
 const db = require("./db");
 
 dotenv.config();
-// console.log(process.env.PUBLIC_VAPID_KEY)
-// const publicVapidKey = process.env.PUBLIC_VAPID_KEY, privateVapidKey = process.env.PRIVATE_VAPID_KEY;
 
-// const publicVapidKey ="BMvqlc4V9Z1P2ktFvoE3V45_qCRkREuNWCbbaoZeJRiUyVb7GKg-IbiBhCL3fEejYby1EPDuuRQJbdY7Cv0GFUw"
-// const privateVapidKey="swkcvXe0xn3YxGbh4j5Y3-oti_wqrs0MUDbZlKgKdR8"
 webpush.setVapidDetails("mailto:test@test.com", process.env.PUBLIC_VAPID_KEY, process.env.PRIVATE_VAPID_KEY);
 
 app.use(cors());
@@ -39,10 +35,10 @@ app.use("/api/register", registerRouter);
 
 app.get("/testpush", (req, res, next) => {
     const subscription = {
-        endpoint: "https://fcm.googleapis.com/fcm/send/d5A8SuvKqQ4:APA91bHxXcxTGJTzNYD8emFkm893TeXsYVCcVz5PLh77wFYxTxI1_aXPaL0AhbcqKHGGQbY_WG4B2CU1j_LN1JgdgLMvSRPbKfphDVdKdRexhZRpkCtIeeYZn0y57xdlhF2K63ObGhow",
+        endpoint: "https://fcm.googleapis.com/fcm/send/d5A8SuvKqQ4:aXPaL0AhbcqKHGGQbY_WG4B2CU1j_LN1JgdgLMvSRPbKfphDVdKdRexhZRpkCtIeeYZn0y57xdlhF2K63ObGhow",
         keys: {
-            p256dh: "BEmjNMQWVKH2nDlha4ut7cyXl4i8Y3r2LUlhb7dDLsB8yg7BMH9TDzqFqYqR8hDVCQ05CgcQEZ_E3c_nkmKts7M",
-            auth: "6VxiW5rtMTeZuHRAuvy1yA"
+            p256dh: "Ulhb7dDLsB8yg7BMH9TDzqFqYqR8hDVCQ05CgcQEZ_E3c_nkmKts7M",
+            auth: "ZuHRAuvy1yA"
         }
     };
 
