@@ -6,12 +6,21 @@ import userReducer from "./reducers/userReducer";
 import postblogReducer from "./reducers/postblogReducer";
 // import usersReducer from "./reducers/usersReducer";
 import fullScreenReducer from "./reducers/fullScreenReducer";
+import failureReducer from "./reducers/failureReducer";
+import usersReducer from "./reducers/usersReducer";
+import statusNotifReducer from "./reducers/statusNotifReducer";
+import notificationReducer from "./reducers/notificationReducer";
+import messagingReducer from "./reducers/messagingReducer";
 
 const reducer = combineReducers({ 
   user: userReducer,
+  users: usersReducer,
   postblog: postblogReducer,
   fullscreenData: fullScreenReducer,
-  // findUser: usersReducer
+  failure: failureReducer,
+  statusNotif: statusNotifReducer,
+  notifs: notificationReducer,
+  messaging: messagingReducer
 });
 
 const store = createStore(

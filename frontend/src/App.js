@@ -7,16 +7,20 @@ import { getAll } from './reducers/postblogReducer';
 import Home from "./components/Home/Home";
 import Register from './components/Register/Register';
 import Login from './components/Login/Login';
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, useLocation, useParams } from "react-router-dom";
 import CreatePost from "./components/CreatePost/CreatePost";
 import UserProfile from "./components/UserProfile/UserProfile";
 import PostFullscreen from "./components/PostFullscreen/PostFullscreen";
 import FullScreenDisp from "./components/FullScreenDisplay/FullScreenDisp";
 import StatusNotif from './components/StatusNotif/StatusNotif';
 import { addNotif, getAllNotifs } from "./reducers/notificationReducer";
+import Messaging from "./components/Messaging/Messaging";
+import { addMsg } from "./reducers/messagingReducer";
 
 function App() {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const params = useParams();
   const user = useSelector(state => state.user);
   // const userS = useSelector(state => state.user);
   // console.log(userS);
@@ -26,11 +30,33 @@ function App() {
     if (user) {
       if (navigator.serviceWorker) {
         navigator.serviceWorker.addEventListener("message", e => {
-          if (e.data.type === "GET_TOKEN") {
-            navigator.serviceWorker.controller.postMessage({ token: user.token });
+          if (e.data.reqtype === "GET_TOKEN") {
+            navigator.serviceWorker.controller.postMessage({ token: user.token, primaryKey: e.data.primaryKey });
           }
-          dispatch(addNotif([e.data]));
-          // console.log(`The service worker sent the client a message of ${Object.values(e.data)}`, e);
+          if (e.data.notifType === "message" && location.pathname.includes("/messages") && location.pathname.includes(e.data.title.replace(/ /g, '').toLowerCase())) {
+
+            dispatch(addMsg([{
+              msg_id: e.data.msg_id,
+              u_id_from: e.data.u_id_from,
+              u_id_to: e.data.u_id_to,
+              msg_text: e.data.body,
+              date: e.data.date,
+              time: e.data.time // Sending object to redux in an array to use ... over action.data instead of creating a new action handler
+            }]));
+
+            navigator.serviceWorker.controller.postMessage({ token: user.token, primaryKey: e.data.primaryKey })
+          }
+          else {
+            console.log("else adding notif");
+            dispatch(addNotif( [{
+              primaryKey: e.data.primaryKey,
+              title: e.data.title,
+              body: e.data.body,
+              icon: e.data.icon,
+              url: e.data.url
+            }] ))
+          };
+          //console.log(`The service worker sent the client a message of ${Object.values(e.data)}`, e);
         });
       };
     };
@@ -58,6 +84,7 @@ function App() {
   // if (userUrlObj) {
   //   userName = useSelector()
   // }
+  // console.log(location.pathname.includes("danlaptop"));
 
   return (
     <div>
@@ -121,6 +148,10 @@ function App() {
             : <Redirect to="/login" /> 
           }
         </Route> */}
+
+        <Route exact path={["/messages/:username", "/messages"]}>
+          { user ? <Messaging /> : <Redirect to="/login" /> }
+        </Route>
 
         <Route path="/register">
           { user ? <Redirect to="/home" /> : <Register />}
