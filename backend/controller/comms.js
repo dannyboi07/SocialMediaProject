@@ -33,7 +33,7 @@ commsRouter.get("/messages/:id", async (req, res, next) => {
 
     try {
 
-        const msgs = await db.query("SELECT msg_id, u_id_from, u_id_to, msg_text, to_char(date, 'HH12:MI AM') as time, to_char(date, 'Month DD, YYYY') as date FROM message WHERE u_id_from = $1 AND u_id_to = $2 OR u_id_to = $1 AND u_id_from = $2 ORDER BY date", [decodedToken.id, friendId]);
+        const msgs = await db.query("SELECT msg_id, u_id_from, u_id_to, msg_text, to_char(date, 'HH12:MI AM') as time, to_char(date, 'Month DD, YYYY') as date FROM message WHERE u_id_from = $1 AND u_id_to = $2 OR u_id_to = $1 AND u_id_from = $2 ORDER BY date DESC", [decodedToken.id, friendId]);
 
         return res.json( msgs.rows );
     } catch(err) {
