@@ -29,14 +29,14 @@ self.addEventListener("install", async e => {
 
 self.addEventListener("push", async e => {
     const data = e.data.json();
-    console.log("Push received...", data);
+    // console.log("Push received...", data);
     const options = {
         body: data.body || "Check it out",
         icon: data.icon,
         vibrate: [100, 50, 100],
         data: {
             dateOfArrival: Date.now(),
-            primaryKey: data.pstId,
+            primaryKey: data.primaryKey,
             url: data.url
         }
     };
@@ -45,7 +45,7 @@ self.addEventListener("push", async e => {
     for (const client of allClients){
         const url = new URL(client.url);
 
-        console.log(client, client.visibilityState);
+        // console.log(client, client.visibilityState);
         if (url.hostname === "localhost" && client.visibilityState === "visible") {
             client.postMessage(data);
             return;
@@ -67,28 +67,39 @@ self.addEventListener('notificationclick', async e => {
         console.log("clicked");
         clients.openWindow(notification.data.url);
 
-        self.addEventListener("message", e => {
-            fetch(`http://localhost:3500/api/users/notif/${primaryKey}`, {
-                method: "DELETE",
-                headers: {
-                    "Authorization": `Bearer ${e.data.token}`
-                }
-            });
-        });
-        
         const allClients = await clients.matchAll({ includeUncontrolled: true });
         for (const client of allClients){
             const url = new URL(client.url);
 
             if (url.hostname === "localhost") {
-                client.postMessage({ type: "GET_TOKEN" });
+                console.log(primaryKey);
+                client.postMessage({ reqtype: "GET_TOKEN", primaryKey });
                 return;
             }
-        }
+        };
         notification.close();
     }
   
     console.log('Closed notification: ' + primaryKey);
+});
+
+// function deleteNotif(e) {
+//     fetch(`http://localhost:3500/api/users/notif/${e.data.primaryKey}`, {
+//         method: "DELETE",
+//         headers: {
+//             "Authorization": `Bearer ${e.data.token}`
+//         }
+//     });
+// }
+
+self.addEventListener("message", e => {
+    console.log(e.data);
+    fetch(`http://localhost:3500/api/user/notif/${e.data.primaryKey}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${e.data.token}`
+        }
+    });
 });
 
 self.addEventListener("activate", e => {
